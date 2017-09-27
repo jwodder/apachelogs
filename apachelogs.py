@@ -39,7 +39,7 @@ FORMAT_DIRECTIVES = {
 
     '{*}C':
 
-    'D': ('microseconds', integer),  ### Type: APR_TIME_T_FMT
+    'D': ('microseconds', integer),
     '{*}e': ('envvar_*', esc_string),
     'f': ('filename', esc_string),
     'h': ('remote_host', esc_string),
@@ -72,11 +72,11 @@ FORMAT_DIRECTIVES = {
     's': ('status', clf(integer)),
     't': ('time', ### Apache timestamp ),
     '{*}t': ???
-    'T': ('seconds', integer),  ### Type: APR_TIME_T_FMT
+    'T': ('seconds', integer),
     '{*}T': {
-        'ms': ('milliseconds', ???),  ### Type: APR_TIME_T_FMT
-        'us': ('microseconds', ???),  ### Type: APR_TIME_T_FMT
-        's': ('seconds', ???),  ### Type: APR_TIME_T_FMT
+        'ms': ('milliseconds', integer),
+        'us': ('microseconds', integer),
+        's': ('seconds', integer),
     },
     'u': ('remote_user', clf(esc_string)),  ### "auth_user"?
         ### XXX: A user with an empty name is represented by '""' (two
