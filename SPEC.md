@@ -16,9 +16,11 @@
 s/match/parse/ ?
 
 - If the same format specifier (or two different specifiers with the same name,
-  e.g., `%B` and `%b`?) appears more than once in a format, the capturing
-  groups for the non-initial occurrences will have their names suffixed with
-  `_2`, `_3`, etc.
+  e.g., `%B` and `%b`?) appears more than once in a format, it is assumed that
+  the field's value remains constant throughout each individual record, and
+  thus all but one of the occurrences (the first? the last?) are discarded
+
+- Aggregate all time fields into a single structure?
 
 - Give the `match` functions a way to return a dict that uses the format
   specifiers instead of custom names as keys?
