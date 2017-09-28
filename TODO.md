@@ -1,0 +1,21 @@
+- Research the following:
+    - Look into whether the values for the following string format specifiers
+      have more restrictive patterns they always follow:
+        - `%H` — no restrictions? (at least on Trusty)
+        - `%h`
+        - `%f`?
+        - `%l`
+        - `%m`
+        - `%q`
+        - `%R`
+        - `%u` (No colon?)
+        - `%v`
+        - `%V`
+        - `%{*}^ti`
+        - `%{*}^to`
+    - `mod_ssl` formats??? <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
+    - Can any format specifier _not_ evaluate to `-`?
+    - Nginx logfile formats
+
+- Handle format specifiers that filter by status code
+- Handle `<` and `>` modifiers for internally-redirected requests
