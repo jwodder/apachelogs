@@ -1,5 +1,7 @@
 - <http://httpd.apache.org/docs/current/mod/mod_log_config.html>
-- Where various relevant things are defined in the Apache source:
+- <http://httpd.apache.org/download.cgi>
+- Where various relevant things are defined in the Apache source (as of
+  v2.4.27):
     - `modules/loggers/mod_log_config.c`
         - table of format directive definitions: `log_pre_config()`
     - escaping of strings: `ap_escape_logitem()` in `server/util.c`
