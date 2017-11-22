@@ -14,7 +14,28 @@ w8  = tzoffset(None, -28800)
 
 @pytest.mark.parametrize('ts,dt', [
     ('31/Dec/1969:19:00:00 +0500', datetime(1969,12,31,19, 0, 0, tzinfo=e5)),
+    ('[31/Dec/1969:19:00:00 +0500]', datetime(1969,12,31,19, 0, 0, tzinfo=e5)),
+    ('[31/Dec/1969:19:00:00 +0500', datetime(1969,12,31,19, 0, 0, tzinfo=e5)),
+    ('31/Dec/1969:19:00:00 +0500]', datetime(1969,12,31,19, 0, 0, tzinfo=e5)),
     ('31/Dec/1969:19:00:00 -0500', datetime(1969,12,31,19, 0, 0, tzinfo=w5)),
+
+    (
+        '31/Dec/1969:19:00:00 +0130',
+        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, 90*60)),
+    ),
+    (
+        '31/Dec/1969:19:00:00 +0030',
+        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, 30*60)),
+    ),
+    (
+        '31/Dec/1969:19:00:00 -0030',
+        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, -30*60)),
+    ),
+    (
+        '31/Dec/1969:19:00:00 -0130',
+        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, -90*60)),
+    ),
+
     ('02/Apr/2006:01:59:59 +0800', datetime(2006, 4, 2, 1,59,59, tzinfo=e8)),
     ('02/Apr/2006:01:59:59 -0800', datetime(2006, 4, 2, 1,59,59, tzinfo=w8)),
     ('02/Apr/2006:02:30:00 +0700', datetime(2006, 4, 2, 2,30, 0, tzinfo=e7)),
