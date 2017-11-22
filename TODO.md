@@ -1,4 +1,6 @@
 - Write tests
+- Fill in keywords & classifiers
+- Write README
 
 - Research the following:
     - Look into whether the values for the following string format directives
