@@ -1,4 +1,5 @@
 import re
+from   .errors import InvalidDirectiveError
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -80,20 +81,23 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     ''', fmt, flags=re.X):
         if m.group('literal') is not None:
             if m.group('literal') == '%':
-                raise InvalidFormatError(fmt)
+                raise InvalidDirectiveError(m.group(0))
             rgx += re.escape(m.group('literal'))
             continue
-        elif m.group('param') is not None:
-            spec = parameterized_directives[m.group('directive')]
-            param = m.group('param')
-            if isinstance(spec, dict):
-                name = (spec[param][0],)
-                dtype = spec[param][1]
+        try:
+            if m.group('param') is not None:
+                spec = parameterized_directives[m.group('directive')]
+                param = m.group('param')
+                if isinstance(spec, dict):
+                    name = (spec[param][0],)
+                    dtype = spec[param][1]
+                else:
+                    name = (spec[0], param)
+                    dtype = spec[1]
             else:
-                name = (spec[0], param)
-                dtype = spec[1]
-        else:
-            name, dtype = plain_directives[m.group('directive')]
+                name, dtype = plain_directives[m.group('directive')]
+        except KeyError:
+            raise InvalidDirectiveError(m.group(0))
         if name is None:
             rgx += dtype.regex
         else:

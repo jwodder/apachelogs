@@ -28,4 +28,3 @@
 - Handle `<` and `>` modifiers for internally-redirected requests
 - Handle bytes input
     - What encoding are Apache logs written in?  Always ASCII?
-- Make `InvalidFormatError` messages more informative

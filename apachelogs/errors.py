@@ -15,9 +15,9 @@ class InvalidEntryError(Error, ValueError):
 
 
 @attr.s(repr=False)
-class InvalidFormatError(Error, ValueError):
-    log_format = attr.ib()
+class InvalidDirectiveError(Error, ValueError):
+    directive = attr.ib()
 
     def __str__(self):
-        return 'Invalid/unrecognized log format string: {!r}'\
-            .format(self.log_format)
+        return 'Invalid/unrecognized log format directive: {!r}'\
+            .format(self.directive)
