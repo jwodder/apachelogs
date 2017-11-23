@@ -1,4 +1,5 @@
-from collections import namedtuple
+from   collections import namedtuple
+import re
 
 BYTE = r'(?:[1-9]?[0-9]|[1-9][0-9][0-9]|2[0-4][0-9]|25[0-5])'
 ### TODO: Support IPv6:
@@ -13,20 +14,13 @@ def clf(ftype):
     )
 
 ip_address = FieldType(IP_ADDRESS_RGX, str)
-integer = FieldType(r'(?:0|[1-9][0-9]*)', int)
+integer    = FieldType(r'(?:0|[1-9][0-9]*)', int)
 log_string = FieldType(r'.*?', str)
-
-# The following characters are escaped in logfiles: ", \, control
-# characters (whatever matches `apr_iscntrl`), bytes over 127 (whatever
-# fails `apr_isprint`?)
-# cf. server/gen_test_char.c
-### TODO: Accept characters that should be escaped but aren't?
-esc_string = FieldType(r'(?:[^"\\ ??? ] | \\x[0-9A-Fa-f]|\\.)*?', unescape)
 
 def unescape(s):
     # Escape sequences used by Apache: \b \n \r \t \v \\ \" \xHH
     # cf. ap_escape_logitem() in server/util.c
-    return re.sub(r'\\(x[0-9A-Fa-f]{2}|.)', _unesc, s)
+    return re.sub(r'\\(x[0-9A-Fa-f]{2}|.)', _unesc, s).encode('iso-8859-1')
 
 _unescapes = {
     't': '\t',
@@ -41,6 +35,17 @@ _unescapes = {
 def _unesc(m):
     esc = m.group(1)
     if esc[0] == 'x':
-        return unichr(int(esc[1:], 16))
+        return chr(int(esc[1:], 16))
     else:
-        return _unescapes.get(esc, esc)
+        return _unescapes.get(esc, '\\' + esc)
+
+# The following characters are escaped in logfiles: ", \, control characters
+# (whatever matches `apr_iscntrl`), bytes over 127 (whatever fails
+# `apr_isprint`?)
+# cf. server/gen_test_char.c
+### TODO: Accept raw tabs?
+### TODO: Accept characters that should be escaped but aren't?
+esc_string = FieldType(
+    r'(?:[ !\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?',
+    unescape,
+)

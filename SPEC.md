@@ -1,5 +1,5 @@
-- `apachelogs.format` — contains string (and compiled `LogFormat`?) constants
-  for common, combined, etc. formats
+- contains string (and compiled `LogFormat`?) constants for common, combined,
+  etc. formats
 - `LogFormat(format: str)`
     - `parse(entry: str) -> LogEntry`
     - `parse_lines(entries: Iterator[str]) -> Iterator[LogEntry]`

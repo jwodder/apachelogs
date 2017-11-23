@@ -1,8 +1,7 @@
-from   datetime          import datetime
-from   dateutil.tz       import tzoffset
+from   datetime    import datetime
+from   dateutil.tz import tzoffset
 import pytest
-from   apachelogs        import LogFormat
-from   apachelogs.format import COMBINED
+from   apachelogs  import COMBINED, LogFormat
 
 @pytest.mark.parametrized('entry,fields', [
     (

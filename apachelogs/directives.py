@@ -1,3 +1,5 @@
+import re
+
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
     'a': ('remote_ip', ip_address),   ### useragent_ip?
@@ -66,34 +68,36 @@ PARAMETERIZED_DIRECTIVES = {
     '^to': ('response_trailer_line', esc_string),
 }
 
-def fmtstr2regex(fmt, plain_directives=None, parameterized_directives=None):
+def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     if plain_directives is None:
         plain_directives = PLAIN_DIRECTIVES
     if parameterized_directives is None:
         parameterized_directives = PARAMETERIZED_DIRECTIVES
-    seen = set()
-    def directive2regex(m):
+    groups = []
+    rgx = ''
+    for m in re.finditer(r'''
+        % (?:!?\d+(?:,\d+)*)? (?:\{(?P<param>.*?)\})? (?P<directive>\^..|.)
+        | (?P<literal>.)
+    ''', fmt, flags=re.X):
         if m.group('literal') is not None:
-            return re.escape(m.group('literal'))
+            if m.group('literal') == '%':
+                raise InvalidFormatError(fmt)
+            rgx += re.escape(m.group('literal'))
+            continue
         elif m.group('param') is not None:
             spec = parameterized_directives[m.group('directive')]
             param = m.group('param')
             if isinstance(spec, dict):
-                name, dtype = spec[param]
+                name = (spec[param][0],)
+                dtype = spec[param][1]
             else:
-                name  = spec[0] + '__' + munge(param)
+                name = (spec[0], param)
                 dtype = spec[1]
         else:
             name, dtype = plain_directives[m.group('directive')]
-        if name is None or name in seen:
-            return dtype.regex
+        if name is None:
+            rgx += dtype.regex
         else:
-            seen.add(name)
-            return r'(?P<{}>{})'.format(name, dtype.regex)
-    return re.sub(r'''
-        % (?:!?\d+(?:,\d+)*)?  (?:\{(?P<param>.*?)\})?  (?P<directive>\^..|.)
-        | (?P<literal>.)
-    ''', directive2regex, fmt, flags=re.X)
-
-def munge(s):
-    return re.sub(r'[^A-Za-z0-9]', ??? , s)
+            groups.append((name, m.group(0)))
+            rgx += r'({})'.format(dtype.regex)
+    return (groups, re.compile(rgx))
