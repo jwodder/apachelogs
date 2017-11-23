@@ -10,7 +10,7 @@ class LogFormat:
     errors     = attr.ib(default=None)
 
     def __attrs_post_init__(self):
-        self._group_names, self._rgx = format2regex(self.log_format)
+        self._group_defs, self._rgx = format2regex(self.log_format)
 
     def parse(self, entry):
         if isinstance(entry, bytes):
@@ -19,14 +19,16 @@ class LogFormat:
         m = self._rgx.fullmatch(entry)
         if not m:
             raise InvalidEntryError(entry, self.log_format)
-        groups = m.groups()
+        groups = [
+            conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())
+        ]
         if self.encoding is not None:
             groups = [
                 gr.decode(self.encoding, self.errors) if isinstance(gr, bytes)
                     else gr
                 for gr in groups
             ]
-        return LogEntry(entry, self._group_names, groups)
+        return LogEntry(entry, [gdef[:2] for gdef in self._group_defs], groups)
 
     def parse_lines(self, entries):
         for e in entries:

@@ -1,5 +1,7 @@
 import re
 from   .errors import InvalidDirectiveError
+from   .types  import FieldType, clf,clf_string, esc_string, integer, ip_address
+from   .util   import parse_apache_timestamp
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -10,29 +12,29 @@ PLAIN_DIRECTIVES = {
     'D': ('request_duration_microseconds', integer),
     'f': ('request_file', esc_string),
     'h': ('remote_host', esc_string),
-    'H': ('request_protocol', clf(esc_string)),
+    'H': ('request_protocol', clf_string),
     'k': ('requests_on_connection', integer),
-    'l': ('remote_logname', clf(esc_string)),
+    'l': ('remote_logname', clf_string),
     'L': ('log_id', clf( ??? )),
-    'm': ('request_method', clf(esc_string)),
+    'm': ('request_method', clf_string),
     'p': ('server_port', integer),
     'P': ('pid', integer),
     'q': ('request_query', esc_string),
-    'r': ('request_line', clf(esc_string)),
+    'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
     's': ('status', clf(integer)),
-    't': ('request_time', ### Apache timestamp ),
+    't': ('request_time', FieldType(r'\[[^]]+\]', parse_apache_timestamp)),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
-    'U': ('request_uri', clf(esc_string)),
+    'U': ('request_uri', clf_string),
     'v': ('virtual_host', esc_string),
     'V': ('server_name', esc_string),
     'X': ('connection_status', FieldType('[-+X]', str)),
 
     # Defined by mod_logio:
-    'I': ('bytes_in', integer),  ### Format: apr_off_t_toa
-    'O': ('bytes_out', integer),      ### Format: apr_off_t_toa
-    'S': ('bytes_combined', integer),  ### Format: apr_off_t_toa
+    'I': ('bytes_in', integer),
+    'O': ('bytes_out', integer),
+    'S': ('bytes_combined', integer),
     '^FB': ('ttfb', clf(integer)),
 }
 
@@ -40,9 +42,9 @@ PARAMETERIZED_DIRECTIVES = {
     'a': {
         'c': ('remote_client_address', ip_address),
     },
-    'C': ('cookie', ???),
+    'C': ('cookie', esc_string),
     'e': ('env_var', esc_string),
-    'i': ('header_in', clf(esc_string)),
+    'i': ('header_in', clf_string),
     'n': ('note', esc_string),
     'o': ('header_out', esc_string),
     'p': {
@@ -99,6 +101,6 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         if name is None:
             rgx += dtype.regex
         else:
-            groups.append((name, m.group(0)))
+            groups.append((name, m.group(0), dtype.converter))
             rgx += r'({})'.format(dtype.regex)
     return (groups, re.compile(rgx))

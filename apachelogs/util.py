@@ -30,3 +30,25 @@ def parse_apache_timestamp(s):
         offset *= -1
     data['tzinfo'] = tzoffset(None, offset)
     return datetime(**data)
+
+def unescape(s):
+    # Escape sequences used by Apache: \b \n \r \t \v \\ \" \xHH
+    # cf. ap_escape_logitem() in server/util.c
+    return re.sub(r'\\(x[0-9A-Fa-f]{2}|.)', _unesc, s).encode('iso-8859-1')
+
+_unescapes = {
+    't': '\t',
+    'n': '\n',
+    'r': '\r',
+    'b': '\b',
+    'v': '\v',
+    # Not emitted by Apache (as of v2.4), but other servers might use it:
+    'f': '\f',
+}
+
+def _unesc(m):
+    esc = m.group(1)
+    if esc[0] == 'x':
+        return chr(int(esc[1:], 16))
+    else:
+        return _unescapes.get(esc, '\\' + esc)

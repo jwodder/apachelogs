@@ -11,7 +11,7 @@ __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/apachelogs'
 
 from .errors import Error, InvalidDirectiveError, InvalidEntryError
-from .format import COMMON, COMMON_VHOST, COMBINED, REFERER, AGENT
+from .format import AGENT, COMBINED, COMMON, COMMON_VHOST, REFERER
 from .parser import LogEntry, LogFormat
 from .util   import parse_apache_timestamp
 

@@ -1,4 +1,5 @@
 - Write tests
+    - cf. <https://gist.github.com/rm-hull/bd60aed44024e9986e3c>?
 - Fill in keywords & classifiers
 - Write README
 - Rename to `accesslogs`?
@@ -6,6 +7,7 @@
 - Research the following:
     - Look into whether the values for the following string format directives
       have more restrictive patterns they always follow:
+        - `%C` - no semicolons, spaces, or tabs?  URI encoded?
         - `%H` — no restrictions? (at least on Trusty)
         - `%h`
         - `%f`?
@@ -13,9 +15,9 @@
         - `%m`
         - `%q`
         - `%R`
-        - `%u` (No colon?)
-        - `%v`
-        - `%V`
+        - `%u` - no colon?
+        - `%v` - no whitespace?
+        - `%V` - no whitespace?
         - `%{*}^ti`
         - `%{*}^to`
     - `mod_ssl` formats??? <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
