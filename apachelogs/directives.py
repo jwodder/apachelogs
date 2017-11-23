@@ -23,9 +23,7 @@ PLAIN_DIRECTIVES = {
     's': ('status', clf(integer)),
     't': ('request_time', ### Apache timestamp ),
     'T': ('request_duration_seconds', integer),
-    'u': ('remote_user', clf(esc_string)),
-        ### XXX: A user with an empty name is represented by '""' (two
-        ### double-quotes)
+    'u': ('remote_user', remote_user),
     'U': ('request_uri', clf(esc_string)),
     'v': ('virtual_host', esc_string),
     'V': ('server_name', esc_string),

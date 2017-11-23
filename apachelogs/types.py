@@ -49,3 +49,11 @@ esc_string = FieldType(
     r'(?:[ !\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?',
     unescape,
 )
+
+clf_string = clf(esc_string)
+
+# A remote user with an empty name is represented by '""' (two double-quotes):
+remote_user = FieldType(
+    clf_string.regex,
+    lambda s: clf_string.converter('' if s == '""' else s),
+)
