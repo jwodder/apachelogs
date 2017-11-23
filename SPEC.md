@@ -22,7 +22,7 @@
     - Default format: combined?  Guess at combined or common?
 
 - If the same format directive (or two different directives with the same name,
-  e.g., `%B` and `%b`?) appears more than once in a format, it is assumed that
+  e.g., `%B` and `%b`) appears more than once in a format, it is assumed that
   the field's value remains constant throughout each individual record, and
   thus all but one of the occurrences (the first? the last?) are discarded
 

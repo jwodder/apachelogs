@@ -8,5 +8,5 @@
     - decisions on what to escape: uses of `T_ESCAPE_LOGITEM` in
       `server/gen_test_char.c`
     - definition of `request_rec`: `ap.d`
-    - `log_pre_config()` in `modules/loggers/mod_logio.c`: `%I`, `%O`, `%S`,
+    - `logio_pre_config()` in `modules/loggers/mod_logio.c`: `%I`, `%O`, `%S`,
       and `%^FB` formats

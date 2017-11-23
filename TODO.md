@@ -1,6 +1,7 @@
 - Write tests
 - Fill in keywords & classifiers
 - Write README
+- Rename to `accesslogs`?
 
 - Research the following:
     - Look into whether the values for the following string format directives
@@ -25,7 +26,6 @@
     - Should they be represented in the result dict/object differently than
       non-filtered directives?
 - Handle `<` and `>` modifiers for internally-redirected requests
-- Change the human names of format directives to match the names used in the
-  Apache source
 - Handle bytes input
     - What encoding are Apache logs written in?  Always ASCII?
+- Make `InvalidFormatError` messages more informative

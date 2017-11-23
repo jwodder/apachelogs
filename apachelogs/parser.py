@@ -40,7 +40,11 @@ class LogEntry(Mapping):
     groups = attr.ib()
 
     def __attrs_post_init__(self):
-        self._data = {k:v for ((k,_),v) in zip(self.group_names, self.groups)}
+        self._data = {}
+        for (k,_), v in zip(self.group_names, self.groups):
+            if self._data.get(k) is None:
+                self._data[k] = v
+            #else: assume self._data[k] == v
 
     def __getitem__(self, key):
         return self._data[key]
