@@ -1,6 +1,7 @@
 import re
 from   .errors import InvalidDirectiveError
-from   .types  import FieldType, clf,clf_string, esc_string, integer, ip_address
+from   .types  import (FieldType, clf, clf_string, esc_string, integer,
+                       ip_address, remote_user)
 from   .util   import parse_apache_timestamp
 
 PLAIN_DIRECTIVES = {
@@ -15,7 +16,7 @@ PLAIN_DIRECTIVES = {
     'H': ('request_protocol', clf_string),
     'k': ('requests_on_connection', integer),
     'l': ('remote_logname', clf_string),
-    'L': ('log_id', clf( ??? )),
+    ### XXX: 'L': ('log_id', clf( ??? )),
     'm': ('request_method', clf_string),
     'p': ('server_port', integer),
     'P': ('pid', integer),
@@ -54,11 +55,10 @@ PARAMETERIZED_DIRECTIVES = {
     },
     'P': {
         'pid': ('pid', integer),
-        'tid': ('tid', integer),  ### apr_psprintf "%pT" format
-        'hextid': ('tid', ???),
-            ### apr_psprintf "%pt" or "%pT" format (depending on APR version)
+        'tid': ('tid', integer),
+        ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version)
     },
-    't': ('request_time', ??? ),
+    ### XXX: 't': ('request_time', ??? ),  ### strftime
     'T': {
         'ms': ('request_duration_milliseconds', integer),
         'us': ('request_duration_microseconds', integer),
@@ -67,6 +67,23 @@ PARAMETERIZED_DIRECTIVES = {
     '^ti': ('trailer_in', esc_string),
     '^to': ('trailer_out', esc_string),
 }
+
+#STRFTIME_DIRECTIVES = {
+#    '%': (None, FieldType('%', None)),
+#    's': ('unix', integer),
+#    'w': ('wday', FieldType(r'[0-6]', int)),
+#    'u': ('iso_wday', FieldType(r'[1-7]', int)),
+#    'm': ('mon',
+#    'd': ('mday',
+#    'A': ('full_wday',
+#    'B': ('full_mon',
+#    'a': ('abbrev_wday',
+#    'b': ('abbrev_mon',
+#    'Y': ('year',
+#    'C': ('century',
+#    'y': ('abbrev_year',
+#    ???
+#}
 
 def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     if plain_directives is None:

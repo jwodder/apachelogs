@@ -29,4 +29,7 @@
       non-filtered directives?
 - Handle `<` and `>` modifiers for internally-redirected requests
 - Handle bytes input
-    - What encoding are Apache logs written in?  Always ASCII?
+    - What encoding are Apache logs written in?  Always ASCII?  Latin-1?
+
+- Replace all instances of `tzoffset` and `tzutc` with `datetime.timezone` and
+  `datetime.timezone.utc`?

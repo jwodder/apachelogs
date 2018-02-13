@@ -27,7 +27,7 @@ IP_ADDRESS_RGX = r'''
 '''.format(HEXTET=HEXTET, IPv4=IPv4)
 
 ip_address = FieldType(IP_ADDRESS_RGX, str)
-integer    = FieldType(r'(?:0|[1-9][0-9]*)', int)
+integer    = FieldType(r'(?:0|-?[1-9][0-9]*)', int)
 #log_string = FieldType(r'.*?', str)
 
 # The following characters are escaped in logfiles: ", \, control characters

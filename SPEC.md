@@ -5,12 +5,15 @@
     - `parse_lines(entries: Iterator[str]) -> Iterator[LogEntry]`
 - `LogEntry` — represents a parsed log entry
     - can be used as a `dict` with humanized directive names as keys
+        - Omit individual timestamp fields from this `dict` so as to reduce
+          clutter?
     - also supplies a dict with the raw directive strings themselves as keys
       somehow
         - Subfields of `%{*}t` directives can (must?) be accessed with keys of
           the form `"%{%a}t"`
     - stringifies to the original entry? (possibly with trailing whitespace
       removed)
+    - Subdicts for HTTP headers (et alii?) are case-insensitive
 - `parse(fmt, entry) -> LogEntry`
 - `parse_lines(fmt, entries: Iterator[str]) -> Iterator[LogEntry]`
 - `ValueError` subclass for invalid log format directives
@@ -32,6 +35,7 @@
 
 - Default to returning bytes but let the user specify an encoding and error
   handler (but where?)
+    - Or should all input be decoded as Latin-1 by default?
 
 - `parse` functions should ignore trailing newlines
 

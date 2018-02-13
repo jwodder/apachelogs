@@ -26,5 +26,13 @@ __all__ = [
     'LogEntry',
     'LogFormat',
     'REFERER',
+    'parse',
     'parse_apache_timestamp',
+    'parse_lines',
 ]
+
+def parse(fmt, entry, encoding=None, errors=None):
+    return LogFormat(fmt, encoding=encoding, errors=errors).parse(entry)
+
+def parse_lines(fmt, entries, encoding=None, errors=None):
+    return LogFormat(fmt, encoding=encoding, errors=errors).parse_lines(entries)
