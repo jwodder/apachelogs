@@ -52,3 +52,6 @@ def _unesc(m):
         return chr(int(esc[1:], 16))
     else:
         return _unescapes.get(esc, '\\' + esc)
+
+def assemble_datetime(fields):
+    raise NotImplementedError

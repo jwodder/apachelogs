@@ -2,7 +2,7 @@ from   datetime   import datetime, timezone
 import pytest
 from   apachelogs import COMBINED, LogFormat
 
-@pytest.mark.parametrized('entry,fields', [
+@pytest.mark.parametrize('entry,fields', [
     (
         '209.126.136.4 - - [01/Nov/2017:07:28:29 +0000] "GET / HTTP/1.1" 301 521 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"',
         {
