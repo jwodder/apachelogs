@@ -24,9 +24,5 @@
     - Can any format directive _not_ evaluate to `-`?
     - Nginx logfile formats
 
-- Handle format directives that filter by status code
-    - Should they be represented in the result dict/object differently than
-      non-filtered directives?
-- Handle `<` and `>` modifiers for internally-redirected requests
 - Handle bytes input
     - What encoding are Apache logs written in?  Always ASCII?  Latin-1?

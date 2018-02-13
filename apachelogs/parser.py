@@ -24,7 +24,8 @@ class LogFormat:
         ]
         if self.encoding is not None:
             groups = [
-                gr.decode(self.encoding, self.errors) if isinstance(gr, bytes)
+                gr.decode(self.encoding, self.errors or 'strict')
+                    if isinstance(gr, bytes)
                     else gr
                 for gr in groups
             ]

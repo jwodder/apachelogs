@@ -93,7 +93,10 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     groups = []
     rgx = ''
     for m in re.finditer(r'''
-        % (?:!?\d+(?:,\d+)*)? (?:\{(?P<param>.*?)\})? (?P<directive>\^..|.)
+        % (?:!?\d+(?:,\d+)*|(?P<redirect1>[<>]))*
+          (?:\{(?P<param>.*?)\})?
+          (?:!?\d+(?:,\d+)*|(?P<redirect2>[<>]))*
+          (?P<directive>\^..|.)
         | (?P<literal>.)
     ''', fmt, flags=re.X):
         if m.group('literal') is not None:
@@ -118,6 +121,11 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         if name is None:
             rgx += dtype.regex
         else:
+            redirect = m.group('redirect2') or m.group('redirect1') or ''
+            if redirect == '<':
+                name = 'original_' + name
+            elif redirect == '>':
+                name = 'final_' + name
             groups.append((name, m.group(0), dtype.converter))
             rgx += r'({})'.format(dtype.regex)
     return (groups, re.compile(rgx))
