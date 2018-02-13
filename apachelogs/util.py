@@ -1,6 +1,5 @@
-from   datetime    import datetime
+from   datetime import datetime, timedelta, timezone
 import re
-from   dateutil.tz import tzoffset
 
 MONTH_SNAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -23,12 +22,13 @@ def parse_apache_timestamp(s):
     for k in 'year day hour minute second'.split():
         data[k] = int(data[k])
     data['month'] = MONTH_SNAMES.index(data['month']) + 1
-    tzoffset_hour = int(data.pop('tzoffset_hour'))
-    tzoffset_min  = int(data.pop('tzoffset_min'))
-    offset = tzoffset_hour * 3600 + tzoffset_min * 60
+    tzoffset = timedelta(
+        hours   = int(data.pop('tzoffset_hour')),
+        minutes = int(data.pop('tzoffset_min')),
+    )
     if data.pop('tzoffset_sign') == '-':
-        offset *= -1
-    data['tzinfo'] = tzoffset(None, offset)
+        tzoffset *= -1
+    data['tzinfo'] = timezone(tzoffset)
     return datetime(**data)
 
 def unescape(s):

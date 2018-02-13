@@ -1,7 +1,6 @@
-from   datetime    import datetime
-from   dateutil.tz import tzoffset
+from   datetime   import datetime, timezone
 import pytest
-from   apachelogs  import COMBINED, LogFormat
+from   apachelogs import COMBINED, LogFormat
 
 @pytest.mark.parametrized('entry,fields', [
     (
@@ -11,7 +10,7 @@ from   apachelogs  import COMBINED, LogFormat
             "remote_logname": None,
             "remote_user": None,
             "request_time": "01/Nov/2017:07:28:29 +0000",
-            "request_datetime": datetime(2017, 11, 1, 7, 28, 29, tzinfo=tzoffset(None, 0)),
+            "request_datetime": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
             "request_line": "GET / HTTP/1.1",
             "final_status": 301,
             "bytes_sent": 521,

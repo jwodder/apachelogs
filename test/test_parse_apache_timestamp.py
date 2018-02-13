@@ -1,16 +1,18 @@
-from   datetime    import datetime
-from   dateutil.tz import tzoffset
+from   datetime   import datetime, timedelta, timezone
 import pytest
-from   apachelogs  import parse_apache_timestamp
+from   apachelogs import parse_apache_timestamp
 
-e8  = tzoffset(None, 28800)
-e7  = tzoffset(None, 25200)
-e5  = tzoffset(None, 18000)
-utc = tzoffset(None, 0)
-w4  = tzoffset(None, -14400)
-w5  = tzoffset(None, -18000)
-w7  = tzoffset(None, -25200)
-w8  = tzoffset(None, -28800)
+def mktz(hours, mins=0):
+    return timezone(timedelta(hours=hours, minutes=mins))
+
+e8  = mktz(8)
+e7  = mktz(7)
+e5  = mktz(5)
+utc = timezone.utc
+w4  = mktz(-4)
+w5  = mktz(-5)
+w7  = mktz(-7)
+w8  = mktz(-8)
 
 @pytest.mark.parametrize('ts,dt', [
     ('31/Dec/1969:19:00:00 +0500', datetime(1969,12,31,19, 0, 0, tzinfo=e5)),
@@ -21,19 +23,19 @@ w8  = tzoffset(None, -28800)
 
     (
         '31/Dec/1969:19:00:00 +0130',
-        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, 90*60)),
+        datetime(1969,12,31,19, 0, 0, tzinfo=mktz(1, 30)),
     ),
     (
         '31/Dec/1969:19:00:00 +0030',
-        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, 30*60)),
+        datetime(1969,12,31,19, 0, 0, tzinfo=mktz(0, 30)),
     ),
     (
         '31/Dec/1969:19:00:00 -0030',
-        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, -30*60)),
+        datetime(1969,12,31,19, 0, 0, tzinfo=mktz(-0, -30)),
     ),
     (
         '31/Dec/1969:19:00:00 -0130',
-        datetime(1969,12,31,19, 0, 0, tzinfo=tzoffset(None, -90*60)),
+        datetime(1969,12,31,19, 0, 0, tzinfo=mktz(-1, -30)),
     ),
 
     ('02/Apr/2006:01:59:59 +0800', datetime(2006, 4, 2, 1,59,59, tzinfo=e8)),

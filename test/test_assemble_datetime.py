@@ -1,5 +1,4 @@
-from   datetime        import datetime
-from   dateutil.tz     import tzoffset, tzutc
+from   datetime        import datetime, timezone
 import pytest
 from   apachelogs.util import assemble_datetime
 
@@ -18,7 +17,7 @@ from   apachelogs.util import assemble_datetime
                 "User-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
             },
         },
-        datetime(2017, 11, 1, 7, 28, 29, tzinfo=tzoffset(None, 0)),
+        datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
     ),
 
     (
@@ -26,7 +25,7 @@ from   apachelogs.util import assemble_datetime
             "request_time_unix": 1511642826,
             "request_line": "GET / HTTP/1.1",
         },
-        datetime(2017, 11, 25, 20, 47, 6, tzinfo=tzutc()),
+        datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
     ),
 
 ])

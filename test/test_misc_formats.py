@@ -1,7 +1,6 @@
-from   datetime    import datetime
-from   dateutil.tz import tzutc
+from   datetime   import datetime, timezone
 import pytest
-from   apachelogs  import LogFormat
+from   apachelogs import LogFormat
 
 @pytest.mark.parametrized('fmt,entry,fields', [
     (
@@ -62,7 +61,7 @@ from   apachelogs  import LogFormat
         '1511642826 GET / HTTP/1.1',
         {
             "request_time_unix": 1511642826,
-            "request_datetime": datetime(2017, 11, 25, 20, 47, 6, tzinfo=tzutc()),
+            "request_datetime": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
             "request_line": "GET / HTTP/1.1",
         },
     ),

@@ -1,7 +1,6 @@
-from   datetime    import datetime
-from   dateutil.tz import tzoffset
+from   datetime   import datetime, timezone
 import pytest
-from   apachelogs  import COMBINED, LogFormat
+from   apachelogs import COMBINED, LogFormat
 
 ENTRY = '66.240.205.34 - - [18/Nov/2017:12:30:55 +0000] "Gh0st\\xad" 400 0 "-" "-"'
 
@@ -15,7 +14,7 @@ def test_bytes_parse():
         "remote_logname": None,
         "remote_user": None,
         "request_time": "18/Nov/2017:12:30:55 +0000",
-        "request_datetime": datetime(2017, 11, 18, 12, 30, 55, tzinfo=tzoffset(None, 0)),
+        "request_datetime": datetime(2017, 11, 18, 12, 30, 55, tzinfo=timezone.utc),
         "request_line": b"Gh0st\xAD",
         "final_status": 400,
         "bytes_sent": 0,
@@ -31,7 +30,7 @@ def test_parse_latin1():
         "remote_logname": None,
         "remote_user": None,
         "request_time": "18/Nov/2017:12:30:55 +0000",
-        "request_datetime": datetime(2017, 11, 18, 12, 30, 55, tzinfo=tzoffset(None, 0)),
+        "request_datetime": datetime(2017, 11, 18, 12, 30, 55, tzinfo=timezone.utc),
         "request_line": "Gh0st\xAD",
         "final_status": 400,
         "bytes_sent": 0,
@@ -47,7 +46,7 @@ def test_parse_utf8_surrogateescape():
         "remote_logname": None,
         "remote_user": None,
         "request_time": "18/Nov/2017:12:30:55 +0000",
-        "request_datetime": datetime(2017, 11, 18, 12, 30, 55, tzinfo=tzoffset(None, 0)),
+        "request_datetime": datetime(2017, 11, 18, 12, 30, 55, tzinfo=timezone.utc),
         "request_line": "Gh0st\xAD",
         "final_status": 400,
         "bytes_sent": 0,
