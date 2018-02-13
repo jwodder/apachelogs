@@ -5,7 +5,7 @@ FieldType = namedtuple('FieldType', 'regex converter')
 
 def clf(ftype):
     return FieldType(
-        regex=r'(?:-|{})'.format(ftype.regex),
+        regex=r'(?:{}|-)'.format(ftype.regex),
         converter=lambda s: None if s == '-' else ftype.converter(s),
     )
 
