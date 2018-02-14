@@ -47,7 +47,7 @@ class LogEntry(Mapping):
         for (k,_), v in zip(self.group_names, self.groups):
             if self._data.get(k) is None:
                 self._data[k] = v
-            #else: assume self._data[k] == v
+            #else: Assume self._data[k] == v
 
     def __getitem__(self, key):
         return self._data[key]
@@ -60,6 +60,3 @@ class LogEntry(Mapping):
 
     def __contains__(self, key):
         return key in self._data
-
-    ### Mutability?
-    ### def copy? (only needed if mutable)

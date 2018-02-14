@@ -5,8 +5,12 @@
     - `parse_lines(entries: Iterator[str]) -> Iterator[LogEntry]`
 - `LogEntry` — represents a parsed log entry
     - can be used as a `dict` with humanized directive names as keys
-        - Omit individual timestamp fields from this `dict` so as to reduce
-          clutter?
+    - If there were any date or time values in the log entry, the `LogEntry`
+      instance will have a `"request_time"` key containing a `datetime` value
+      (or `None` if there is insufficient data to assemble a `datetime`)
+    - All `%t` and `%{*}t` fields are stored (primitively-typed) in a
+      `log_entry.time_fields` (`request_time_fields`?) `dict` in order to
+      reduce clutter in the main mapping.
     - also supplies a dict with the raw directive strings themselves as keys
       somehow
         - Subfields of `%{*}t` directives can (must?) be accessed with keys of
@@ -14,6 +18,7 @@
     - stringifies to the original entry? (possibly with trailing whitespace
       removed)
     - Subdicts for HTTP headers (et alii?) are case-insensitive
+    - immutable
 - `parse(fmt, entry) -> LogEntry`
 - `parse_lines(fmt, entries: Iterator[str]) -> Iterator[LogEntry]`
 - `ValueError` subclass for invalid log format directives
@@ -46,8 +51,6 @@
   unrestricted namespace (i.e., not directives like `%{*}T` that can only take
   a fixed set of values for the `*`) should be represented in the result dict
   by sub-dictionaries.
-
-- Aggregate all time fields into a single structure?
 
 - Include instructions in the documentation for adding your own format
   directives (including `%{*}t` sub-directives)

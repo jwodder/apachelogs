@@ -68,23 +68,6 @@ PARAMETERIZED_DIRECTIVES = {
     '^to': ('trailer_out', esc_string),
 }
 
-#STRFTIME_DIRECTIVES = {
-#    '%': (None, FieldType('%', None)),
-#    's': ('unix', integer),
-#    'w': ('wday', FieldType(r'[0-6]', int)),
-#    'u': ('iso_wday', FieldType(r'[1-7]', int)),
-#    'm': ('mon',
-#    'd': ('mday',
-#    'A': ('full_wday',
-#    'B': ('full_mon',
-#    'a': ('abbrev_wday',
-#    'b': ('abbrev_mon',
-#    'Y': ('year',
-#    'C': ('century',
-#    'y': ('abbrev_year',
-#    ???
-#}
-
 def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     if plain_directives is None:
         plain_directives = PLAIN_DIRECTIVES
