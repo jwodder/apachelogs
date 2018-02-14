@@ -45,9 +45,14 @@ class LogEntry(Mapping):
     def __attrs_post_init__(self):
         self._data = {}
         for (k,_), v in zip(self.group_names, self.groups):
-            if self._data.get(k) is None:
-                self._data[k] = v
-            #else: Assume self._data[k] == v
+            d = self._data
+            if isinstance(k, tuple):
+                for k2 in k[:-1]:
+                    d = d.setdefault(k2, {})
+                k = k[-1]
+            if d.get(k) is None:
+                d[k] = v
+            #else: Assume d[k] == v
 
     def __getitem__(self, key):
         return self._data[key]
