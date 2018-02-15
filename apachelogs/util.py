@@ -15,6 +15,8 @@ APACHE_TS_RGX = re.compile(r'''
 ''', flags=re.X)
 
 def parse_apache_timestamp(s):
+    # This fails when in a locale with different month snames:
+    #return datetime.strptime(s.strip('[]'), '%d/%b/%Y:%H:%M:%S %z')
     m = APACHE_TS_RGX.match(s)
     if not m:
         raise ValueError(s)
@@ -54,4 +56,23 @@ def _unesc(m):
         return _unescapes.get(esc, '\\' + esc)
 
 def assemble_datetime(fields):
-    raise NotImplementedError
+    if "apache_timestamp" in fields:
+        return parse_apache_timestamp(fields["apache_timestamp"])
+    elif "unix" in fields:
+        return datetime.fromtimestamp(
+            fields["unix"],
+            fields.get("timezone", timezone.utc),
+        )
+    else:
+        try:
+            return datetime(
+                year   = fields["year"],
+                month  = fields["mon"],
+                day    = fields["mday"],
+                hour   = fields["hour"],
+                minute = fields["min"],
+                second = fields["sec"],
+                tzinfo = fields.get("timezone"),
+            )
+        except KeyError:
+            return None
