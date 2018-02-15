@@ -2,6 +2,7 @@ from   collections.abc import Mapping
 import attr
 from   .directives     import format2regex
 from   .errors         import InvalidEntryError
+from   .util           import TIME_FIELD_TOKEN, assemble_datetime
 
 @attr.s
 class LogFormat:
@@ -44,15 +45,21 @@ class LogEntry(Mapping):
 
     def __attrs_post_init__(self):
         self._data = {}
+        self.time_fields = {}
         for (k,_), v in zip(self.group_names, self.groups):
             d = self._data
             if isinstance(k, tuple):
                 for k2 in k[:-1]:
-                    d = d.setdefault(k2, {})
+                    if k2 is TIME_FIELD_TOKEN:
+                        d = self.time_fields
+                    else:
+                        d = d.setdefault(k2, {})
                 k = k[-1]
             if d.get(k) is None:
                 d[k] = v
             #else: Assume d[k] == v
+        if self.time_fields:
+            self._data["request_time"] = assemble_datetime(self.time_fields)
 
     def __getitem__(self, key):
         return self._data[key]

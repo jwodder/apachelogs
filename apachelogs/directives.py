@@ -2,7 +2,7 @@ import re
 from   .errors import InvalidDirectiveError
 from   .types  import (FieldType, clf, clf_string, esc_string, integer,
                        ip_address, remote_user)
-from   .util   import parse_apache_timestamp
+from   .util   import TIME_FIELD_TOKEN
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -24,7 +24,7 @@ PLAIN_DIRECTIVES = {
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
     's': ('status', clf(integer)),
-    't': ('request_time', FieldType(r'\[[^]]+\]', parse_apache_timestamp)),
+    't': ((TIME_FIELD_TOKEN, 'apache_timestamp'), FieldType(r'\[[^]]+\]', str)),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
     'U': ('request_uri', clf_string),
@@ -58,7 +58,7 @@ PARAMETERIZED_DIRECTIVES = {
         'tid': ('tid', integer),
         ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version)
     },
-    ### XXX: 't': ('request_time', ??? ),  ### strftime
+    ### XXX: 't': (TIME_FIELD_TOKEN, ??? ),  ### strftime
     'T': {
         'ms': ('request_duration_milliseconds', integer),
         'us': ('request_duration_microseconds', integer),
@@ -94,6 +94,7 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
                 if isinstance(spec, dict):
                     name = (spec[param][0],)
                     dtype = spec[param][1]
+                #elif callable(spec):
                 else:
                     name = (spec[0], param)
                     dtype = spec[1]
