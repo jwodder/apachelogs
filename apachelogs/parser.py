@@ -15,7 +15,7 @@ class LogFormat:
 
     def parse(self, entry):
         if isinstance(entry, bytes):
-            entry = entry.decode('us-ascii')
+            entry = entry.decode('iso-8859-1')
         entry = entry.rstrip('\r\n')
         m = self._rgx.fullmatch(entry)
         if not m:

@@ -12,7 +12,7 @@ APACHE_TS_RGX = re.compile(r'''
     ^\[?
     (?P<day>\d\d)   / (?P<month>\w\w\w) / (?P<year>\d{4,})
     :(?P<hour>\d\d) : (?P<minute>\d\d)  : (?P<second>\d\d)
-    \s* (?P<tzoffset_sign>[-+]) (?P<tzoffset_hour>\d\d+) (?P<tzoffset_min>\d\d)
+    \s* (?P<tzoffset_sign>[-+]) (?P<tzoffset_hour>\d\d) (?P<tzoffset_min>\d\d)
     \]?$
 ''', flags=re.X)
 
@@ -63,10 +63,14 @@ def assemble_datetime(fields):
     elif "unix" in fields:
         return datetime.fromtimestamp(
             fields["unix"],
-            fields.get("timezone", timezone.utc),
+            fields.get("timezone") or timezone.utc,
+            # fields["timezone"] may be None, in which case we still want the
+            # timezone to be UTC
         )
     else:
         try:
+            ### TODO: Use yday, date, time, and hour_min fields when necessary
+            ### TODO: Use word fields when necessary
             return datetime(
                 year   = fields["year"],
                 month  = fields["mon"],
