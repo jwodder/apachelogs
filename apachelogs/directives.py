@@ -92,8 +92,7 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
                 spec = parameterized_directives[m.group('directive')]
                 param = m.group('param')
                 if isinstance(spec, dict):
-                    name = (spec[param][0],)
-                    dtype = spec[param][1]
+                    name, dtype = spec[param]
                 #elif callable(spec):
                 else:
                     name = (spec[0], param)
@@ -106,10 +105,12 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
             rgx += dtype.regex
         else:
             redirect = m.group('redirect2') or m.group('redirect1') or ''
-            if redirect == '<':
-                name = 'original_' + name
-            elif redirect == '>':
-                name = 'final_' + name
+            if redirect in {'<', '>'}:
+                prefix = 'original_' if redirect == '<' else 'final_'
+                if isinstance(name, tuple):
+                    name = (prefix + name[0],) + name[1:]
+                else:
+                    name = prefix + name
             groups.append((name, m.group(0), dtype.converter))
             rgx += r'({})'.format(dtype.regex)
     return (groups, re.compile(rgx))

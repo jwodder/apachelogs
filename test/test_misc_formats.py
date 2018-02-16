@@ -31,6 +31,29 @@ from   apachelogs import LogFormat
             "final_status": 203,
         },
     ),
+    (
+        '%<{Referer}i %{Referer}i %>{Referer}i',
+        'http://example.com/original http://example.com/default http://example.com/final',
+        {
+            "original_header_in": {
+                "Referer": "http://example.com/original",
+            },
+            "header_in": {
+                "Referer": "http://example.com/default",
+            },
+            "final_header_in": {
+                "Referer": "http://example.com/final",
+            },
+        },
+    ),
+    (
+        '%T %{ms}T',
+        '1 1042',
+        {
+            "request_duration_seconds": 1,
+            "request_duration_milliseconds": 1042,
+        }
+    ),
 ])
 def test_parse_misc(fmt, entry, fields):
     assert dict(LogFormat(fmt, encoding='utf-8').parse(entry)) == fields
