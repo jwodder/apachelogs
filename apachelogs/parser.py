@@ -1,7 +1,7 @@
 from   collections.abc import Mapping
 import attr
-from   .directives     import format2regex
-from   .errors         import InvalidEntryError
+from   .directives     import format2parser
+#from   .errors         import InvalidEntryError
 from   .util           import TIME_FIELD_TOKEN, assemble_datetime
 
 @attr.s
@@ -11,26 +11,25 @@ class LogFormat:
     errors     = attr.ib(default=None)
 
     def __attrs_post_init__(self):
-        self._group_defs, self._rgx = format2regex(self.log_format)
+        self._parser = format2parser(self.log_format)
 
     def parse(self, entry):
         if isinstance(entry, bytes):
             entry = entry.decode('iso-8859-1')
         entry = entry.rstrip('\r\n')
-        m = self._rgx.fullmatch(entry)
-        if not m:
-            raise InvalidEntryError(entry, self.log_format)
-        groups = [
-            conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())
-        ]
+        #try:
+        r = self._parser.parseString(entry, parseAll=True)
+        #except ... :
+        #    raise InvalidEntryError(entry, self.log_format)
+        groups = dict(r)
         if self.encoding is not None:
-            groups = [
-                gr.decode(self.encoding, self.errors or 'strict')
-                    if isinstance(gr, bytes)
-                    else gr
-                for gr in groups
-            ]
-        return LogEntry(entry, [gdef[:2] for gdef in self._group_defs], groups)
+            groups = {
+                k: v.decode(self.encoding, self.errors or 'strict')
+                    if isinstance(v, bytes)
+                    else v
+                for k,v in groups.items()
+            }
+        return LogEntry(entry, groups)
 
     def parse_lines(self, entries):
         for e in entries:
@@ -40,21 +39,19 @@ class LogFormat:
 @attr.s
 class LogEntry(Mapping):
     entry = attr.ib()
-    group_names = attr.ib()
     groups = attr.ib()
 
     def __attrs_post_init__(self):
         self._data = {}
         self.time_fields = {}
-        for (k,_), v in zip(self.group_names, self.groups):
+        for k, v in self.groups.items():
             d = self._data
-            if isinstance(k, tuple):
-                for k2 in k[:-1]:
-                    if k2 is TIME_FIELD_TOKEN:
-                        d = self.time_fields
-                    else:
-                        d = d.setdefault(k2, {})
-                k = k[-1]
+            if ':' in k:
+                k1, _, k = k.partition(':')
+                if k1 == TIME_FIELD_TOKEN:
+                    d = self.time_fields
+                else:
+                    d = d.setdefault(k1, {})
             if d.get(k) is None:
                 d[k] = v
             #else: Assume d[k] == v

@@ -1,42 +1,42 @@
-import re
-from   .errors import InvalidDirectiveError
-from   .types  import (FieldType, clf, clf_string, esc_string, integer,
-                       ip_address, remote_user)
-from   .util   import TIME_FIELD_TOKEN
+import pyparsing as P
+from   pyparsing import pyparsing_common as PC
+from   .errors   import InvalidDirectiveError
+from   .types    import clf, clf_string, esc_string, ip_address, remote_user
+from   .util     import TIME_FIELD_TOKEN
 
 PLAIN_DIRECTIVES = {
-    '%': (None, FieldType('%', None)),
+    '%': (None, P.Literal('%')),
     'a': ('remote_address', ip_address),
     'A': ('local_address', ip_address),
-    'b': ('bytes_sent', clf(integer)),
-    'B': ('bytes_sent', integer),
-    'D': ('request_duration_microseconds', integer),
+    'b': ('bytes_sent', clf(PC.signed_integer)),
+    'B': ('bytes_sent', PC.signed_integer),
+    'D': ('request_duration_microseconds', PC.signed_integer),
     'f': ('request_file', esc_string),
     'h': ('remote_host', esc_string),
     'H': ('request_protocol', clf_string),
-    'k': ('requests_on_connection', integer),
+    'k': ('requests_on_connection', PC.signed_integer),
     'l': ('remote_logname', clf_string),
     ### XXX: 'L': ('log_id', clf( ??? )),
     'm': ('request_method', clf_string),
-    'p': ('server_port', integer),
-    'P': ('pid', integer),
+    'p': ('server_port', PC.signed_integer),
+    'P': ('pid', PC.signed_integer),
     'q': ('request_query', esc_string),
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
-    's': ('status', clf(integer)),
-    't': ((TIME_FIELD_TOKEN, 'apache_timestamp'), FieldType(r'\[[^]]+\]', str)),
-    'T': ('request_duration_seconds', integer),
+    's': ('status', clf(PC.signed_integer)),
+    't': (TIME_FIELD_TOKEN + ':apache_timestamp', P.Regex(r'\[[^]]+\]')),
+    'T': ('request_duration_seconds', PC.signed_integer),
     'u': ('remote_user', remote_user),
     'U': ('request_uri', clf_string),
     'v': ('virtual_host', esc_string),
     'V': ('server_name', esc_string),
-    'X': ('connection_status', FieldType('[-+X]', str)),
+    'X': ('connection_status', P.Word("-+X", exact=1)),
 
     # Defined by mod_logio:
-    'I': ('bytes_in', integer),
-    'O': ('bytes_out', integer),
-    'S': ('bytes_combined', integer),
-    '^FB': ('ttfb', clf(integer)),
+    'I': ('bytes_in', PC.signed_integer),
+    'O': ('bytes_out', PC.signed_integer),
+    'S': ('bytes_combined', PC.signed_integer),
+    '^FB': ('ttfb', clf(PC.signed_integer)),
 }
 
 PARAMETERIZED_DIRECTIVES = {
@@ -49,68 +49,68 @@ PARAMETERIZED_DIRECTIVES = {
     'n': ('note', esc_string),
     'o': ('header_out', esc_string),
     'p': {
-        'canonical': ('server_port', integer),
-        'local': ('local_port', integer),
-        'remote': ('remote_port', integer),
+        'canonical': ('server_port', PC.signed_integer),
+        'local': ('local_port', PC.signed_integer),
+        'remote': ('remote_port', PC.signed_integer),
     },
     'P': {
-        'pid': ('pid', integer),
-        'tid': ('tid', integer),
+        'pid': ('pid', PC.signed_integer),
+        'tid': ('tid', PC.signed_integer),
         ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version)
     },
     ### XXX: 't': (TIME_FIELD_TOKEN, ??? ),  ### strftime
     'T': {
-        'ms': ('request_duration_milliseconds', integer),
-        'us': ('request_duration_microseconds', integer),
-        's': ('request_duration_seconds', integer),
+        'ms': ('request_duration_milliseconds', PC.signed_integer),
+        'us': ('request_duration_microseconds', PC.signed_integer),
+        's': ('request_duration_seconds', PC.signed_integer),
     },
     '^ti': ('trailer_in', esc_string),
     '^to': ('trailer_out', esc_string),
 }
 
-def format2regex(fmt, plain_directives=None, parameterized_directives=None):
+directive = P.CharsNotIn("%")("literal") | P.Literal('%') + P.ZeroOrMore(
+    P.Optional(P.Literal('!')) + P.delimitedList(PC.integer, ',')
+    ^ (P.Literal("<") ^ P.Literal(">"))("redirect")
+    ^ (P.Literal("{") + P.Optional(P.CharsNotIn("}"))("param") + P.Literal("}"))
+) + (
+    P.Literal("^") + P.Word(P.alphas, exact=2)
+    ^ P.Word(P.alphas, exact=1)
+)("directive")
+directive.leaveWhitespace()
+
+def format2parser(fmt, plain_directives=None, parameterized_directives=None):
     if plain_directives is None:
         plain_directives = PLAIN_DIRECTIVES
     if parameterized_directives is None:
         parameterized_directives = PARAMETERIZED_DIRECTIVES
-    groups = []
-    rgx = ''
-    for m in re.finditer(r'''
-        % (?:!?\d+(?:,\d+)*|(?P<redirect1>[<>]))*
-          (?:\{(?P<param>.*?)\})?
-          (?:!?\d+(?:,\d+)*|(?P<redirect2>[<>]))*
-          (?P<directive>\^..|.)
-        | (?P<literal>.)
-    ''', fmt, flags=re.X):
-        if m.group('literal') is not None:
-            if m.group('literal') == '%':
-                raise InvalidDirectiveError(m.group(0))
-            rgx += re.escape(m.group('literal'))
-            continue
-        try:
-            if m.group('param') is not None:
-                spec = parameterized_directives[m.group('directive')]
-                param = m.group('param')
-                if isinstance(spec, dict):
-                    name, dtype = spec[param]
-                #elif callable(spec):
-                else:
-                    name = (spec[0], param)
-                    dtype = spec[1]
-            else:
-                name, dtype = plain_directives[m.group('directive')]
-        except KeyError:
-            raise InvalidDirectiveError(m.group(0))
-        if name is None:
-            rgx += dtype.regex
+    parser = P.Empty()
+    ### TODO: Ensure that this processes the entire string (including, say,
+    ### lone percent signs at the end of the string)
+    for d in directive.searchString(fmt):
+        if d.literal:
+            parser += P.Literal(d.literal)
         else:
-            redirect = m.group('redirect2') or m.group('redirect1') or ''
-            if redirect in {'<', '>'}:
-                prefix = 'original_' if redirect == '<' else 'final_'
-                if isinstance(name, tuple):
-                    name = (prefix + name[0],) + name[1:]
+            try:
+                if d.param:  # Apache treats an empty param the same as no param
+                    spec = parameterized_directives[d.directive]
+                    if isinstance(spec, dict):
+                        name, p = spec[d.param]
+                    #elif callable(spec):
+                    else:
+                        name = spec[0] + ':' + d.param
+                        p = spec[1]
                 else:
-                    name = prefix + name
-            groups.append((name, m.group(0), dtype.converter))
-            rgx += r'({})'.format(dtype.regex)
-    return (groups, re.compile(rgx))
+                    name, p = plain_directives[d.directive]
+            except KeyError:
+                raise InvalidDirectiveError(''.join(d))
+            if name is None:
+                parser += p
+            else:
+                if d.redirect == '<':
+                    name = 'original_' + name
+                elif d.redirect == '>':
+                    name = 'final_' + name
+                parser += p(name)
+    parser.leaveWhitespace()
+    print(repr(parser))
+    return parser

@@ -1,7 +1,7 @@
 from   datetime import datetime, timedelta, timezone
 import re
 
-TIME_FIELD_TOKEN = object()
+TIME_FIELD_TOKEN = 'TIME_FIELD'
 
 MONTH_SNAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
