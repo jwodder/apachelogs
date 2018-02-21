@@ -4,7 +4,7 @@ from   .util     import unescape
 
 def clf(p):
     return (p | P.Literal("-")).setParseAction(
-        lambda toks: None if len(toks) == 0 and toks[0] == "-" else toks
+        lambda toks: None if len(toks) == 1 and toks[0] in ("-", b"-") else toks
     )
 
 ip_address = PC.ipv4_address ^ PC.ipv6_address
@@ -15,8 +15,11 @@ ip_address = PC.ipv4_address ^ PC.ipv6_address
 # cf. server/gen_test_char.c
 ### TODO: Accept raw tabs?
 ### TODO: Accept characters that should be escaped but aren't?
-esc_string = P.Regex(r'(?:[ !\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?')\
-              .setParseAction(lambda toks: unescape(toks[0]))
+esc_string = P.ZeroOrMore(
+    P.Word(P.printables, excludeChars='"\\', exact=1)
+    | (r'\x' + P.Word(P.hexnums, exact=2))
+    | (r'\\' + P.Word(P.alphas + '"\\', exact=1))
+).setParseAction(lambda toks: unescape(''.join(toks)))
 
 clf_string = clf(esc_string)
 

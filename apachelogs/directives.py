@@ -112,5 +112,4 @@ def format2parser(fmt, plain_directives=None, parameterized_directives=None):
                     name = 'final_' + name
                 parser += p(name)
     parser.leaveWhitespace()
-    print(repr(parser))
     return parser
