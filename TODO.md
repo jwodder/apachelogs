@@ -13,7 +13,7 @@
         - `%f`?
         - `%l`
         - `%m`
-        - `%q`
+        - `%q` - begins with `?` when non-empty
         - `%R`
         - `%u` - no colon?
         - `%v` - no whitespace?
@@ -26,3 +26,5 @@
 
 - Handle bytes input
     - What encoding are Apache logs written in?  Always ASCII?  Latin-1?
+
+- Give `parse_lines` an option for discarding invalid entries
