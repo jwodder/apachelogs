@@ -2,7 +2,7 @@ from   collections.abc import Mapping
 import attr
 from   .directives     import format2parser
 #from   .errors         import InvalidEntryError
-from   .util           import TIME_FIELD_TOKEN, assemble_datetime
+from   .util           import CLF_NULL_TOKEN, TIME_FIELD_TOKEN, assemble_datetime
 
 @attr.s
 class LogFormat:
@@ -21,7 +21,10 @@ class LogFormat:
         r = self._parser.parseString(entry, parseAll=True)
         #except ... :
         #    raise InvalidEntryError(entry, self.log_format)
-        groups = dict(r)
+        groups = {
+            k: None if v is CLF_NULL_TOKEN else v
+            for k,v in dict(r).items()
+        }
         if self.encoding is not None:
             groups = {
                 k: v.decode(self.encoding, self.errors or 'strict')

@@ -3,6 +3,8 @@ import re
 
 TIME_FIELD_TOKEN = 'TIME_FIELD'
 
+CLF_NULL_TOKEN = object()
+
 MONTH_SNAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',

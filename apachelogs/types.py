@@ -1,10 +1,10 @@
 import pyparsing as P
 from   pyparsing import pyparsing_common as PC
-from   .util     import unescape
+from   .util     import CLF_NULL_TOKEN, unescape
 
 def clf(p):
     return (p | P.Literal("-")).setParseAction(
-        lambda toks: None if len(toks) == 1 and toks[0] in ("-", b"-") else toks
+        lambda toks: CLF_NULL_TOKEN if len(toks) == 1 and toks[0] in ("-", b"-") else None
     )
 
 ip_address = PC.ipv4_address ^ PC.ipv6_address
