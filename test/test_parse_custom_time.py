@@ -55,7 +55,7 @@ w5 = timezone(timedelta(hours=-5))
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
         },
-        {"unix": 1511642826},
+        {"epoch": 1511642826},
     ),
 
     (
@@ -63,9 +63,9 @@ w5 = timezone(timedelta(hours=-5))
         '1511642826@-0500 GET / HTTP/1.1',
         {
             "request_line": "GET / HTTP/1.1",
-            "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=w5),
+            "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
         },
-        {"unix": 1511642826, "timezone": w5},
+        {"epoch": 1511642826, "timezone": w5},
     ),
 
     (
@@ -108,9 +108,9 @@ w5 = timezone(timedelta(hours=-5))
         '1511642826@-0500 GET / HTTP/1.1',
         {
             "request_line": "GET / HTTP/1.1",
-            "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=w5),
+            "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
         },
-        {"unix": 1511642826, "timezone": w5},
+        {"epoch": 1511642826, "timezone": w5},
     ),
 
     (

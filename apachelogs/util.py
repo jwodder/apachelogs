@@ -73,9 +73,9 @@ def _unesc(m):
 def assemble_datetime(fields):
     if "apache_timestamp" in fields:
         return parse_apache_timestamp(fields["apache_timestamp"])
-    elif "unix" in fields:
+    elif "epoch" in fields:
         return datetime.fromtimestamp(
-            fields["unix"],
+            fields["epoch"],
             fields.get("timezone") or timezone.utc,
             # fields["timezone"] may be None, in which case we still want the
             # timezone to be UTC

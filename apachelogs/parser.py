@@ -1,4 +1,5 @@
 from   collections.abc import Mapping
+import re
 import attr
 from   .directives     import format2regex
 from   .errors         import InvalidEntryError
@@ -12,6 +13,7 @@ class LogFormat:
 
     def __attrs_post_init__(self):
         self._group_defs, self._rgx = format2regex(self.log_format)
+        self._rgx = re.compile(self._rgx)
 
     def parse(self, entry):
         if isinstance(entry, bytes):

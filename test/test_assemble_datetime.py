@@ -16,12 +16,12 @@ w4 = timezone(timedelta(hours=-4))
     ),
 
     (
-        {"unix": 1511642826},
+        {"epoch": 1511642826},
         datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
     ),
 
     (
-        {"unix": 1511642826, "timezone": w4},
+        {"epoch": 1511642826, "timezone": w4},
         datetime(2017, 11, 25, 16, 47, 6, tzinfo=w4),
     ),
 

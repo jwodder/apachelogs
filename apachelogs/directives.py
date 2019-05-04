@@ -1,8 +1,9 @@
 import re
-from   .errors import InvalidDirectiveError
-from   .types  import (FieldType, clf, clf_string, esc_string, integer,
-                       ip_address, remote_user)
-from   .util   import TIME_FIELD_TOKEN
+from   .errors   import InvalidDirectiveError
+from   .strftime import strftime2regex
+from   .types    import (FieldType, clf, clf_string, esc_string, integer,
+                         ip_address, remote_user)
+from   .util     import TIME_FIELD_TOKEN
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -58,7 +59,7 @@ PARAMETERIZED_DIRECTIVES = {
         'tid': ('tid', integer),
         ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version)
     },
-    ### XXX: 't': (TIME_FIELD_TOKEN, ??? ),  ### strftime
+    't': strftime2regex,
     'T': {
         'ms': ('request_duration_milliseconds', integer),
         'us': ('request_duration_microseconds', integer),
@@ -89,9 +90,9 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
       - ``converter`` is a function that takes a `str` (the captured value) and
         returns a value
 
-    - ``rgx`` is a compiled regex object that matches any string created from
-      ``fmt``, with a capturing group around the substring corresponding to
-      each non-``%%`` directive
+    - ``rgx`` is a regex string that matches any string created from ``fmt``,
+      with a capturing group around the substring corresponding to each
+      non-``%%`` directive
 
     :param str fmt:
     :param dict plain_directives: A `dict` mapping plain directive names to
@@ -101,9 +102,10 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     :param dict parameterized_directives: A `dict` mapping parameterized
         directive names either to a ``(name, field_type)`` pair (where the
         ``name`` is the name of the `dict` attribute of `LogEntry` in which a
-        key named after the parameter will store the converted captured value)
+        key named after the parameter will store the converted captured value),
         or to a sub-`dict` mapping parameter values to ``(name, field_type)``
-        pairs
+        pairs, or to a callable that takes a parameter and returns the same
+        return type as `format2regex()`.
     :raises InvalidDirectiveError: if an unknown or invalid directive occurs in
         ``fmt``
     """
@@ -126,13 +128,16 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
                 raise InvalidDirectiveError(m.group(0))
             rgx += re.escape(m.group('literal'))
             continue
+        multiple = False
         try:
             if m.group('param') is not None:
                 spec = parameterized_directives[m.group('directive')]
                 param = m.group('param')
                 if isinstance(spec, dict):
                     name, dtype = spec[param]
-                #elif callable(spec):
+                elif callable(spec):
+                    subgroups, subrgx = spec(param)
+                    multiple = True
                 else:
                     name = (spec[0], param)
                     dtype = spec[1]
@@ -140,16 +145,22 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
                 name, dtype = plain_directives[m.group('directive')]
         except KeyError:
             raise InvalidDirectiveError(m.group(0))
-        if name is None:
-            rgx += dtype.regex
+        if multiple:
+            rgx += subrgx
         else:
-            redirect = m.group('redirect2') or m.group('redirect1') or ''
-            if redirect in {'<', '>'}:
-                prefix = 'original_' if redirect == '<' else 'final_'
+            if name is None:
+                rgx += '(?:{})'.format(dtype.regex)
+                continue
+            rgx += r'({})'.format(dtype.regex)
+            subgroups = [(name, m.group(0), dtype.converter)]
+        redirect = m.group('redirect2') or m.group('redirect1') or ''
+        if redirect in {'<', '>'}:
+            prefix = 'original_' if redirect == '<' else 'final_'
+            for i, (name, directive, converter) in enumerate(subgroups):
                 if isinstance(name, tuple):
                     name = (prefix + name[0],) + name[1:]
                 else:
                     name = prefix + name
-            groups.append((name, m.group(0), dtype.converter))
-            rgx += r'({})'.format(dtype.regex)
-    return (groups, re.compile(rgx))
+                subgroups[i] = (name, directive, converter)
+        groups.extend(subgroups)
+    return (groups, rgx)

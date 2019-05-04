@@ -1,21 +1,25 @@
 # cf. <http://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html>
 
+# Note that Apache implements `%{*}t` via `apr_strftime()`, so [TODO] see that
+# for finer-grained information.
+
 from datetime import datetime
 from .types   import FieldType, integer
+from .util    import TIME_FIELD_TOKEN
 
 YEAR   = r'[0-9]{4,}'
-MONTH  = r'0[1-9]|1[012]'
-MDAY   = r'[ 0][1-9]|[12][0-9]|3[01]'
-HOUR   = r'[ 01][0-9]|2[0-3]'
-HOUR12 = r'[ 0][1-9]|1[0-2]'
+MONTH  = r'(?:0[1-9]|1[012])'
+MDAY   = r'(?:[ 0][1-9]|[12][0-9]|3[01])'
+HOUR   = r'(?:[ 01][0-9]|2[0-3])'
+HOUR12 = r'(?:[ 0][1-9]|1[0-2])'
 MINUTE = r'[ 0-5][0-9]'
-SECOND = r'[0-5][0-9]|60'
+SECOND = r'(?:[0-5][0-9]|60)'
 
-WEEKNUM     = r'[0-4][0-9]|5[0-3]'  # 00-53
-ISO_WEEKNUM = r'0[1-9]|[1-4][0-9]|5[0-3]'  # 01-53
+WEEKNUM     = r'(?:[0-4][0-9]|5[0-3])'  # 00-53
+ISO_WEEKNUM = r'(?:0[1-9]|[1-4][0-9]|5[0-3])'  # 01-53
 
-word = FieldType(r'\w+', bytes)
-# decoded to str if an encoding is passed to LogFormat
+### TODO: Should this be ASCII-only?
+word = FieldType(r'\w+', str)
 
 STRFTIME_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -64,7 +68,7 @@ STRFTIME_DIRECTIVES = {
             lambda s: datetime.strptime(s, '%H:%M').time(),
         )
     ),
-    's': ('unix', integer),
+    's': ('epoch', integer),
     'S': ('sec', FieldType(SECOND, int)),
     't': (None, FieldType('\t', None)),
     'T': (
@@ -84,7 +88,8 @@ STRFTIME_DIRECTIVES = {
     'z': (
         'timezone',
         FieldType(
-            r'(?:[-+]{}{})?'.format(HOUR, MINUTE),
+            ### TODO: Get rid of the `?` here?
+            r'(?:[-+](?:[01][0-9]|2[0-3])[0-5][0-9])?',
             lambda s: datetime.strptime(s, '%z').tzinfo if s else None,
         )
     ),
@@ -97,3 +102,27 @@ STRFTIME_DIRECTIVES = {
 
 #    'E*', 'O*': No.
 }
+
+SPECIAL_PARAMETERS = {
+    'sec': ('epoch', integer),
+    'msec': ('milliepoch', integer),
+    'usec': ('microepoch', integer),
+    'msec_frac': ('msec_frac', integer),
+    'usec_frac': ('msec_frac', integer),
+}
+
+def strftime2regex(param):
+    if param in SPECIAL_PARAMETERS:
+        name, dtype = SPECIAL_PARAMETERS[param]
+        return [
+            ((TIME_FIELD_TOKEN, name), '%{' + param + '}t', dtype.converter),
+            r'({})'.format(dtype.regex),
+        ]
+    else:
+        from .directives import format2regex
+        groups, rgx = format2regex(param, STRFTIME_DIRECTIVES, {})
+        groups = [
+            ((TIME_FIELD_TOKEN, name), '%{' + directive + '}t', converter)
+            for (name, directive, converter) in groups
+        ]
+        return (groups, rgx)
