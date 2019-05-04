@@ -1,9 +1,8 @@
-from   collections.abc import Mapping
 import re
 import attr
-from   .directives     import format2regex
-from   .errors         import InvalidEntryError
-from   .util           import TIME_FIELD_TOKEN, assemble_datetime
+from   .directives import format2regex
+from   .errors     import InvalidEntryError
+from   .util       import assemble_datetime
 
 @attr.s
 class LogParser:
@@ -41,38 +40,20 @@ class LogParser:
                     raise
 
 
-@attr.s
-class LogEntry(Mapping):
-    entry = attr.ib()
-    group_names = attr.ib()
-    groups = attr.ib()
-
-    def __attrs_post_init__(self):
-        self._data = {}
-        self.time_fields = {}
-        for (k,_), v in zip(self.group_names, self.groups):
-            d = self._data
+class LogEntry:
+    def __init__(self, entry, group_names, groups):
+        self.entry = entry
+        for (k,_), v in zip(group_names, groups):
+            d = self.__dict__
             if isinstance(k, tuple):
                 for k2 in k[:-1]:
-                    if k2 is TIME_FIELD_TOKEN:
-                        d = self.time_fields
-                    else:
-                        d = d.setdefault(k2, {})
+                    d = d.setdefault(k2, {})
                 k = k[-1]
             if d.get(k) is None:
                 d[k] = v
             #else: Assume d[k] == v
-        if self.time_fields:
-            self._data["request_time"] = assemble_datetime(self.time_fields)
+        if getattr(self, "time_fields", None):
+            self.request_time = assemble_datetime(self.time_fields)
 
-    def __getitem__(self, key):
-        return self._data[key]
-
-    def __iter__(self):
-        return iter(self._data)
-
-    def __len__(self):
-        return len(self._data)
-
-    def __contains__(self, key):
-        return key in self._data
+    def __eq__(self, other):
+        return type(self) is type(other) and vars(self) == vars(other)

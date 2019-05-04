@@ -21,4 +21,6 @@ from   apachelogs import COMBINED, LogParser
     ),
 ])
 def test_parse_combined(entry, fields):
-    assert dict(LogParser(COMBINED, encoding='utf-8').parse(entry)) == fields
+    log_entry = LogParser(COMBINED, encoding='utf-8').parse(entry)
+    for k,v in fields.items():
+        assert getattr(log_entry, k) == v

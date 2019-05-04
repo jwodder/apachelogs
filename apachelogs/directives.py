@@ -3,7 +3,6 @@ from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
 from   .types    import (FieldType, clf, clf_string, esc_string, integer,
                          ip_address, remote_user)
-from   .util     import TIME_FIELD_TOKEN
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -25,7 +24,7 @@ PLAIN_DIRECTIVES = {
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
     's': ('status', clf(integer)),
-    't': ((TIME_FIELD_TOKEN, 'apache_timestamp'), FieldType(r'\[[^]]+\]', str)),
+    't': (('time_fields', 'apache_timestamp'), FieldType(r'\[[^]]+\]', str)),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
     'U': ('request_uri', clf_string),

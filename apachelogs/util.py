@@ -1,8 +1,6 @@
 from   datetime import datetime, timedelta, timezone
 import re
 
-TIME_FIELD_TOKEN = object()
-
 #: The abbreviated names of the months in English
 MONTH_SNAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',

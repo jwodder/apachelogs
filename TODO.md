@@ -31,3 +31,10 @@
 
 - For each format in `format.py` that Ubuntu (Debian?) ships using `%O` instead
   of `%b`, add a `%O`-using format with the name suffix `_UBUNTU` (`_DEBIAN`?)
+
+- Include instructions in the documentation for adding your own format
+  directives (including `%{*}t` sub-directives)
+
+- People are likely to copy & paste Apache log formats directly from Apache
+  config files, and thus they will likely contain escaped double-quotes.  Does
+  this need special handling?

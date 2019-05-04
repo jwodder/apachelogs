@@ -4,18 +4,18 @@ from   apachelogs import LogParser
 
 w5 = timezone(timedelta(hours=-5))
 
-@pytest.mark.parametrize('fmt,entry,fields,time_fields', [
+@pytest.mark.parametrize('fmt,entry,fields', [
     (
         '%{%a %b %d}t %r',
         'Sat Nov 25 GET / HTTP/1.1',
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": None,
-        },
-        {
-            "abbrev_wday": "Sat",
-            "abbrev_mon": "Nov",
-            "mday": 25,
+            "time_fields": {
+                "abbrev_wday": "Sat",
+                "abbrev_mon": "Nov",
+                "mday": 25,
+            },
         },
     ),
 
@@ -25,12 +25,12 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": None,
+            "time_fields": {
+                "full_wday": "Saturday",
+                "full_mon": "November",
+                "mday": 25,
+            },
         },
-        {
-            "full_wday": "Saturday",
-            "full_mon": "November",
-            "mday": 25,
-        }
     ),
 
     (
@@ -39,13 +39,13 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": None,
+            "time_fields": {
+                "wday": 6,
+                "iso_wday": 6,
+                "mon": 11,
+                "mday": 25,
+            },
         },
-        {
-            "wday": 6,
-            "iso_wday": 6,
-            "mon": 11,
-            "mday": 25,
-        }
     ),
 
     (
@@ -54,8 +54,8 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
+            "time_fields": {"epoch": 1511642826},
         },
-        {"epoch": 1511642826},
     ),
 
     (
@@ -64,8 +64,8 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
+            "time_fields": {"epoch": 1511642826, "timezone": w5},
         },
-        {"epoch": 1511642826, "timezone": w5},
     ),
 
     (
@@ -74,14 +74,14 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6),
-        },
-        {
-            "year": 2017,
-            "mon": 11,
-            "mday": 25,
-            "hour": 20,
-            "min": 47,
-            "sec": 6,
+            "time_fields": {
+                "year": 2017,
+                "mon": 11,
+                "mday": 25,
+                "hour": 20,
+                "min": 47,
+                "sec": 6,
+            },
         },
     ),
 
@@ -91,15 +91,15 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=w5),
-        },
-        {
-            "year": 2017,
-            "mon": 11,
-            "mday": 25,
-            "hour": 20,
-            "min": 47,
-            "sec": 6,
-            "timezone": w5,
+            "time_fields": {
+                "year": 2017,
+                "mon": 11,
+                "mday": 25,
+                "hour": 20,
+                "min": 47,
+                "sec": 6,
+                "timezone": w5,
+            },
         },
     ),
 
@@ -109,8 +109,8 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
+            "time_fields": {"epoch": 1511642826, "timezone": w5},
         },
-        {"epoch": 1511642826, "timezone": w5},
     ),
 
     (
@@ -119,14 +119,14 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6),
-        },
-        {
-            "year": 2017,
-            "mon": 11,
-            "mday": 25,
-            "hour": 20,
-            "min": 47,
-            "sec": 6,
+            "time_fields": {
+                "year": 2017,
+                "mon": 11,
+                "mday": 25,
+                "hour": 20,
+                "min": 47,
+                "sec": 6,
+            },
         },
     ),
 
@@ -136,19 +136,19 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=w5),
-        },
-        {
-            "year": 2017,
-            "mon": 11,
-            "mday": 25,
-            "hour": 20,
-            "min": 47,
-            "sec": 6,
-            "timezone": w5,
+            "time_fields": {
+                "year": 2017,
+                "mon": 11,
+                "mday": 25,
+                "hour": 20,
+                "min": 47,
+                "sec": 6,
+                "timezone": w5,
+            },
         },
     ),
 ])
-def test_parse_custom_time(fmt, entry, fields, time_fields):
-    res = LogParser(fmt, encoding='utf-8').parse(entry)
-    assert dict(res) == fields
-    assert res.time_fields == time_fields
+def test_parse_custom_time(fmt, entry, fields):
+    log_entry = LogParser(fmt, encoding='utf-8').parse(entry)
+    for k,v in fields.items():
+        assert getattr(log_entry, k) == v

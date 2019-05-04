@@ -5,7 +5,6 @@
 
 from datetime import datetime
 from .types   import FieldType, integer
-from .util    import TIME_FIELD_TOKEN
 
 YEAR   = r'[0-9]{4,}'
 MONTH  = r'(?:0[1-9]|1[012])'
@@ -115,14 +114,14 @@ def strftime2regex(param):
     if param in SPECIAL_PARAMETERS:
         name, dtype = SPECIAL_PARAMETERS[param]
         return [
-            ((TIME_FIELD_TOKEN, name), '%{' + param + '}t', dtype.converter),
+            (('time_fields', name), '%{' + param + '}t', dtype.converter),
             r'({})'.format(dtype.regex),
         ]
     else:
         from .directives import format2regex
         groups, rgx = format2regex(param, STRFTIME_DIRECTIVES, {})
         groups = [
-            ((TIME_FIELD_TOKEN, name), '%{' + directive + '}t', converter)
+            (('time_fields', name), '%{' + directive + '}t', converter)
             for (name, directive, converter) in groups
         ]
         return (groups, rgx)

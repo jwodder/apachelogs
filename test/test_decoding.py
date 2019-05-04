@@ -17,34 +17,34 @@ NON_STR_FIELDS = {
 }
 
 def test_bytes_parse():
-    assert dict(LogParser(COMBINED).parse(ENTRY)) == dict(
-        NON_STR_FIELDS,
-        request_line=b"Gh0st\xAD",
-        remote_host=b"66.240.205.34",
-    )
+    log_entry = LogParser(COMBINED).parse(ENTRY)
+    for k,v in NON_STR_FIELDS.items():
+        assert getattr(log_entry, k) == v
+    assert log_entry.request_line == b"Gh0st\xAD"
+    assert log_entry.remote_host == b"66.240.205.34"
 
 def test_parse_latin1():
-    assert dict(LogParser(COMBINED, encoding='iso-8859-1').parse(ENTRY)) == dict(
-        NON_STR_FIELDS,
-        request_line="Gh0st\xAD",
-        remote_host="66.240.205.34",
-    )
+    log_entry = LogParser(COMBINED, encoding='iso-8859-1').parse(ENTRY)
+    for k,v in NON_STR_FIELDS.items():
+        assert getattr(log_entry, k) == v
+    assert log_entry.request_line == "Gh0st\xAD"
+    assert log_entry.remote_host == "66.240.205.34"
 
 def test_parse_bad_utf8():
     with pytest.raises(UnicodeDecodeError):
         LogParser(COMBINED, encoding='utf-8').parse(ENTRY)
 
 def test_parse_utf8_surrogateescape():
-    assert dict(LogParser(COMBINED, encoding='utf-8', errors='surrogateescape').parse(ENTRY)) == dict(
-        NON_STR_FIELDS,
-        request_line="Gh0st\uDCAD",
-        remote_host="66.240.205.34",
-    )
+    log_entry = LogParser(COMBINED, encoding='utf-8', errors='surrogateescape')\
+                    .parse(ENTRY)
+    for k,v in NON_STR_FIELDS.items():
+        assert getattr(log_entry, k) == v
+    assert log_entry.request_line == "Gh0st\uDCAD"
+    assert log_entry.remote_host == "66.240.205.34"
 
 @pytest.mark.parametrize('encoding', [None, 'iso-8859-1', 'utf-8'])
 def test_parse_ip_address(encoding):
-    assert dict(LogParser('%a', encoding=encoding).parse('127.0.0.1')) == {
-        "remote_address": "127.0.0.1",
-    }
+    assert LogParser('%a', encoding=encoding).parse('127.0.0.1').remote_address\
+        == "127.0.0.1"
 
 ### TODO: Test bytes vs. chars when referer and/or user agent is non-None
