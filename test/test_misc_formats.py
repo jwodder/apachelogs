@@ -35,13 +35,13 @@ from   apachelogs import LogParser
         '%<{Referer}i %{Referer}i %>{Referer}i',
         'http://example.com/original http://example.com/default http://example.com/final',
         {
-            "original_header_in": {
+            "original_headers_in": {
                 "Referer": "http://example.com/original",
             },
-            "header_in": {
+            "headers_in": {
                 "Referer": "http://example.com/default",
             },
-            "final_header_in": {
+            "final_headers_in": {
                 "Referer": "http://example.com/final",
             },
         },

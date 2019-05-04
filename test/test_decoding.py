@@ -10,7 +10,7 @@ NON_STR_FIELDS = {
     "request_time": datetime(2017, 11, 18, 12, 30, 55, tzinfo=timezone.utc),
     "final_status": 400,
     "bytes_sent": 0,
-    "header_in": {
+    "headers_in": {
         "Referer": None,
         "User-agent": None,
     },

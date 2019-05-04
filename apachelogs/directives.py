@@ -43,11 +43,11 @@ PARAMETERIZED_DIRECTIVES = {
     'a': {
         'c': ('remote_client_address', ip_address),
     },
-    'C': ('cookie', esc_string),
-    'e': ('env_var', esc_string),
-    'i': ('header_in', clf_string),
-    'n': ('note', esc_string),
-    'o': ('header_out', esc_string),
+    'C': ('cookies', esc_string),
+    'e': ('env_vars', esc_string),
+    'i': ('headers_in', clf_string),
+    'n': ('notes', esc_string),
+    'o': ('headers_out', esc_string),
     'p': {
         'canonical': ('server_port', integer),
         'local': ('local_port', integer),
@@ -64,8 +64,8 @@ PARAMETERIZED_DIRECTIVES = {
         'us': ('request_duration_microseconds', integer),
         's': ('request_duration_seconds', integer),
     },
-    '^ti': ('trailer_in', esc_string),
-    '^to': ('trailer_out', esc_string),
+    '^ti': ('trailers_in', esc_string),
+    '^to': ('trailers_out', esc_string),
 }
 
 def format2regex(fmt, plain_directives=None, parameterized_directives=None):
