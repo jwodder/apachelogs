@@ -6,19 +6,19 @@ from   .util       import assemble_datetime
 
 @attr.s
 class LogParser:
-    log_format = attr.ib()
-    encoding   = attr.ib(default=None)
-    errors     = attr.ib(default=None)
+    format   = attr.ib()
+    encoding = attr.ib(default=None)
+    errors   = attr.ib(default=None)
 
     def __attrs_post_init__(self):
-        self._group_defs, self._rgx = format2regex(self.log_format)
+        self._group_defs, self._rgx = format2regex(self.format)
         self._rgx = re.compile(self._rgx)
 
     def parse(self, entry):
         entry = entry.rstrip('\r\n')
         m = self._rgx.fullmatch(entry)
         if not m:
-            raise InvalidEntryError(entry, self.log_format)
+            raise InvalidEntryError(entry, self.format)
         groups = [
             conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())
         ]
@@ -29,7 +29,12 @@ class LogParser:
                     else gr
                 for gr in groups
             ]
-        return LogEntry(entry, [gdef[:2] for gdef in self._group_defs], groups)
+        return LogEntry(
+            entry,
+            self.format,
+            [gdef[:2] for gdef in self._group_defs],
+            groups,
+        )
 
     def parse_lines(self, entries, ignore_invalid=False):
         for e in entries:
@@ -41,8 +46,9 @@ class LogParser:
 
 
 class LogEntry:
-    def __init__(self, entry, group_names, groups):
+    def __init__(self, entry, format, group_names, groups):
         self.entry = entry
+        self.format = format
         for (k,_), v in zip(group_names, groups):
             d = self.__dict__
             if isinstance(k, tuple):
