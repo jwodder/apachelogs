@@ -69,6 +69,45 @@ PARAMETERIZED_DIRECTIVES = {
 }
 
 def format2regex(fmt, plain_directives=None, parameterized_directives=None):
+    """
+    Given a %-style format string ``fmt`` made up of a mixture of the "plain"
+    directives (e.g., ``%q``) in ``plain_directives`` (default
+    `PLAIN_DIRECTIVES`) and the parameterized directives (e.g., ``%{foo}q``) in
+    ``parameterized_directives`` (default `PARAMETERIZED_DIRECTIVES`), return a
+    pair ``(groups, rgx)`` where:
+
+    - ``groups`` is a list of ``(name, directive, converter)`` triples,
+      corresponding to the respective capturing groups in ``rgx``, where:
+
+      - ``name`` is the name (if a `str`) or path (if a `tuple` of `str`) at
+        which the converted captured value shall be saved in a `LogEntry`
+        instance
+
+      - ``directive`` is the complete directive in ``fmt`` that produced this
+        triple and capturing group
+
+      - ``converter`` is a function that takes a `str` (the captured value) and
+        returns a value
+
+    - ``rgx`` is a compiled regex object that matches any string created from
+      ``fmt``, with a capturing group around the substring corresponding to
+      each non-``%%`` directive
+
+    :param str fmt:
+    :param dict plain_directives: A `dict` mapping plain directive names to
+        ``(name, field_type)`` pairs.  A ``name`` of `None` (as for the ``%%``
+        directive) indicates that input text matching the directive shall not
+        be captured.
+    :param dict parameterized_directives: A `dict` mapping parameterized
+        directive names either to a ``(name, field_type)`` pair (where the
+        ``name`` is the name of the `dict` attribute of `LogEntry` in which a
+        key named after the parameter will store the converted captured value)
+        or to a sub-`dict` mapping parameter values to ``(name, field_type)``
+        pairs
+    :raises InvalidDirectiveError: if an unknown or invalid directive occurs in
+        ``fmt``
+    """
+
     if plain_directives is None:
         plain_directives = PLAIN_DIRECTIVES
     if parameterized_directives is None:

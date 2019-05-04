@@ -36,3 +36,6 @@
   observed in)
 
 - Test parsing entries that end in LF and/or CR LF
+
+- For each format in `format.py` that Ubuntu (Debian?) ships using `%O` instead
+  of `%b`, add a `%O`-using format with the name suffix `_UBUNTU` (`_DEBIAN`?)

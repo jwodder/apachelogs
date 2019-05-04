@@ -3,6 +3,7 @@ import re
 
 TIME_FIELD_TOKEN = object()
 
+#: The abbreviated names of the months in English
 MONTH_SNAMES = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
@@ -17,6 +18,12 @@ APACHE_TS_RGX = re.compile(r'''
 ''', flags=re.X)
 
 def parse_apache_timestamp(s):
+    """
+    :param str s: a string of the form ``DD/Mon/YYYY:HH:MM:SS +HHMM``
+        (optionally enclosed in square brackets)
+    :return: an aware `datetime.datetime`
+    :raises ValueError: if ``s`` is not in the expected format
+    """
     # Apache timestamps always use English month abbreviations.  Thus, parsing
     # with strptime like the below will fail when in a locale with different
     # month snames:
@@ -38,6 +45,10 @@ def parse_apache_timestamp(s):
     return datetime(**data)
 
 def unescape(s):
+    """
+    Unescape the escape sequences in the string ``s``, returning a `bytes`
+    string
+    """
     # Escape sequences used by Apache: \b \n \r \t \v \\ \" \xHH
     # cf. ap_escape_logitem() in server/util.c
     return re.sub(r'\\(x[0-9A-Fa-f]{2}|.)', _unesc, s).encode('iso-8859-1')
