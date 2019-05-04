@@ -1,5 +1,5 @@
 import re
-from   .errors   import InvalidDirectiveError
+from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
 from   .types    import (FieldType, clf, clf_string, esc_string, integer,
                          ip_address, remote_user)
@@ -106,8 +106,8 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         or to a sub-`dict` mapping parameter values to ``(name, field_type)``
         pairs, or to a callable that takes a parameter and returns the same
         return type as `format2regex()`.
-    :raises InvalidDirectiveError: if an unknown or invalid directive occurs in
-        ``fmt``
+    :raises InvalidDirectiveError: if an invalid directive occurs in ``fmt``
+    :raises UnknownDirectiveError: if an unknown directive occurs in ``fmt``
     """
 
     if plain_directives is None:
@@ -120,12 +120,12 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         % (?:!?\d+(?:,\d+)*|(?P<redirect1>[<>]))*
           (?:\{(?P<param>.*?)\})?
           (?:!?\d+(?:,\d+)*|(?P<redirect2>[<>]))*
-          (?P<directive>\^..|.)
+          (?P<directive>\^[a-zA-Z%]{2}|[a-zA-Z%])
         | (?P<literal>.)
     ''', fmt, flags=re.X):
         if m.group('literal') is not None:
             if m.group('literal') == '%':
-                raise InvalidDirectiveError(m.group(0))
+                raise InvalidDirectiveError(fmt, m.start())
             rgx += re.escape(m.group('literal'))
             continue
         multiple = False
@@ -144,7 +144,7 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
             else:
                 name, dtype = plain_directives[m.group('directive')]
         except KeyError:
-            raise InvalidDirectiveError(m.group(0))
+            raise UnknownDirectiveError(m.group(0))
         if multiple:
             rgx += subrgx
         else:
