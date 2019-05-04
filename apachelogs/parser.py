@@ -16,8 +16,6 @@ class LogParser:
         self._rgx = re.compile(self._rgx)
 
     def parse(self, entry):
-        if isinstance(entry, bytes):
-            entry = entry.decode('iso-8859-1')
         entry = entry.rstrip('\r\n')
         m = self._rgx.fullmatch(entry)
         if not m:

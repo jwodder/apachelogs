@@ -23,10 +23,6 @@
     - Check whether `%a` can be a comma-separated list of IP addresses (in case
       of proxying/X-Forwarded-For and the like)
 
-- Handle bytes input
-    - What encoding are Apache logs written in?  Always ASCII?  Latin-1?
-    - Better idea: Don't handle bytes input; require the user to supply text
-
 - For each directive that doesn't match what one would naïvely expect, add a
   comment explaining why (including what versions of Apache the behavior is
   observed in)
