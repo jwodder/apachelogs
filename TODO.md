@@ -2,7 +2,6 @@
     - cf. <https://gist.github.com/rm-hull/bd60aed44024e9986e3c>?
 - Fill in keywords & classifiers
 - Write README
-- Rename to `accesslogs`?
 
 - Research the following:
     - Look into whether the values for the following string format directives
@@ -22,9 +21,18 @@
         - `%{*}^to`
     - `mod_ssl` formats??? <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
     - Can any format directive _not_ evaluate to `-`?
-    - Nginx logfile formats
+    - Check whether `%a` can be a comma-separated list of IP addresses (in case
+      of proxying/X-Forwarded-For and the like)
 
 - Handle bytes input
     - What encoding are Apache logs written in?  Always ASCII?  Latin-1?
+    - Better idea: Don't handle bytes input; require the user to supply text
 
-- Give `parse_lines` an option for discarding invalid entries
+- Give `parse_lines` an option (`ignore_errors=False`?) for discarding invalid
+  entries
+
+- For each directive that doesn't match what one would naïvely expect, add a
+  comment explaining why (including what versions of Apache the behavior is
+  observed in)
+
+- Test parsing entries that end in LF and/or CR LF

@@ -17,7 +17,9 @@ APACHE_TS_RGX = re.compile(r'''
 ''', flags=re.X)
 
 def parse_apache_timestamp(s):
-    # This fails when in a locale with different month snames:
+    # Apache timestamps always use English month abbreviations.  Thus, parsing
+    # with strptime like the below will fail when in a locale with different
+    # month snames:
     #return datetime.strptime(s.strip('[]'), '%d/%b/%Y:%H:%M:%S %z')
     m = APACHE_TS_RGX.match(s)
     if not m:
