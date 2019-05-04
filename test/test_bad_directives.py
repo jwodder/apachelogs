@@ -1,5 +1,5 @@
 import pytest
-from   apachelogs import LogFormat, InvalidDirectiveError, UnknownDirectiveError
+from   apachelogs import LogParser, InvalidDirectiveError, UnknownDirectiveError
 
 @pytest.mark.parametrize('fmt', [
     '%',
@@ -10,7 +10,7 @@ from   apachelogs import LogFormat, InvalidDirectiveError, UnknownDirectiveError
 ])
 def test_malformed_directive(fmt):
     with pytest.raises(InvalidDirectiveError) as excinfo:
-        LogFormat(fmt)
+        LogParser(fmt)
     assert str(excinfo.value) \
         == 'Invalid log format directive at column 0 of {!r}'.format(fmt)
     assert excinfo.value.pos == 0
@@ -26,7 +26,7 @@ def test_malformed_directive(fmt):
 ])
 def test_unknown_directive(fmt):
     with pytest.raises(UnknownDirectiveError) as excinfo:
-        LogFormat(fmt)
+        LogParser(fmt)
     assert str(excinfo.value) \
         == 'Unknown log format directive: {!r}'.format(fmt)
     assert excinfo.value.directive == fmt

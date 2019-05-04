@@ -1,6 +1,6 @@
 from   datetime   import datetime, timedelta, timezone
 import pytest
-from   apachelogs import LogFormat
+from   apachelogs import LogParser
 
 w5 = timezone(timedelta(hours=-5))
 
@@ -149,6 +149,6 @@ w5 = timezone(timedelta(hours=-5))
     ),
 ])
 def test_parse_custom_time(fmt, entry, fields, time_fields):
-    res = LogFormat(fmt, encoding='utf-8').parse(entry)
+    res = LogParser(fmt, encoding='utf-8').parse(entry)
     assert dict(res) == fields
     assert res.time_fields == time_fields

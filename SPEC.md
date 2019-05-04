@@ -1,6 +1,6 @@
-- contains string (and compiled `LogFormat`?) constants for common, combined,
+- contains string (and compiled `LogParser`?) constants for common, combined,
   etc. formats
-- `LogFormat(format: str)`
+- `LogParser(format: str)`
     - `parse(entry: str) -> LogEntry`
     - `parse_lines(entries: Iterator[str]) -> Iterator[LogEntry]`
 - `LogEntry` — represents a parsed log entry
@@ -18,7 +18,6 @@
     - stringifies to the original entry? (possibly with trailing whitespace
       removed)
     - Subdicts for HTTP headers (et alii?) are case-insensitive
-    - immutable
 - `parse(fmt, entry) -> LogEntry`
 - `parse_lines(fmt, entries: Iterator[str]) -> Iterator[LogEntry]`
 - `ValueError` subclass for invalid log format directives

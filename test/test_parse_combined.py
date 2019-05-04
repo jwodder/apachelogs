@@ -1,6 +1,6 @@
 from   datetime   import datetime, timezone
 import pytest
-from   apachelogs import COMBINED, LogFormat
+from   apachelogs import COMBINED, LogParser
 
 @pytest.mark.parametrize('entry,fields', [
     (
@@ -21,4 +21,4 @@ from   apachelogs import COMBINED, LogFormat
     ),
 ])
 def test_parse_combined(entry, fields):
-    assert dict(LogFormat(COMBINED, encoding='utf-8').parse(entry)) == fields
+    assert dict(LogParser(COMBINED, encoding='utf-8').parse(entry)) == fields

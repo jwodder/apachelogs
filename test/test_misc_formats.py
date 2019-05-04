@@ -1,5 +1,5 @@
 import pytest
-from   apachelogs import LogFormat
+from   apachelogs import LogParser
 
 @pytest.mark.parametrize('fmt,entry,fields', [
     (
@@ -56,4 +56,4 @@ from   apachelogs import LogFormat
     ),
 ])
 def test_parse_misc(fmt, entry, fields):
-    assert dict(LogFormat(fmt, encoding='utf-8').parse(entry)) == fields
+    assert dict(LogParser(fmt, encoding='utf-8').parse(entry)) == fields

@@ -13,7 +13,7 @@ __url__          = 'https://github.com/jwodder/apachelogs'
 from .errors import Error, InvalidDirectiveError, InvalidEntryError, \
                     UnknownDirectiveError
 from .format import AGENT, COMBINED, COMMON, COMMON_VHOST, REFERER
-from .parser import LogEntry, LogFormat
+from .parser import LogEntry, LogParser
 from .util   import parse_apache_timestamp
 
 __all__ = [
@@ -25,7 +25,7 @@ __all__ = [
     'InvalidDirectiveError',
     'InvalidEntryError',
     'LogEntry',
-    'LogFormat',
+    'LogParser',
     'REFERER',
     'UnknownDirectiveError',
     'parse',
@@ -34,7 +34,7 @@ __all__ = [
 ]
 
 def parse(fmt, entry, encoding=None, errors=None):
-    return LogFormat(fmt, encoding=encoding, errors=errors).parse(entry)
+    return LogParser(fmt, encoding=encoding, errors=errors).parse(entry)
 
 def parse_lines(fmt, entries, encoding=None, errors=None):
-    return LogFormat(fmt, encoding=encoding, errors=errors).parse_lines(entries)
+    return LogParser(fmt, encoding=encoding, errors=errors).parse_lines(entries)

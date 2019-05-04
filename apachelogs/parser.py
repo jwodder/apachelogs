@@ -6,7 +6,7 @@ from   .errors         import InvalidEntryError
 from   .util           import TIME_FIELD_TOKEN, assemble_datetime
 
 @attr.s
-class LogFormat:
+class LogParser:
     log_format = attr.ib()
     encoding   = attr.ib(default=None)
     errors     = attr.ib(default=None)
