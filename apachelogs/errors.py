@@ -4,7 +4,7 @@ class Error(Exception):
     pass
 
 
-@attr.s(repr=False, frozen=True)
+@attr.s(repr=False)
 class InvalidEntryError(Error, ValueError):
     entry      = attr.ib()
     log_format = attr.ib()
@@ -14,7 +14,7 @@ class InvalidEntryError(Error, ValueError):
                ' against log format {0.log_format!r}'.format(self)
 
 
-@attr.s(repr=False, frozen=True)
+@attr.s(repr=False)
 class InvalidDirectiveError(Error, ValueError):
     directive = attr.ib()
 
