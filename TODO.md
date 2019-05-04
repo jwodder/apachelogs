@@ -1,6 +1,5 @@
 - Write tests
     - cf. <https://gist.github.com/rm-hull/bd60aed44024e9986e3c>?
-- Fill in keywords & classifiers
 - Write README
 
 - Research the following:
