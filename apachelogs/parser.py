@@ -7,7 +7,7 @@ from   .util       import assemble_datetime
 @attr.s
 class LogParser:
     format   = attr.ib()
-    encoding = attr.ib(default=None)
+    encoding = attr.ib(default='iso-8859-1')
     errors   = attr.ib(default=None)
 
     def __attrs_post_init__(self):
@@ -22,7 +22,7 @@ class LogParser:
         groups = [
             conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())
         ]
-        if self.encoding is not None:
+        if self.encoding != 'bytes':
             groups = [
                 gr.decode(self.encoding, self.errors or 'strict')
                     if isinstance(gr, bytes)

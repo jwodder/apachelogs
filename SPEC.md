@@ -35,8 +35,9 @@
   the field's value remains constant throughout each individual record, and
   thus all but one of the occurrences (the first? the last?) are discarded
 
-- Default to returning bytes but let the user specify an encoding and error
-  handler (but where?)
-    - Or should all input be decoded as Latin-1 by default?
+- Directives that can contain escape sequences are decoded as Latin-1 by
+  default; this can be overridden via the `encoding` argument to `LogParser`.
+  Setting `encoding='bytes'` will cause the directive strings to be returned as
+  `bytes`.
 
 - `parse` functions should ignore trailing newlines

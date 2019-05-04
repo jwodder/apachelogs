@@ -33,9 +33,10 @@ __all__ = [
     'parse_lines',
 ]
 
-def parse(fmt, entry, encoding=None, errors=None):
+def parse(fmt, entry, encoding='iso-8859-1', errors=None):
     return LogParser(fmt, encoding=encoding, errors=errors).parse(entry)
 
-def parse_lines(fmt, entries, encoding=None, errors=None, ignore_invalid=False):
+def parse_lines(fmt, entries, encoding='iso-8859-1', errors=None,
+                ignore_invalid=False):
     return LogParser(fmt, encoding=encoding, errors=errors)\
         .parse_lines(entries, ignore_invalid)
