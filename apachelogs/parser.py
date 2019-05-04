@@ -34,9 +34,13 @@ class LogParser:
             ]
         return LogEntry(entry, [gdef[:2] for gdef in self._group_defs], groups)
 
-    def parse_lines(self, entries):
+    def parse_lines(self, entries, ignore_invalid=False):
         for e in entries:
-            yield self.parse(e)
+            try:
+                yield self.parse(e)
+            except InvalidEntryError:
+                if not ignore_invalid:
+                    raise
 
 
 @attr.s

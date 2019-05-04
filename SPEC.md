@@ -2,7 +2,7 @@
   etc. formats
 - `LogParser(format: str)`
     - `parse(entry: str) -> LogEntry`
-    - `parse_lines(entries: Iterator[str]) -> Iterator[LogEntry]`
+    - `parse_lines(entries: Iterator[str], ignore_invalid=False) -> Iterator[LogEntry]`
 - `LogEntry` — represents a parsed log entry
     - can be used as a `dict` with humanized directive names as keys
     - If there were any date or time values in the log entry, the `LogEntry`

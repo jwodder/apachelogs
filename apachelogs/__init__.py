@@ -36,5 +36,6 @@ __all__ = [
 def parse(fmt, entry, encoding=None, errors=None):
     return LogParser(fmt, encoding=encoding, errors=errors).parse(entry)
 
-def parse_lines(fmt, entries, encoding=None, errors=None):
-    return LogParser(fmt, encoding=encoding, errors=errors).parse_lines(entries)
+def parse_lines(fmt, entries, encoding=None, errors=None, ignore_invalid=False):
+    return LogParser(fmt, encoding=encoding, errors=errors)\
+        .parse_lines(entries, ignore_invalid)

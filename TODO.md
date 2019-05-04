@@ -27,9 +27,6 @@
     - What encoding are Apache logs written in?  Always ASCII?  Latin-1?
     - Better idea: Don't handle bytes input; require the user to supply text
 
-- Give `parse_lines` an option (`ignore_errors=False`?) for discarding invalid
-  entries
-
 - For each directive that doesn't match what one would naïvely expect, add a
   comment explaining why (including what versions of Apache the behavior is
   observed in)
