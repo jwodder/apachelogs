@@ -24,7 +24,10 @@ PLAIN_DIRECTIVES = {
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
     's': ('status', clf(integer)),
-    't': (('time_fields', 'apache_timestamp'), FieldType(r'\[[^]]+\]', str)),
+    't': (
+        ('request_time_fields', 'apache_timestamp'),
+        FieldType(r'\[[^]]+\]', str),
+    ),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
     'U': ('request_uri', clf_string),

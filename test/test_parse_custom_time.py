@@ -11,7 +11,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": None,
-            "time_fields": {
+            "request_time_fields": {
                 "abbrev_wday": "Sat",
                 "abbrev_mon": "Nov",
                 "mday": 25,
@@ -25,7 +25,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": None,
-            "time_fields": {
+            "request_time_fields": {
                 "full_wday": "Saturday",
                 "full_mon": "November",
                 "mday": 25,
@@ -39,7 +39,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": None,
-            "time_fields": {
+            "request_time_fields": {
                 "wday": 6,
                 "iso_wday": 6,
                 "mon": 11,
@@ -54,7 +54,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
-            "time_fields": {"epoch": 1511642826},
+            "request_time_fields": {"epoch": 1511642826},
         },
     ),
 
@@ -64,7 +64,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
-            "time_fields": {"epoch": 1511642826, "timezone": w5},
+            "request_time_fields": {"epoch": 1511642826, "timezone": w5},
         },
     ),
 
@@ -74,7 +74,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6),
-            "time_fields": {
+            "request_time_fields": {
                 "year": 2017,
                 "mon": 11,
                 "mday": 25,
@@ -91,7 +91,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=w5),
-            "time_fields": {
+            "request_time_fields": {
                 "year": 2017,
                 "mon": 11,
                 "mday": 25,
@@ -109,7 +109,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
-            "time_fields": {"epoch": 1511642826, "timezone": w5},
+            "request_time_fields": {"epoch": 1511642826, "timezone": w5},
         },
     ),
 
@@ -119,7 +119,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6),
-            "time_fields": {
+            "request_time_fields": {
                 "year": 2017,
                 "mon": 11,
                 "mday": 25,
@@ -136,7 +136,7 @@ w5 = timezone(timedelta(hours=-5))
         {
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=w5),
-            "time_fields": {
+            "request_time_fields": {
                 "year": 2017,
                 "mon": 11,
                 "mday": 25,
