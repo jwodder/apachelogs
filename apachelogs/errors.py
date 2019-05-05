@@ -9,15 +9,15 @@ class InvalidEntryError(Error, ValueError):
     log format
     """
 
-    def __init__(self, entry, log_format):
+    def __init__(self, entry, format):
         #: The invalid log entry
-        self.entry      = entry
+        self.entry  = entry
         #: The log format string the entry failed to match against
-        self.log_format = log_format
+        self.format = format
 
     def __str__(self):
         return 'Could not match log entry {0.entry!r}'\
-               ' against log format {0.log_format!r}'.format(self)
+               ' against log format {0.format!r}'.format(self)
 
 
 class InvalidDirectiveError(Error, ValueError):
@@ -26,16 +26,16 @@ class InvalidDirectiveError(Error, ValueError):
     invalid or malformed directive
     """
 
-    def __init__(self, log_format, pos):
+    def __init__(self, format, pos):
         #: The log format string containing the invalid directive
-        self.log_format = log_format
+        self.format = format
         #: The position in the log format string at which the invalid directive
         #: occurs
         self.pos = pos
 
     def __str__(self):
         return 'Invalid log format directive at index {} of {!r}'\
-            .format(self.pos, self.log_format)
+            .format(self.pos, self.format)
 
 
 class UnknownDirectiveError(Error, ValueError):

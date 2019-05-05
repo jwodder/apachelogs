@@ -14,7 +14,7 @@ def test_malformed_directive(fmt):
     assert str(excinfo.value) \
         == 'Invalid log format directive at index 0 of {!r}'.format(fmt)
     assert excinfo.value.pos == 0
-    assert excinfo.value.log_format == fmt
+    assert excinfo.value.format == fmt
 
 @pytest.mark.parametrize('fmt', [
     '%x',
