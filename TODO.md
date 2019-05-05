@@ -34,3 +34,10 @@
 
 - Include instructions in the documentation for adding your own format
   directives (including `%{*}t` sub-directives)
+
+- Add a console script entry point: `apachelogs2json [--format <format>]
+  [<file> ...]`
+    - The special names "combined" and "common" (et alii?) are accepted as
+      formats.
+        - Accept these in the library interface as well?
+    - Default format: combined?  Guess at combined or common?
