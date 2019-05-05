@@ -15,8 +15,11 @@ apachelogs — Parse Apache access logs
     errors
     directives
 
-``apachelogs`` parses Apache access log files.  Pass it a logfile format
-string, and you'll get back a parser for logfile entries in that format.
+`apachelogs` parses Apache access log files.  Pass it a `log format string
+<http://httpd.apache.org/docs/current/mod/mod_log_config.html>`_ and get back a
+parser for logfile entries in that format.  `apachelogs` even takes care of
+decoding escape sequences and converting things like timestamps, integers, and
+bare hyphens to `~datetime.datetime` values, `int`\s, and `None`\s.
 
 
 Installation
@@ -28,14 +31,14 @@ Installation
     python3 -m pip install git+https://github.com/jwodder/apachelogs.git
 
 
-Example
-=======
+Examples
+========
 
-::
+Parse a single log entry::
 
     >>> from apachelogs import LogParser
     >>> parser = LogParser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"")
-    >>> # The above log format is also available as the constant `apachelogs.COMBINED`
+    >>> # The above log format is also available as the constant `apachelogs.COMBINED`.
     >>> entry = parser.parse('209.126.136.4 - - [01/Nov/2017:07:28:29 +0000] "GET / HTTP/1.1" 301 521 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"\n')
     >>> entry.remote_host
     '209.126.136.4'
@@ -51,6 +54,17 @@ Example
     True
     >>> entry.headers_in["User-agent"]
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
+
+Parse a file full of log entries::
+
+    >>> with open('/var/log/apache2/access.log') as fp:  # doctest: +SKIP
+    ...     for entry in parser.parse_lines(fp):
+    ...         print(str(entry.request_time), entry.request_line)
+    ...
+    2019-01-01 12:34:56-05:00 GET / HTTP/1.1
+    2019-01-01 12:34:57-05:00 GET /favicon.ico HTTP/1.1
+    2019-01-01 12:34:57-05:00 GET /styles.css HTTP/1.1
+    # etc.
 
 
 Indices and tables
