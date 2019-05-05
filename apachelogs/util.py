@@ -81,8 +81,8 @@ def assemble_datetime(fields):
     Given a `dict` of time fields, return a `datetime.datetime` object if there
     is enough information to create one, `None` otherwise.
     """
-    if "apache_timestamp" in fields:
-        return parse_apache_timestamp(fields["apache_timestamp"])
+    if "timestamp" in fields:
+        return fields["timestamp"]
     elif "epoch" in fields:
         return datetime.fromtimestamp(
             fields["epoch"],

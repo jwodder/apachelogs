@@ -6,12 +6,15 @@ w4 = timezone(timedelta(hours=-4))
 
 @pytest.mark.parametrize('fields,dt', [
     (
-        {"apache_timestamp": "01/Nov/2017:07:28:29 +0000"},
+        {"timestamp": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc)},
         datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
     ),
 
     (
-        {"apache_timestamp": "01/Nov/2017:07:28:29 +0000", "timezone": w4},
+        {
+            "timestamp": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
+            "timezone": w4,
+        },
         datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
     ),
 

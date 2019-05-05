@@ -20,5 +20,5 @@ def test_parse_general():
     }
     assert parsed.entry == ENTRY
     assert parsed.format == COMBINED
-    assert parsed.request_time_fields == \
-        {"apache_timestamp": "[01/Nov/2017:07:28:29 +0000]"}
+    assert parsed.request_time_fields \
+        == {"timestamp": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc)}

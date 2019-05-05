@@ -125,8 +125,8 @@ information on the meaning of each directive.
       - ``entry.bytes_combined``
       - `int`
     * - ``%t``
-      - ``entry.request_time_fields["apache_timestamp"]``
-      - `str`
+      - ``entry.request_time_fields["timestamp"]``
+      - aware `datetime.datetime`
     * - ``%{sec}t``
       - ``entry.request_time_fields["epoch"]``
       - `int`
