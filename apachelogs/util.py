@@ -7,6 +7,7 @@ MONTH_SNAMES = [
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
+#: Compiled regex for an Apache timestamp
 APACHE_TS_RGX = re.compile(r'''
     ^\[?
     (?P<day>\d\d)   / (?P<month>\w\w\w) / (?P<year>\d{4,})
@@ -17,6 +18,13 @@ APACHE_TS_RGX = re.compile(r'''
 
 def parse_apache_timestamp(s):
     """
+    Parse an Apache timestamp into a `datetime.datetime` object.  The month
+    name in the timestamp is expected to be an abbreviated English name
+    regardless of the current locale.
+
+    >>> parse_apache_timestamp('[01/Nov/2017:07:28:29 +0000]')
+    datetime.datetime(2017, 11, 1, 7, 28, 29, tzinfo=datetime.timezone.utc)
+
     :param str s: a string of the form ``DD/Mon/YYYY:HH:MM:SS +HHMM``
         (optionally enclosed in square brackets)
     :return: an aware `datetime.datetime`
@@ -69,6 +77,10 @@ def _unesc(m):
         return _unescapes.get(esc, '\\' + esc)
 
 def assemble_datetime(fields):
+    """
+    Given a `dict` of time fields, return a `datetime.datetime` object if there
+    is enough information to create one, `None` otherwise.
+    """
     if "apache_timestamp" in fields:
         return parse_apache_timestamp(fields["apache_timestamp"])
     elif "epoch" in fields:

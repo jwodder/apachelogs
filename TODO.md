@@ -34,7 +34,3 @@
 
 - Include instructions in the documentation for adding your own format
   directives (including `%{*}t` sub-directives)
-
-- People are likely to copy & paste Apache log formats directly from Apache
-  config files, and thus they will likely contain escaped double-quotes.  Does
-  this need special handling?

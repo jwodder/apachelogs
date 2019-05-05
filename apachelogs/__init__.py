@@ -12,7 +12,6 @@ __url__          = 'https://github.com/jwodder/apachelogs'
 
 from .errors import Error, InvalidDirectiveError, InvalidEntryError, \
                     UnknownDirectiveError
-from .format import AGENT, COMBINED, COMMON, COMMON_VHOST, REFERER
 from .parser import LogEntry, LogParser
 from .util   import parse_apache_timestamp
 
@@ -33,10 +32,42 @@ __all__ = [
     'parse_lines',
 ]
 
-def parse(fmt, entry, encoding='iso-8859-1', errors=None):
-    return LogParser(fmt, encoding=encoding, errors=errors).parse(entry)
+### cf. the log definitions shipped with Apache under Ubuntu (Debian?), which
+### use %O instead of %b
 
-def parse_lines(fmt, entries, encoding='iso-8859-1', errors=None,
+#: Common log format
+COMMON = "%h %l %u %t \"%r\" %>s %b"
+
+#: Like `COMMON`, but with ``%v`` (the name of the server serving the request)
+#: prepended
+COMMON_VHOST = "%v %h %l %u %t \"%r\" %>s %b"
+
+#: Combined log format
+COMBINED = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\""
+
+#: HTTP Referer and requested URL path
+REFERER = "%{Referer}i -> %U"
+
+#: Just the client's :mailheader:`User-agent` header
+AGENT = "%{User-agent}i"
+
+def parse(format, entry, encoding='iso-8859-1', errors=None):
+    """
+    A convenience function for parsing a single logfile entry without having
+    to directly create a `LogParser` object.
+
+    ``encoding`` and ``errors`` have the same meaning as for `LogParser`.
+    """
+    return LogParser(format, encoding=encoding, errors=errors).parse(entry)
+
+def parse_lines(format, entries, encoding='iso-8859-1', errors=None,
                 ignore_invalid=False):
-    return LogParser(fmt, encoding=encoding, errors=errors)\
+    """
+    A convenience function for parsing an iterable of logfile entries without
+    having to directly create a `LogParser` object.
+
+    ``encoding`` and ``errors`` have the same meaning as for `LogParser`.
+    ``ignore_invalid`` has the same meaning as for `LogParser.parse_lines()`.
+    """
+    return LogParser(format, encoding=encoding, errors=errors)\
         .parse_lines(entries, ignore_invalid)
