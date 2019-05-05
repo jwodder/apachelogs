@@ -12,7 +12,7 @@ def test_malformed_directive(fmt):
     with pytest.raises(InvalidDirectiveError) as excinfo:
         LogParser(fmt)
     assert str(excinfo.value) \
-        == 'Invalid log format directive at column 0 of {!r}'.format(fmt)
+        == 'Invalid log format directive at index 0 of {!r}'.format(fmt)
     assert excinfo.value.pos == 0
     assert excinfo.value.log_format == fmt
 

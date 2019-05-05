@@ -34,7 +34,7 @@ class InvalidDirectiveError(Error, ValueError):
         self.pos = pos
 
     def __str__(self):
-        return 'Invalid log format directive at column {} of {!r}'\
+        return 'Invalid log format directive at index {} of {!r}'\
             .format(self.pos, self.log_format)
 
 
