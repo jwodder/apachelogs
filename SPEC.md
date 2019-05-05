@@ -15,11 +15,11 @@
     - All `%t` and `%{*}t` fields are stored (primitively-typed) in a
       `log_entry.time_fields` (`request_time_fields`?) `dict` in order to
       reduce clutter in the main mapping.
-    - also supplies a dict with the raw directive strings themselves as keys
-      somehow
+    - [LATER VERSION] also supplies a dict with the raw directive strings
+      themselves as keys somehow
         - Subfields of `%{*}t` directives can (must?) be accessed with keys of
           the form `"%{%a}t"`
-    - Subdicts for HTTP headers (et alii?) are case-insensitive
+    - [LATER VERSION] Subdicts for HTTP headers (et alii?) are case-insensitive
 - `parse(fmt, entry) -> LogEntry`
 - `parse_lines(fmt, entries: Iterator[str]) -> Iterator[LogEntry]`
 - `ValueError` subclass for invalid log format directives

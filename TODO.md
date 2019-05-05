@@ -1,6 +1,6 @@
 - Write tests
     - cf. <https://gist.github.com/rm-hull/bd60aed44024e9986e3c>?
-- Write README
+- Expand README
 
 - Research the following:
     - Look into whether the values for the following string format directives
