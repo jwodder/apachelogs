@@ -93,6 +93,10 @@ class LogEntry:
     from the entry as an `int`.  See :ref:`directives` for the attribute names
     & types of each directive supported by this library.
 
+    If the log format contains two or more directives that are stored in the
+    same attribute (e.g., ``%D`` and ``%{us}T``), the given attribute will
+    contain the first non-`None` directive value.
+
     The values of date & time directives are stored in a ``request_time_fields:
     dict`` attribute.  If this `dict` contains enough information to assemble a
     complete (possibly naïve) `datetime.datetime`, then the `LogEntry` will
