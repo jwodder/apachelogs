@@ -107,7 +107,7 @@ SPECIAL_PARAMETERS = {
     'msec': ('milliepoch', integer),
     'usec': ('microepoch', integer),
     'msec_frac': ('msec_frac', integer),
-    'usec_frac': ('msec_frac', integer),
+    'usec_frac': ('usec_frac', integer),
 }
 
 def strftime2regex(param):
