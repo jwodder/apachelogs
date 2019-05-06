@@ -35,21 +35,14 @@ __all__ = [
 ### cf. the log definitions shipped with Apache under Ubuntu (Debian?), which
 ### use %O instead of %b
 
-#: Common log format
+#: Common log format (CLF)
 COMMON = "%h %l %u %t \"%r\" %>s %b"
 
-#: Like `COMMON`, but with ``%v`` (the name of the server serving the request)
-#: prepended
+#: Common log format with virtual host prepended
 COMMON_VHOST = "%v %h %l %u %t \"%r\" %>s %b"
 
-#: Combined log format
+#: NCSA extended/combined log format
 COMBINED = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\""
-
-#: HTTP Referer and requested URL path
-REFERER = "%{Referer}i -> %U"
-
-#: Just the client's :mailheader:`User-agent` header
-AGENT = "%{User-agent}i"
 
 def parse(format, entry, encoding='iso-8859-1', errors=None):
     """

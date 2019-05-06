@@ -9,8 +9,6 @@ Log Format Constants
 The following common log formats are available as string constants in this
 package so that you don't have to keep typing out the full log format strings:
 
-.. autodata:: AGENT
 .. autodata:: COMBINED
 .. autodata:: COMMON
 .. autodata:: COMMON_VHOST
-.. autodata:: REFERER
