@@ -10,12 +10,15 @@ along with the names & types of the attributes at which their parsed values are
 stored on a `LogEntry`.  The attribute names for the directives are based off
 of the names used internally by the Apache source code.
 
-A directive with the ``<`` modifier will be stored at
+A directive with the ``<`` modifier (e.g., ``%<s``) will be stored at
 :samp:`entry.original_{attribute_name}`, and a directive with the ``>``
 modifier will be stored at :samp:`entry.final_{attribute_name}`
 
 A type of `str` marked with an asterisk (\*) means that the directive's values
 are decoded according to the ``encoding`` option to `LogParser`.
+
+Any directive may evaluate to `None` when it is modified by a set of status
+codes (e.g., ``%400,501T`` or ``%!200T``).
 
 See `the Apache documentation
 <http://httpd.apache.org/docs/current/mod/mod_log_config.html>`_ for
@@ -188,8 +191,13 @@ Supported ``strftime`` Directives
 
 The following table lists the ``strftime`` directives supported for use in the
 parameter of a ``%{*}t`` directive along with the keys & types at which they
-are stored in ``entry.request_time_fields``.  See any C documentation for
-information on the meaning of each directive.
+are stored in the `dict` ``entry.request_time_fields``.  See any C
+documentation for information on the meaning of each directive.
+
+A ``%{*}t`` directive with the ``begin:`` modifier (e.g.,
+``%{begin:%Y-%m-%d}t``) will have its subdirectives stored in
+``entry.begin_request_time_fields`` (in turn used to set
+``entry.begin_request_time``), and likewise for the ``end:`` modifier.
 
 .. list-table::
     :header-rows: 1

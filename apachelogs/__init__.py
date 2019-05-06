@@ -1,5 +1,11 @@
-"""
+r"""
 Parse Apache access logs
+
+``apachelogs`` parses Apache access log files.  Pass it a `log format string
+<http://httpd.apache.org/docs/current/mod/mod_log_config.html>`_ and get back a
+parser for logfile entries in that format.  ``apachelogs`` even takes care of
+decoding escape sequences and converting things like timestamps, integers, and
+bare hyphens to ``datetime`` values, ``int``\s, and ``None``\s.
 
 Visit <https://github.com/jwodder/apachelogs> for more information.
 """
