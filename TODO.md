@@ -1,6 +1,5 @@
 - Write tests
     - cf. <https://gist.github.com/rm-hull/bd60aed44024e9986e3c>?
-- Expand README
 
 - Research the following:
     - Look into whether the values for the following string format directives
@@ -27,11 +26,6 @@
 - For each directive that doesn't match what one would naïvely expect, add a
   comment explaining why (including what versions of Apache the behavior is
   observed in)
-
-- Test parsing entries that end in LF and/or CR LF
-
-- For each format in `format.py` that Ubuntu (Debian?) ships using `%O` instead
-  of `%b`, add a `%O`-using format with the name suffix `_UBUNTU` (`_DEBIAN`?)
 
 - Include instructions in the documentation for adding your own format
   directives (including `%{*}t` sub-directives)
