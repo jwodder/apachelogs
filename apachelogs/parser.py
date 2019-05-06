@@ -117,8 +117,13 @@ class LogEntry:
             if d.get(k) is None:
                 d[k] = v
             #else: Assume d[k] == v
-        if getattr(self, "request_time_fields", None):
-            self.request_time = assemble_datetime(self.request_time_fields)
+        for prefix in ('original_', '', 'final_'):
+            if getattr(self, prefix + "request_time_fields", None):
+                setattr(
+                    self,
+                    prefix + 'request_time',
+                    assemble_datetime(getattr(self, prefix + 'request_time_fields')),
+                )
 
     def __eq__(self, other):
         return type(self) is type(other) and vars(self) == vars(other)

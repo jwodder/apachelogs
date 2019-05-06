@@ -1,4 +1,4 @@
-from   datetime   import datetime, timezone
+from   datetime   import datetime, timedelta, timezone
 import pytest
 from   apachelogs import VHOST_COMBINED, LogParser
 
@@ -164,6 +164,36 @@ from   apachelogs import VHOST_COMBINED, LogParser
             "headers_in": {
                 "Referer": None,
                 "User-Agent": '}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86',
+            },
+        },
+    ),
+    (
+        "%<t",
+        "[14/Apr/2018:18:39:42 +0000]",
+        {
+            "original_request_time": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
+            "original_request_time_fields": {
+                "timestamp": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
+            },
+        },
+    ),
+    (
+        "%>{%Y-%m-%dT%H:%M:%S}t.%>{usec_frac}t%>{%z}t",
+        "2019-05-06T12:09:43.123456-0400",
+        {
+            "final_request_time": datetime(
+                2019, 5, 6, 12, 9, 43, 123456,
+                tzinfo=timezone(timedelta(hours=-4)),
+            ),
+            "final_request_time_fields": {
+                "year": 2019,
+                "mon": 5,
+                "mday": 6,
+                "hour": 12,
+                "min": 9,
+                "sec": 43,
+                "usec_frac": 123456,
+                "timezone": timezone(timedelta(hours=-4)),
             },
         },
     ),
