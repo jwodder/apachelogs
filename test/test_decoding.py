@@ -46,5 +46,3 @@ def test_parse_utf8_surrogateescape():
 def test_parse_ip_address(encoding):
     assert LogParser('%a', encoding=encoding).parse('127.0.0.1').remote_address\
         == "127.0.0.1"
-
-### TODO: Test bytes vs. chars when referer and/or user agent is non-None

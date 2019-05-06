@@ -161,6 +161,30 @@ w5 = timezone(timedelta(hours=-5))
     ),
 
     (
+        "%{%D%%%T}t",
+        "05/06/19%13:42:26",
+        {
+            "request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "request_time_fields": {
+                "date": date(2019, 5, 6),
+                "time": time(13, 42, 26),
+            }
+        },
+    ),
+
+    (
+        "%{%D%t%T}t",
+        "05/06/19\t13:42:26",
+        {
+            "request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "request_time_fields": {
+                "date": date(2019, 5, 6),
+                "time": time(13, 42, 26),
+            }
+        },
+    ),
+
+    (
         "%{%F %R:%S}t",
         "2019-05-06 13:42:26",
         {

@@ -230,6 +230,17 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             },
         },
     ),
+
+    (
+        "%m %% %U%q %% %H",
+        "GET % /index.html?foo % HTTP/1.1",
+        {
+            "request_method": "GET",
+            "request_uri": "/index.html",
+            "request_query": "?foo",
+            "request_protocol": "HTTP/1.1",
+        },
+    ),
 ])
 def test_parse(fmt, entry, fields):
     log_entry = LogParser(fmt).parse(entry)
