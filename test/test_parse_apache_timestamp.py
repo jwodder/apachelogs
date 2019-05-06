@@ -97,3 +97,16 @@ def test_parse_apache_timestamp(ts, dt):
     assert apts == dt
     assert apts.replace(tzinfo=None) == dt.replace(tzinfo=None)
     assert apts.tzinfo == dt.tzinfo
+
+@pytest.mark.parametrize('ts', [
+    '13/Mar/2016:01:59:59 -05:00',
+    '13/Mar/2016:01:59:59',
+    '13/Mar/2016:01:59:59 -05',
+    '13/03/2016:01:59:59 -0500',
+    '13/Mar/2016 01:59:59 -0500',
+    '13/Mar/2016T01:59:59 -0500',
+])
+def test_parse_bad_apache_timestamp(ts):
+    with pytest.raises(ValueError) as excinfo:
+        parse_apache_timestamp(ts)
+    assert str(excinfo.value) == ts

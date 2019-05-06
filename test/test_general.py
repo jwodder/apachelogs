@@ -2,7 +2,7 @@ from   datetime   import datetime, timezone
 from   pathlib    import Path
 import pytest
 from   apachelogs import COMBINED, InvalidEntryError, LogEntry, LogParser, \
-                            VHOST_COMBINED, parse_lines
+                            VHOST_COMBINED, parse, parse_lines
 
 def mkentry(entry, format, **attrs):
     logentry = LogEntry(entry, format, [], [])
@@ -179,3 +179,27 @@ def test_parse_lines_ignore_invalid():
     with (Path(__file__).with_name('data') / 'vhost_combined.log').open() as fp:
         entries = parse_lines(VHOST_COMBINED, fp, ignore_invalid=True)
         assert list(entries) == VHOST_COMBINED_LOG_ENTRIES
+
+def test_parse_default_enc(mocker):
+    m = mocker.patch('apachelogs.LogParser', spec=LogParser)
+    parse('%s', '200')
+    m.assert_called_once_with('%s', encoding='iso-8859-1', errors=None)
+    m.return_value.parse.assert_called_once_with('200')
+
+def test_parse_custom_enc(mocker):
+    m = mocker.patch('apachelogs.LogParser', spec=LogParser)
+    parse('%s', '200', encoding='utf-8', errors='surrogateescape')
+    m.assert_called_once_with('%s', encoding='utf-8', errors='surrogateescape')
+    m.return_value.parse.assert_called_once_with('200')
+
+def test_parse_lines_default_enc(mocker):
+    m = mocker.patch('apachelogs.LogParser', spec=LogParser)
+    parse_lines('%s', ['200'])
+    m.assert_called_once_with('%s', encoding='iso-8859-1', errors=None)
+    m.return_value.parse_lines.assert_called_once_with(['200'], False)
+
+def test_parse_lines_custom_enc(mocker):
+    m = mocker.patch('apachelogs.LogParser', spec=LogParser)
+    parse_lines('%s', ['200'], encoding='utf-8', errors='surrogateescape')
+    m.assert_called_once_with('%s', encoding='utf-8', errors='surrogateescape')
+    m.return_value.parse_lines.assert_called_once_with(['200'], False)
