@@ -39,7 +39,7 @@ __all__ = [
 COMMON = "%h %l %u %t \"%r\" %>s %b"
 
 #: Common log format with virtual host prepended
-COMMON_VHOST = "%v %h %l %u %t \"%r\" %>s %b"
+VHOST_COMMON = "%v %h %l %u %t \"%r\" %>s %b"
 
 #: NCSA extended/combined log format
 COMBINED = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\""

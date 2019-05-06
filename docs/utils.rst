@@ -11,4 +11,4 @@ package so that you don't have to keep typing out the full log format strings:
 
 .. autodata:: COMBINED
 .. autodata:: COMMON
-.. autodata:: COMMON_VHOST
+.. autodata:: VHOST_COMMON
