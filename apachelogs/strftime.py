@@ -1,7 +1,7 @@
 # cf. <http://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html>
 
-# Note that Apache implements `%{*}t` via `apr_strftime()`, so [TODO] see that
-# for finer-grained information.
+# Apache implements `%{*}t` via `apr_strftime()`, which just calls the native
+# platform's `strftime()`.
 
 from datetime import datetime
 from .types   import FieldType, integer
@@ -17,7 +17,6 @@ SECOND = r'(?:[0-5][0-9]|60)'
 WEEKNUM     = r'(?:[0-4][0-9]|5[0-3])'  # 00-53
 ISO_WEEKNUM = r'(?:0[1-9]|[1-4][0-9]|5[0-3])'  # 01-53
 
-### TODO: Should this be ASCII-only?
 word = FieldType(r'\w+', str)
 
 STRFTIME_DIRECTIVES = {
@@ -106,8 +105,8 @@ SPECIAL_PARAMETERS = {
     'sec': ('epoch', integer),
     'msec': ('milliepoch', integer),
     'usec': ('microepoch', integer),
-    'msec_frac': ('msec_frac', integer),
-    'usec_frac': ('usec_frac', integer),
+    'msec_frac': ('msec_frac', FieldType(r'[0-9]{3}', int)),
+    'usec_frac': ('usec_frac', FieldType(r'[0-9]{6}', int)),
 }
 
 def strftime2regex(param):
