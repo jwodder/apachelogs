@@ -90,7 +90,7 @@ def _unesc(m):
     if esc[0] == 'x':
         return chr(int(esc[1:], 16))
     else:
-        return _unescapes.get(esc, '\\' + esc)
+        return _unescapes.get(esc, esc)
 
 def assemble_datetime(fields):
     """

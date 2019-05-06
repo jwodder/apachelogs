@@ -1,6 +1,6 @@
 from   datetime   import datetime, timezone
 import pytest
-from   apachelogs import LogParser
+from   apachelogs import VHOST_COMBINED, LogParser
 
 @pytest.mark.parametrize('fmt,entry,fields', [
     (
@@ -107,7 +107,7 @@ from   apachelogs import LogParser
             "local_address": "172.22.0.2",
             "server_port": 80,
             "request_method": "GET",
-            "request_uri": "/wsgi/tést",
+            "request_uri": "/wsgi/t\xc3\xa9st",
             "request_query": "",
             "request_file": "/usr/local/app/run.wsgi",
             "pid": 16,
@@ -145,8 +145,30 @@ from   apachelogs import LogParser
             },
         },
     ),
+    (
+        VHOST_COMBINED,
+        r'www.varonathe.org:80 185.234.218.71 - - [14/Apr/2018:18:39:42 +0000] "GET / HTTP/1.1" 301 539 "-" "}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86"',
+        {
+            "virtual_host": "www.varonathe.org",
+            "server_port": 80,
+            "remote_host": "185.234.218.71",
+            "remote_logname": None,
+            "remote_user": None,
+            "request_time": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "timestamp": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
+            },
+            "request_line": "GET / HTTP/1.1",
+            "final_status": 301,
+            "bytes_out": 539,
+            "headers_in": {
+                "Referer": None,
+                "User-Agent": '}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86',
+            },
+        },
+    ),
 ])
 def test_parse_misc(fmt, entry, fields):
-    log_entry = LogParser(fmt, encoding='utf-8').parse(entry)
+    log_entry = LogParser(fmt).parse(entry)
     for k,v in fields.items():
         assert getattr(log_entry, k) == v
