@@ -251,6 +251,20 @@ w4 = timezone(timedelta(hours=-4))
         datetime(2017, 11, 1, 7, 28, 29, 123456),
     ),
 
+    (
+        {"year": 2017, "mday": 1, "hour": 7, "min": 28, "sec": 29},
+        None,
+    ),
+
+    (
+        {"year": 2017, "mon": 11, "hour": 7, "min": 28, "sec": 29},
+        None,
+    ),
+
+    (
+        {"year": 2017, "mon": 11, "mday": 1, "hour": 7, "sec": 29},
+        None,
+    ),
 ])
 def test_assemble_datetime(fields, dt):
     res = assemble_datetime(fields)
