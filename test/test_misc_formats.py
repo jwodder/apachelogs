@@ -115,6 +115,36 @@ from   apachelogs import LogParser
             "handler": "wsgi-script",
         },
     ),
+    ("%200f", "-", {"request_file": None}),
+    (
+        "%200f",
+        "/var/www/html/index.html",
+        {"request_file": "/var/www/html/index.html"},
+    ),
+    (
+        "%200{%Y-%m-%d}t",
+        "-",
+        {
+            "request_time": None,
+            "request_time_fields": {
+                "year": None,
+                "mon": None,
+                "mday": None,
+            }
+        },
+    ),
+    (
+        "%200{%Y-%m-%d}t",
+        "2019-05-06",
+        {
+            "request_time": None,
+            "request_time_fields": {
+                "year": 2019,
+                "mon": 5,
+                "mday": 6,
+            },
+        },
+    ),
 ])
 def test_parse_misc(fmt, entry, fields):
     log_entry = LogParser(fmt, encoding='utf-8').parse(entry)

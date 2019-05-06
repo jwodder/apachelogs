@@ -30,6 +30,9 @@ PLAIN_DIRECTIVES = {
     ),
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
+    # httpd v2.4.29 has a provision in its code for converting statuses less
+    # than or equal to zero to "-".  I'm not sure when that can happen, but
+    # apparently it can.
     's': ('status', clf(integer)),
     't': (
         ('request_time_fields', 'timestamp'),
@@ -126,9 +129,9 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     groups = []
     rgx = ''
     for m in re.finditer(r'''
-        % (?:!?\d+(?:,\d+)*|(?P<redirect1>[<>]))*
+        % (?:(?P<restrict1>!?\d+(?:,\d+)*)|(?P<redirect1>[<>]))*
           (?:\{(?P<param>.*?)\})?
-          (?:!?\d+(?:,\d+)*|(?P<redirect2>[<>]))*
+          (?:(?P<restrict2>!?\d+(?:,\d+)*)|(?P<redirect2>[<>]))*
           (?P<directive>\^[a-zA-Z%]{2}|[a-zA-Z%])
         | (?P<literal>.)
     ''', fmt, flags=re.X):
@@ -155,11 +158,15 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         except KeyError:
             raise UnknownDirectiveError(m.group(0))
         if multiple:
+            if m.group('restrict1') or m.group('restrict2'):
+                subrgx = '(?:{}|-)'.format(subrgx)
             rgx += subrgx
         else:
             if name is None:
                 rgx += '(?:{})'.format(dtype.regex)
                 continue
+            if m.group('restrict1') or m.group('restrict2'):
+                dtype = clf(dtype)
             rgx += r'({})'.format(dtype.regex)
             subgroups = [(name, m.group(0), dtype.converter)]
         redirect = m.group('redirect2') or m.group('redirect1') or ''

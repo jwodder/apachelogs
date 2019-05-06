@@ -17,7 +17,15 @@ SECOND = r'(?:[0-5][0-9]|60)'
 WEEKNUM     = r'(?:[0-4][0-9]|5[0-3])'  # 00-53
 ISO_WEEKNUM = r'(?:0[1-9]|[1-4][0-9]|5[0-3])'  # 01-53
 
-word = FieldType(r'\w+', str)
+# All strftime converters must pass `None` through unmodified in order to
+# handle directives like `%200{%Y-%m-%d}t` matching "-".
+
+word = FieldType(r'\w+', lambda s: None if s is None else s)
+
+def none_int(s):
+    return None if s is None else int(s)
+
+none_integer = integer._replace(converter=none_int)
 
 STRFTIME_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -25,64 +33,64 @@ STRFTIME_DIRECTIVES = {
     'A': ('full_wday', word),
     'b': ('abbrev_mon', word),
     'B': ('full_mon', word),
-    'C': ('century', FieldType(r'[0-9]{2,}', int)),
-    'd': ('mday', FieldType(MDAY, int)),
+    'C': ('century', FieldType(r'[0-9]{2,}', none_int)),
+    'd': ('mday', FieldType(MDAY, none_int)),
     'D': (
         'date',
         FieldType(
             '{}/{}/[0-9][0-9]'.format(MONTH, MDAY),
-            lambda s: datetime.strptime(s, '%m/%d/%y').date(),
+            lambda s: datetime.strptime(s, '%m/%d/%y').date() if s is not None else None,
         )
     ),
-    'e': ('mday', FieldType(MDAY, int)),
+    'e': ('mday', FieldType(MDAY, none_int)),
     'F': (
         'date',
         FieldType(
             '{}-{}-{}'.format(YEAR, MONTH, MDAY),
-            lambda s: datetime.strptime(s, '%Y-%m-%d').date(),
+            lambda s: datetime.strptime(s, '%Y-%m-%d').date() if s is not None else None,
         )
     ),
-    'g': ('abbrev_week_year', FieldType(r'[0-9][0-9]', int)),
-    'G': ('week_year', FieldType(YEAR, int)),
+    'g': ('abbrev_week_year', FieldType(r'[0-9][0-9]', none_int)),
+    'G': ('week_year', FieldType(YEAR, none_int)),
     'h': ('abbrev_mon', word),
-    'H': ('hour', FieldType(HOUR, int)),
-    'I': ('hour12', FieldType(HOUR12, int)),
+    'H': ('hour', FieldType(HOUR, none_int)),
+    'I': ('hour12', FieldType(HOUR12, none_int)),
     'j': (
         'yday',
         FieldType(
             # 001−366:
             '0(?:0[1-9]|[1-9][0-9])|[12][0-9][0-9]|3(?:[0-5][0-9]|6[0-6])',
-            int
+            none_int
         )
     ),
-    'm': ('mon', FieldType(MONTH, int)),
-    'M': ('min', FieldType(MINUTE, int)),
+    'm': ('mon', FieldType(MONTH, none_int)),
+    'M': ('min', FieldType(MINUTE, none_int)),
     'n': (None, FieldType('\n', None)),
     'p': ('am_pm', word),
     'R': (
         'hour_min',
         FieldType(
             '{}:{}'.format(HOUR, MINUTE),
-            lambda s: datetime.strptime(s, '%H:%M').time(),
+            lambda s: datetime.strptime(s, '%H:%M').time() if s is not None else None,
         )
     ),
-    's': ('epoch', integer),
-    'S': ('sec', FieldType(SECOND, int)),
+    's': ('epoch', none_integer),
+    'S': ('sec', FieldType(SECOND, none_int)),
     't': (None, FieldType('\t', None)),
     'T': (
         'time',
         FieldType(
             '{}:{}:{}'.format(HOUR, MINUTE, SECOND),
-            lambda s: datetime.strptime(s, '%H:%M:%S').time(),
+            lambda s: datetime.strptime(s, '%H:%M:%S').time() if s is not None else None,
         )
     ),
-    'u': ('iso_wday', FieldType(r'[1-7]', int)),
-    'U': ('sunday_weeknum', FieldType(WEEKNUM, int)),
-    'V': ('iso_weeknum', FieldType(ISO_WEEKNUM, int)),
-    'w': ('wday', FieldType(r'[0-6]', int)),
-    'W': ('monday_weeknum', FieldType(WEEKNUM, int)),
-    'y': ('abbrev_year', FieldType(r'[0-9][0-9]', int)),
-    'Y': ('year', FieldType(YEAR, int)),
+    'u': ('iso_wday', FieldType(r'[1-7]', none_int)),
+    'U': ('sunday_weeknum', FieldType(WEEKNUM, none_int)),
+    'V': ('iso_weeknum', FieldType(ISO_WEEKNUM, none_int)),
+    'w': ('wday', FieldType(r'[0-6]', none_int)),
+    'W': ('monday_weeknum', FieldType(WEEKNUM, none_int)),
+    'y': ('abbrev_year', FieldType(r'[0-9][0-9]', none_int)),
+    'Y': ('year', FieldType(YEAR, none_int)),
     'z': (
         'timezone',
         FieldType(
@@ -102,11 +110,11 @@ STRFTIME_DIRECTIVES = {
 }
 
 SPECIAL_PARAMETERS = {
-    'sec': ('epoch', integer),
-    'msec': ('milliepoch', integer),
-    'usec': ('microepoch', integer),
-    'msec_frac': ('msec_frac', FieldType(r'[0-9]{3}', int)),
-    'usec_frac': ('usec_frac', FieldType(r'[0-9]{6}', int)),
+    'sec': ('epoch', none_integer),
+    'msec': ('milliepoch', none_integer),
+    'usec': ('microepoch', none_integer),
+    'msec_frac': ('msec_frac', FieldType(r'[0-9]{3}', none_int)),
+    'usec_frac': ('usec_frac', FieldType(r'[0-9]{6}', none_int)),
 }
 
 def strftime2regex(param):

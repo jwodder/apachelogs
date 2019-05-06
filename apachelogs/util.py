@@ -97,23 +97,23 @@ def assemble_datetime(fields):
     Given a `dict` of time fields, return a `datetime.datetime` object if there
     is enough information to create one, `None` otherwise.
     """
-    if "timestamp" in fields:
+    if fields.get("timestamp") is not None:
         return fields["timestamp"]
-    elif "microepoch" in fields:
+    elif fields.get("microepoch") is not None:
         return datetime.fromtimestamp(
             fields["microepoch"] / 1000000,
             fields.get("timezone") or timezone.utc,
             # fields["timezone"] may be None, in which case we still want the
             # timezone to be UTC
         )
-    elif "milliepoch" in fields:
+    elif fields.get("milliepoch") is not None:
         return datetime.fromtimestamp(
             fields["milliepoch"] / 1000,
             fields.get("timezone") or timezone.utc,
             # fields["timezone"] may be None, in which case we still want the
             # timezone to be UTC
         )
-    elif "epoch" in fields:
+    elif fields.get("epoch") is not None:
         return datetime.fromtimestamp(
             fields["epoch"],
             fields.get("timezone") or timezone.utc,
@@ -121,44 +121,46 @@ def assemble_datetime(fields):
             # timezone to be UTC
         )
     else:
-        if "year" in fields:
+        if fields.get("year") is not None:
             year = fields["year"]
-        elif "date" in fields:
+        elif fields.get("date") is not None:
             year = fields["date"].year
-        elif "century" in fields and "abbrev_year" in fields:
+        elif fields.get("century") is not None \
+                and fields.get("abbrev_year") is not None:
             year = fields["century"] * 100 + fields["abbrev_year"]
         else:
             return None
 
-        if "mon" in fields:
+        if fields.get("mon") is not None:
             month = fields["mon"]
-        elif "date" in fields:
+        elif fields.get("date") is not None:
             month = fields["date"].month
-        elif "yday" in fields:
+        elif fields.get("yday") is not None:
             month = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).month
-        elif "full_mon" in fields and fields["full_mon"] in MONTH_FULL_NAMES:
+        elif fields.get("full_mon") in MONTH_FULL_NAMES:
             month = MONTH_FULL_NAMES.index(fields["full_mon"]) + 1
-        elif "abbrev_mon" in fields and fields["abbrev_mon"] in MONTH_SNAMES:
+        elif fields.get("abbrev_mon") in MONTH_SNAMES:
             month = MONTH_SNAMES.index(fields["abbrev_mon"]) + 1
         else:
             return None
 
-        if "mday" in fields:
+        if fields.get("mday") is not None:
             day = fields["mday"]
-        elif "date" in fields:
+        elif fields.get("date") is not None:
             day = fields["date"].day
-        elif "yday" in fields:
+        elif fields.get("yday") is not None:
             day = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).day
         else:
             return None
 
-        if "hour" in fields:
+        if fields.get("hour") is not None:
             hour = fields["hour"]
-        elif "time" in fields:
+        elif fields.get("time") is not None:
             hour = fields["time"].hour
-        elif "hour_min" in fields:
+        elif fields.get("hour_min") is not None:
             hour = fields["hour_min"].hour
-        elif "hour12" in fields and "am_pm" in fields \
+        elif fields.get("hour12") is not None \
+                and fields.get("am_pm") is not None \
                 and fields["am_pm"].upper() in ('AM', 'PM'):
             hour = fields["hour12"] % 12
             if fields["am_pm"].upper() == "PM":
@@ -166,25 +168,25 @@ def assemble_datetime(fields):
         else:
             return None
 
-        if "min" in fields:
+        if fields.get("min") is not None:
             minute = fields["min"]
-        elif "time" in fields:
+        elif fields.get("time") is not None:
             minute = fields["time"].minute
-        elif "hour_min" in fields:
+        elif fields.get("hour_min") is not None:
             minute = fields["hour_min"].minute
         else:
             return None
 
-        if "sec" in fields:
+        if fields.get("sec") is not None:
             second = fields["sec"]
-        elif "time" in fields:
+        elif fields.get("time") is not None:
             second = fields["time"].second
         else:
             return None
 
-        if "usec_frac" in fields:
+        if fields.get("usec_frac") is not None:
             microsecond = fields["usec_frac"]
-        elif "msec_frac" in fields:
+        elif fields.get("msec_frac") is not None:
             microsecond = fields["msec_frac"] * 1000
         else:
             microsecond = 0
