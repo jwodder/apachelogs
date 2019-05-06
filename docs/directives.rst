@@ -46,13 +46,13 @@ information on the meaning of each directive.
     * - ``%B``
       - ``entry.bytes_sent``
       - `int`
-    * - :samp:`%\{{name}\}C`
+    * - :samp:`%\\{{name}\\}C`
       - :samp:`entry.cookies[{name}]`
       - `str`\* or `None`
     * - ``%D``
       - ``entry.request_duration_microseconds``
       - `int`
-    * - :samp:`%\{{name}\}e`
+    * - :samp:`%\\{{name}\\}e`
       - :samp:`entry.env_vars[{name}]`
       - `str`\* or `None`
     * - ``%f``
@@ -64,7 +64,7 @@ information on the meaning of each directive.
     * - ``%H``
       - ``entry.request_protocol``
       - `str`\* or `None`
-    * - :samp:`%\{{name}\}i`
+    * - :samp:`%\\{{name}\\}i`
       - :samp:`entry.headers_in[{name}]`
       - `str`\* or `None`
     * - ``%I``
@@ -79,10 +79,10 @@ information on the meaning of each directive.
     * - ``%m``
       - ``entry.request_method``
       - `str`\* or `None`
-    * - :samp:`%\{{name}\}n`
+    * - :samp:`%\\{{name}\\}n`
       - :samp:`entry.notes[{name}]`
       - `str`\* or `None`
-    * - :samp:`%\{{name}\}o`
+    * - :samp:`%\\{{name}\\}o`
       - :samp:`entry.headers_out[{name}]`
       - `str`\* or `None`
     * - ``%O``
@@ -142,7 +142,7 @@ information on the meaning of each directive.
     * - ``%{usec_frac}t``
       - ``entry.request_time_fields["usec_frac"]``
       - `int`
-    * - :samp:`%\{{strftime_format}\}t`
+    * - :samp:`%\\{{strftime_format}\\}t`
       - ``entry.request_time_fields`` (See below)
       - (See below)
     * - ``%T``
@@ -175,10 +175,10 @@ information on the meaning of each directive.
     * - ``%^FB``
       - ``entry.ttfb``
       - `int` or `None`
-    * - :samp:`%\{{name}\}^ti`
+    * - :samp:`%\\{{name}\\}^ti`
       - :samp:`entry.trailers_in[{name}]`
       - `str`\* or `None`
-    * - :samp:`%\{{name}\}^to`
+    * - :samp:`%\\{{name}\\}^to`
       - :samp:`entry.trailers_out[{name}]`
       - `str`\* or `None`
 
