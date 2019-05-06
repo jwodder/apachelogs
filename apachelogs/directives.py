@@ -21,7 +21,13 @@ PLAIN_DIRECTIVES = {
     'm': ('request_method', clf_string),
     'p': ('server_port', integer),
     'P': ('pid', integer),
-    'q': ('request_query', esc_string),
+    # As of httpd v2.4.29, `%q` is formatted as either an empty string or `?`
+    # followed by an escaped string (`r->args`); see `log_request_query()` in
+    # `modules/loggers/mod_log_config.c`.
+    'q': (
+        'request_query',
+        FieldType(r'(?:\?{})?'.format(esc_string.regex), esc_string.converter)
+    ),
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
     's': ('status', clf(integer)),
@@ -47,11 +53,11 @@ PARAMETERIZED_DIRECTIVES = {
     'a': {
         'c': ('remote_client_address', ip_address),
     },
-    'C': ('cookies', esc_string),
-    'e': ('env_vars', esc_string),
+    'C': ('cookies', clf_string),
+    'e': ('env_vars', clf_string),
     'i': ('headers_in', clf_string),
-    'n': ('notes', esc_string),
-    'o': ('headers_out', esc_string),
+    'n': ('notes', clf_string),
+    'o': ('headers_out', clf_string),
     'p': {
         'canonical': ('server_port', integer),
         'local': ('local_port', integer),
@@ -68,8 +74,8 @@ PARAMETERIZED_DIRECTIVES = {
         'us': ('request_duration_microseconds', integer),
         's': ('request_duration_seconds', integer),
     },
-    '^ti': ('trailers_in', esc_string),
-    '^to': ('trailers_out', esc_string),
+    '^ti': ('trailers_in', clf_string),
+    '^to': ('trailers_out', clf_string),
 }
 
 def format2regex(fmt, plain_directives=None, parameterized_directives=None):

@@ -11,9 +11,10 @@
         - `%f`?
         - `%l`
         - `%m`
-        - `%q` - begins with `?` when non-empty
+        - `%q` - forbidden from containing spaces?
         - `%R`
         - `%u` - no colon?
+        - `%U` - forbidden from containing spaces or question marks?
         - `%v` - no whitespace?
         - `%V` - no whitespace?
         - `%{*}^ti`

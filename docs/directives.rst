@@ -48,13 +48,13 @@ information on the meaning of each directive.
       - `int`
     * - :samp:`%\{{name}\}C`
       - :samp:`entry.cookies[{name}]`
-      - `str`\*
+      - `str`\* or `None`
     * - ``%D``
       - ``entry.request_duration_microseconds``
       - `int`
     * - :samp:`%\{{name}\}e`
       - :samp:`entry.env_vars[{name}]`
-      - `str`\*
+      - `str`\* or `None`
     * - ``%f``
       - ``entry.request_file``
       - `str`\*
@@ -81,10 +81,10 @@ information on the meaning of each directive.
       - `str`\* or `None`
     * - :samp:`%\{{name}\}n`
       - :samp:`entry.notes[{name}]`
-      - `str`\*
+      - `str`\* or `None`
     * - :samp:`%\{{name}\}o`
       - :samp:`entry.headers_out[{name}]`
-      - `str`\*
+      - `str`\* or `None`
     * - ``%O``
       - ``entry.bytes_out``
       - `int`
@@ -177,10 +177,10 @@ information on the meaning of each directive.
       - `int` or `None`
     * - :samp:`%\{{name}\}^ti`
       - :samp:`entry.trailers_in[{name}]`
-      - `str`\*
+      - `str`\* or `None`
     * - :samp:`%\{{name}\}^to`
       - :samp:`entry.trailers_out[{name}]`
-      - `str`\*
+      - `str`\* or `None`
 
 
 Supported ``strftime`` Directives
