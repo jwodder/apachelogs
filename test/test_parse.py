@@ -259,6 +259,60 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "request_protocol": "HTTP/1.1",
         },
     ),
+
+    (
+        "%<>s",
+        "200",
+        {"final_status": 200},
+    ),
+
+    (
+        "%200<T",
+        "-",
+        {"original_request_duration_seconds": None},
+    ),
+
+    (
+        "%>!200T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
+
+    (
+        "%>{s}!200T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
+
+    (
+        "%{s}!200>T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
+
+    (
+        "%<{s}!200>T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
+
+    (
+        "%><{s}!200>T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
+
+    (
+        "%<200>T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
+
+    (
+        "%<200<!>T",
+        "-",
+        {"final_request_duration_seconds": None},
+    ),
 ])
 def test_parse(fmt, entry, fields):
     log_entry = LogParser(fmt).parse(entry)

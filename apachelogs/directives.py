@@ -129,9 +129,9 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
     groups = []
     rgx = ''
     for m in re.finditer(r'''
-        % (?:(?P<restrict1>!?\d+(?:,\d+)*)|(?P<redirect1>[<>]))*
+        % (?P<modifiers1>[0-9,!<>]*)
           (?:\{(?P<param>.*?)\})?
-          (?:(?P<restrict2>!?\d+(?:,\d+)*)|(?P<redirect2>[<>]))*
+          (?P<modifiers2>[0-9,!<>]*)
           (?P<directive>\^[a-zA-Z%]{2}|[a-zA-Z%])
         | (?P<literal>.)
     ''', fmt, flags=re.X):
@@ -141,6 +141,9 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
             rgx += re.escape(m.group('literal'))
             continue
         multiple = False
+        modifiers = (m.group('modifiers1') or '')+(m.group('modifiers2') or '')
+        conditioned = any(c.isdigit() for c in modifiers)
+        redirects = re.findall(r'[<>]', modifiers)
         try:
             if m.group('param') is not None:
                 spec = parameterized_directives[m.group('directive')]
@@ -158,20 +161,19 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         except KeyError:
             raise UnknownDirectiveError(m.group(0))
         if multiple:
-            if m.group('restrict1') or m.group('restrict2'):
+            if conditioned:
                 subrgx = '(?:{}|-)'.format(subrgx)
             rgx += subrgx
         else:
             if name is None:
                 rgx += '(?:{})'.format(dtype.regex)
                 continue
-            if m.group('restrict1') or m.group('restrict2'):
+            if conditioned:
                 dtype = clf(dtype)
             rgx += r'({})'.format(dtype.regex)
             subgroups = [(name, m.group(0), dtype.converter)]
-        redirect = m.group('redirect2') or m.group('redirect1') or ''
-        if redirect in {'<', '>'}:
-            prefix = 'original_' if redirect == '<' else 'final_'
+        if redirects:
+            prefix = 'original_' if redirects[-1] == '<' else 'final_'
             for i, (name, directive, converter) in enumerate(subgroups):
                 if isinstance(name, tuple):
                     name = (prefix + name[0],) + name[1:]
