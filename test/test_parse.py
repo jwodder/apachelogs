@@ -177,6 +177,24 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
     ),
 
     (
+        "%200t",
+        "-",
+        {
+            "request_time": None,
+            "request_time_fields": {"timestamp": None},
+        },
+    ),
+
+    (
+        "%200{}t",
+        "-",
+        {
+            "request_time": None,
+            "request_time_fields": {"timestamp": None},
+        },
+    ),
+
+    (
         VHOST_COMBINED,
         r'www.varonathe.org:80 185.234.218.71 - - [14/Apr/2018:18:39:42 +0000] "GET / HTTP/1.1" 301 539 "-" "}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86"',
         {

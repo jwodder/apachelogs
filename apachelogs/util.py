@@ -50,6 +50,8 @@ def parse_apache_timestamp(s):
     # with strptime like the below will fail when in a locale with different
     # month snames:
     #return datetime.strptime(s.strip('[]'), '%d/%b/%Y:%H:%M:%S %z')
+    if s is None:
+        return None
     m = APACHE_TS_RGX.match(s)
     if not m:
         raise ValueError(s)
