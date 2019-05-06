@@ -1,13 +1,16 @@
-.. image:: http://www.repostatus.org/badges/latest/wip.svg
-    :target: http://www.repostatus.org/#wip
-    :alt: Project Status: WIP — Initial development is in progress, but there
-          has not yet been a stable, usable release suitable for the public.
+.. image:: http://www.repostatus.org/badges/latest/active.svg
+    :target: http://www.repostatus.org/#active
+    :alt: Project Status: Active — The project has reached a stable, usable
+          state and is being actively developed.
 
 .. image:: https://travis-ci.com/jwodder/apachelogs.svg?branch=master
     :target: https://travis-ci.com/jwodder/apachelogs
 
 .. image:: https://codecov.io/gh/jwodder/apachelogs/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/jwodder/apachelogs
+
+.. image:: https://img.shields.io/pypi/pyversions/apachelogs.svg
+    :target: https://pypi.org/project/apachelogs/
 
 .. image:: https://img.shields.io/github/license/jwodder/apachelogs.svg
     :target: https://opensource.org/licenses/MIT
@@ -17,6 +20,7 @@
     :target: https://saythanks.io/to/jwodder
 
 `GitHub <https://github.com/jwodder/apachelogs>`_
+| `PyPI <https://pypi.org/project/apachelogs/>`_
 | `Documentation <https://apachelogs.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
 
@@ -33,7 +37,7 @@ Installation
 <https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 ``apachelogs`` and its dependencies::
 
-    python3 -m pip install git+https://github.com/jwodder/apachelogs.git
+    python3 -m pip install apachelogs
 
 
 Examples

@@ -5,6 +5,7 @@ apachelogs — Parse Apache access logs
 =====================================
 
 `GitHub <https://github.com/jwodder/apachelogs>`_
+| `PyPI <https://pypi.org/project/apachelogs/>`_
 | `Documentation <https://apachelogs.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
 
@@ -29,7 +30,7 @@ Installation
 <https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 ``apachelogs`` and its dependencies::
 
-    python3 -m pip install git+https://github.com/jwodder/apachelogs.git
+    python3 -m pip install apachelogs
 
 
 Examples
