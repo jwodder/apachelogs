@@ -16,9 +16,10 @@
         - `%{*}^ti`
         - `%{*}^to`
     - `mod_ssl` formats??? <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
-    - Can any format directive _not_ evaluate to `-`?
     - Check whether `%a` can be a comma-separated list of IP addresses (in case
       of proxying/X-Forwarded-For and the like)
+
+- Test every directive
 
 - For each directive that doesn't match what one would naïvely expect, add a
   comment explaining why (including what versions of Apache the behavior is

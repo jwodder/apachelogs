@@ -7,7 +7,8 @@ parser for logfile entries in that format.  ``apachelogs`` even takes care of
 decoding escape sequences and converting things like timestamps, integers, and
 bare hyphens to ``datetime`` values, ``int``\s, and ``None``\s.
 
-Visit <https://github.com/jwodder/apachelogs> for more information.
+Visit <https://github.com/jwodder/apachelogs> or <https://apachelogs.rtfd.io>
+for more information.
 """
 
 __version__      = '0.1.0.dev1'

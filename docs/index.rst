@@ -5,6 +5,7 @@ apachelogs — Parse Apache access logs
 =====================================
 
 `GitHub <https://github.com/jwodder/apachelogs>`_
+| `Documentation <https://apachelogs.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
 
 .. toctree::

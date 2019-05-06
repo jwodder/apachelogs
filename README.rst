@@ -17,6 +17,7 @@
     :target: https://saythanks.io/to/jwodder
 
 `GitHub <https://github.com/jwodder/apachelogs>`_
+| `Documentation <https://apachelogs.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
 
 ``apachelogs`` parses Apache access log files.  Pass it a `log format string
