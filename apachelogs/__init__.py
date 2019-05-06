@@ -16,33 +16,42 @@ from .parser import LogEntry, LogParser
 from .util   import parse_apache_timestamp
 
 __all__ = [
-    'AGENT',
     'COMBINED',
+    'COMBINED_DEBIAN',
     'COMMON',
-    'COMMON_VHOST',
+    'COMMON_DEBIAN',
     'Error',
     'InvalidDirectiveError',
     'InvalidEntryError',
     'LogEntry',
     'LogParser',
-    'REFERER',
     'UnknownDirectiveError',
+    'VHOST_COMBINED',
+    'VHOST_COMMON',
     'parse',
     'parse_apache_timestamp',
     'parse_lines',
 ]
 
-### cf. the log definitions shipped with Apache under Ubuntu (Debian?), which
-### use %O instead of %b
-
 #: Common log format (CLF)
 COMMON = "%h %l %u %t \"%r\" %>s %b"
 
-#: Common log format with virtual host prepended
+#: `COMMON` with virtual host prepended
 VHOST_COMMON = "%v %h %l %u %t \"%r\" %>s %b"
 
 #: NCSA extended/combined log format
 COMBINED = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\""
+
+#: Like `COMMON`, but with ``%O`` (total bytes sent including headers) in place
+#: of ``%b`` (size of response excluding headers)
+COMMON_DEBIAN = "%h %l %u %t \"%r\" %>s %O"
+
+#: Like `COMBINED`, but with ``%O`` (total bytes sent including headers) in
+#: place of ``%b`` (size of response excluding headers)
+COMBINED_DEBIAN = "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-agent}i\""
+
+#: `COMBINED_DEBIAN` with virtual host & port prepended
+VHOST_COMBINED = "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\""
 
 def parse(format, entry, encoding='iso-8859-1', errors=None):
     """
