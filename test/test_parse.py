@@ -1,28 +1,50 @@
 from   datetime   import datetime, timedelta, timezone
 import pytest
-from   apachelogs import VHOST_COMBINED, LogParser
+from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
 
 @pytest.mark.parametrize('fmt,entry,fields', [
+    (
+        COMBINED,
+        '209.126.136.4 - - [01/Nov/2017:07:28:29 +0000] "GET / HTTP/1.1" 301 521 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"',
+        {
+            "remote_host": "209.126.136.4",
+            "remote_logname": None,
+            "remote_user": None,
+            "request_time": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
+            "request_line": "GET / HTTP/1.1",
+            "final_status": 301,
+            "bytes_sent": 521,
+            "headers_in": {
+                "Referer": None,
+                "User-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
+            },
+        },
+    ),
+
     (
         '"%400r" "%r"',
         '"-" "GET /index.html HTTP/1.1"',
         {"request_line": "GET /index.html HTTP/1.1"},
     ),
+
     (
         '"%r" "%400r"',
         '"GET /index.html HTTP/1.1" "-"',
         {"request_line": "GET /index.html HTTP/1.1"},
     ),
+
     (
         '"%!400r" "%r"',
         '"-" "GET /index.xml HTTP/1.1"',
         {"request_line": "GET /index.xml HTTP/1.1"},
     ),
+
     (
         '"%r" "%!400r"',
         '"GET /index.xml HTTP/1.1" "-"',
         {"request_line": "GET /index.xml HTTP/1.1"},
     ),
+
     (
         '%<s %s %>s',
         '201 202 203',
@@ -32,6 +54,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             "final_status": 203,
         },
     ),
+
     (
         '%<{Referer}i %{Referer}i %>{Referer}i',
         'http://example.com/original http://example.com/default http://example.com/final',
@@ -47,6 +70,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             },
         },
     ),
+
     (
         '%T %{ms}T',
         '1 1042',
@@ -55,6 +79,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             "request_duration_milliseconds": 1042,
         }
     ),
+
     (
         "%{%Y-%m-%d %H:%M:%S %z}t [%{msec_frac}t] %s %a:%{remote}p <-> %A:%p \"%m\" \"%U%q\" \"%f\" %P:%{tid}P \"%R\"",
         '2019-05-05 20:49:14 +0000 [690] 403 172.21.0.1:44782 <-> 172.21.0.2:80 "GET" "/wsgi/test?q=foo" "/usr/local/app/run.wsgi" 16:140168282543872 "wsgi-script"',
@@ -85,6 +110,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             "handler": "wsgi-script",
         },
     ),
+
     (
         "%{%Y-%m-%d %H:%M:%S %z}t [%{msec_frac}t] %s %a:%{remote}p <-> %A:%p \"%m\" \"%U%q\" \"%f\" %P:%{tid}P \"%R\"",
         r'2019-05-05 20:56:07 +0000 [148] 403 172.22.0.1:34488 <-> 172.22.0.2:80 "GET" "/wsgi/t\xc3\xa9st" "/usr/local/app/run.wsgi" 16:140436276180736 "wsgi-script"',
@@ -115,12 +141,15 @@ from   apachelogs import VHOST_COMBINED, LogParser
             "handler": "wsgi-script",
         },
     ),
+
     ("%200f", "-", {"request_file": None}),
+
     (
         "%200f",
         "/var/www/html/index.html",
         {"request_file": "/var/www/html/index.html"},
     ),
+
     (
         "%200{%Y-%m-%d}t",
         "-",
@@ -133,6 +162,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             }
         },
     ),
+
     (
         "%200{%Y-%m-%d}t",
         "2019-05-06",
@@ -145,6 +175,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             },
         },
     ),
+
     (
         VHOST_COMBINED,
         r'www.varonathe.org:80 185.234.218.71 - - [14/Apr/2018:18:39:42 +0000] "GET / HTTP/1.1" 301 539 "-" "}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86"',
@@ -167,6 +198,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             },
         },
     ),
+
     (
         "%<t",
         "[14/Apr/2018:18:39:42 +0000]",
@@ -177,6 +209,7 @@ from   apachelogs import VHOST_COMBINED, LogParser
             },
         },
     ),
+
     (
         "%>{%Y-%m-%dT%H:%M:%S}t.%>{usec_frac}t%>{%z}t",
         "2019-05-06T12:09:43.123456-0400",
@@ -198,7 +231,9 @@ from   apachelogs import VHOST_COMBINED, LogParser
         },
     ),
 ])
-def test_parse_misc(fmt, entry, fields):
+def test_parse(fmt, entry, fields):
     log_entry = LogParser(fmt).parse(entry)
+    assert log_entry.entry == entry.rstrip('\r\n')
+    assert log_entry.format == fmt
     for k,v in fields.items():
         assert getattr(log_entry, k) == v
