@@ -1,0 +1,7 @@
+www.varonathe.org:80 203.62.1.80 - - [06/May/2019:06:28:20 +0000] "GET / HTTP/1.1" 301 577 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0"
+www.varonathe.org:80 203.62.1.80 - - [06/May/2019:06:28:20 +0000] "GET /robots.txt HTTP/1.1" 301 596 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0"
+www.varonathe.org:80 203.62.1.80 - - [06/May/2019:06:28:21 +0000] "POST /App6079ec68.php HTTP/1.1" 301 606 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0"
+www.varonathe.org:80 203.62.1.80 - - [06/May/2019:06:28:21 +0000] "GET /webdav/ HTTP/1.1" 301 554 "-" "Mozilla/5.0"
+Bad line
+www.varonathe.org:80 203.62.1.80 - - [06/May/2019:06:28:21 +0000] "GET /help.php HTTP/1.1" 301 592 "-" "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0"
+www.varonathe.org:80 203.62.1.80 - - [06/May/2019:06:28:22 +0000] "GET /java.php HTTP/1.1" 301 592 "-" "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0"
