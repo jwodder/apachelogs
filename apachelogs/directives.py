@@ -81,7 +81,16 @@ PARAMETERIZED_DIRECTIVES = {
     '^to': ('trailers_out', clf_string),
 }
 
-def format2regex(fmt, plain_directives=None, parameterized_directives=None):
+DIRECTIVE_RGX = re.compile(r'''
+    % (?P<modifiers1>[0-9,!<>]*)
+      (?:\{(?P<param>.*?)\})?
+      (?P<modifiers2>[0-9,!<>]*)
+      (?P<directive>\^[a-zA-Z%]{2}|[a-zA-Z%])
+    | (?P<literal>.)
+''', flags=re.X)
+
+def format2regex(fmt, plain_directives=None, parameterized_directives=None,
+                 simple=False):
     """
     Given a %-style format string ``fmt`` made up of a mixture of the "plain"
     directives (e.g., ``%q``) in ``plain_directives`` (default
@@ -118,6 +127,8 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         or to a sub-`dict` mapping parameter values to ``(name, field_type)``
         pairs, or to a callable that takes a parameter and returns the same
         return type as `format2regex()`.
+    :param bool simple: If `True`, an `InvalidDirectiveError` will be raised if
+        a directive with modifiers or a parameter is encountered
     :raises InvalidDirectiveError: if an invalid directive occurs in ``fmt``
     :raises UnknownDirectiveError: if an unknown directive occurs in ``fmt``
     """
@@ -128,13 +139,7 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         parameterized_directives = PARAMETERIZED_DIRECTIVES
     groups = []
     rgx = ''
-    for m in re.finditer(r'''
-        % (?P<modifiers1>[0-9,!<>]*)
-          (?:\{(?P<param>.*?)\})?
-          (?P<modifiers2>[0-9,!<>]*)
-          (?P<directive>\^[a-zA-Z%]{2}|[a-zA-Z%])
-        | (?P<literal>.)
-    ''', fmt, flags=re.X):
+    for m in DIRECTIVE_RGX.finditer(fmt):
         if m.group('literal') is not None:
             if m.group('literal') == '%':
                 raise InvalidDirectiveError(fmt, m.start())
@@ -144,6 +149,8 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None):
         modifiers = (m.group('modifiers1') or '')+(m.group('modifiers2') or '')
         conditioned = any(c.isdigit() for c in modifiers)
         redirects = re.findall(r'[<>]', modifiers)
+        if simple and (modifiers or m.group('param') is not None):
+            raise InvalidDirectiveError(fmt, m.start())
         try:
             if m.group('param') is not None:
                 spec = parameterized_directives[m.group('directive')]

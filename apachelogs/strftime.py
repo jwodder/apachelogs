@@ -141,7 +141,7 @@ def strftime2regex(param):
         )
     else:
         from .directives import format2regex
-        groups, rgx = format2regex(param, STRFTIME_DIRECTIVES, {})
+        groups, rgx = format2regex(param, STRFTIME_DIRECTIVES, {}, simple=True)
         groups = [
             (
                 (prefix + 'request_time_fields', name),
