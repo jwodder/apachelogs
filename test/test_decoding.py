@@ -12,7 +12,7 @@ NON_STR_FIELDS = {
     "bytes_sent": 0,
     "headers_in": {
         "Referer": None,
-        "User-agent": None,
+        "User-Agent": None,
     },
 }
 

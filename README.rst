@@ -46,7 +46,7 @@ Examples
 Parse a single log entry::
 
     >>> from apachelogs import LogParser
-    >>> parser = LogParser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"")
+    >>> parser = LogParser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"")
     >>> # The above log format is also available as the constant `apachelogs.COMBINED`.
     >>> entry = parser.parse('209.126.136.4 - - [01/Nov/2017:07:28:29 +0000] "GET / HTTP/1.1" 301 521 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"\n')
     >>> entry.remote_host
@@ -61,7 +61,7 @@ Parse a single log entry::
     521
     >>> entry.headers_in["Referer"] is None
     True
-    >>> entry.headers_in["User-agent"]
+    >>> entry.headers_in["User-Agent"]
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
 
 Parse a file full of log entries::
