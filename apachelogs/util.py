@@ -1,5 +1,21 @@
-from   datetime import datetime, timedelta, timezone
+from   datetime import date, datetime, timedelta, timezone
 import re
+
+#: The names of the months in English
+MONTH_FULL_NAMES = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+]
 
 #: The abbreviated names of the months in English
 MONTH_SNAMES = [
@@ -83,6 +99,20 @@ def assemble_datetime(fields):
     """
     if "timestamp" in fields:
         return fields["timestamp"]
+    elif "microepoch" in fields:
+        return datetime.fromtimestamp(
+            fields["microepoch"] / 1000000,
+            fields.get("timezone") or timezone.utc,
+            # fields["timezone"] may be None, in which case we still want the
+            # timezone to be UTC
+        )
+    elif "milliepoch" in fields:
+        return datetime.fromtimestamp(
+            fields["milliepoch"] / 1000,
+            fields.get("timezone") or timezone.utc,
+            # fields["timezone"] may be None, in which case we still want the
+            # timezone to be UTC
+        )
     elif "epoch" in fields:
         return datetime.fromtimestamp(
             fields["epoch"],
@@ -91,17 +121,81 @@ def assemble_datetime(fields):
             # timezone to be UTC
         )
     else:
-        try:
-            ### TODO: Use yday, date, time, and hour_min fields when necessary
-            ### TODO: Use word fields when necessary
-            return datetime(
-                year   = fields["year"],
-                month  = fields["mon"],
-                day    = fields["mday"],
-                hour   = fields["hour"],
-                minute = fields["min"],
-                second = fields["sec"],
-                tzinfo = fields.get("timezone"),
-            )
-        except KeyError:
+        if "year" in fields:
+            year = fields["year"]
+        elif "date" in fields:
+            year = fields["date"].year
+        elif "century" in fields and "abbrev_year" in fields:
+            year = fields["century"] * 100 + fields["abbrev_year"]
+        else:
             return None
+
+        if "mon" in fields:
+            month = fields["mon"]
+        elif "date" in fields:
+            month = fields["date"].month
+        elif "yday" in fields:
+            month = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).month
+        elif "full_mon" in fields and fields["full_mon"] in MONTH_FULL_NAMES:
+            month = MONTH_FULL_NAMES.index(fields["full_mon"]) + 1
+        elif "abbrev_mon" in fields and fields["abbrev_mon"] in MONTH_SNAMES:
+            month = MONTH_SNAMES.index(fields["abbrev_mon"]) + 1
+        else:
+            return None
+
+        if "mday" in fields:
+            day = fields["mday"]
+        elif "date" in fields:
+            day = fields["date"].day
+        elif "yday" in fields:
+            day = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).day
+        else:
+            return None
+
+        if "hour" in fields:
+            hour = fields["hour"]
+        elif "time" in fields:
+            hour = fields["time"].hour
+        elif "hour_min" in fields:
+            hour = fields["hour_min"].hour
+        elif "hour12" in fields and "am_pm" in fields \
+                and fields["am_pm"].upper() in ('AM', 'PM'):
+            hour = fields["hour12"] % 12
+            if fields["am_pm"].upper() == "PM":
+                hour += 12
+        else:
+            return None
+
+        if "min" in fields:
+            minute = fields["min"]
+        elif "time" in fields:
+            minute = fields["time"].minute
+        elif "hour_min" in fields:
+            minute = fields["hour_min"].minute
+        else:
+            return None
+
+        if "sec" in fields:
+            second = fields["sec"]
+        elif "time" in fields:
+            second = fields["time"].second
+        else:
+            return None
+
+        if "usec_frac" in fields:
+            microsecond = fields["usec_frac"]
+        elif "msec_frac" in fields:
+            microsecond = fields["msec_frac"] * 1000
+        else:
+            microsecond = 0
+
+        return datetime(
+            year   = year,
+            month  = month,
+            day    = day,
+            hour   = hour,
+            minute = minute,
+            second = second,
+            microsecond = microsecond,
+            tzinfo = fields.get("timezone"),
+        )
