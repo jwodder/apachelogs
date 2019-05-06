@@ -3,8 +3,10 @@
 # Apache implements `%{*}t` via `apr_strftime()`, which just calls the native
 # platform's `strftime()`.
 
-from datetime import datetime
-from .types   import FieldType, integer
+from   datetime import datetime
+import re
+from   .types   import FieldType, integer
+from   .util    import parse_apache_timestamp
 
 YEAR   = r'[0-9]{4,}'
 MONTH  = r'(?:0[1-9]|1[012])'
@@ -110,6 +112,7 @@ STRFTIME_DIRECTIVES = {
 }
 
 SPECIAL_PARAMETERS = {
+    '': ('timestamp', FieldType(r'\[[^]]+\]', parse_apache_timestamp)),
     'sec': ('epoch', none_integer),
     'msec': ('milliepoch', none_integer),
     'usec': ('microepoch', none_integer),
@@ -118,17 +121,32 @@ SPECIAL_PARAMETERS = {
 }
 
 def strftime2regex(param):
+    m = re.match(r'^(begin|end):?', param)
+    if m:
+        param = param[m.end():]
+        prefix = m.group(1) + '_'
+        modifier = m.group(0)
+    else:
+        prefix = ''
+        modifier = ''
     if param in SPECIAL_PARAMETERS:
         name, dtype = SPECIAL_PARAMETERS[param]
         return (
-            [(('request_time_fields', name), '%{'+param+'}t', dtype.converter)],
+            [(
+                (prefix + 'request_time_fields', name),
+                '%{' + modifier + param + '}t',
+                dtype.converter,
+            )],
             r'({})'.format(dtype.regex),
         )
     else:
         from .directives import format2regex
         groups, rgx = format2regex(param, STRFTIME_DIRECTIVES, {})
         groups = [
-            (('request_time_fields', name), '%{' + directive + '}t', converter)
-            for (name, directive, converter) in groups
+            (
+                (prefix + 'request_time_fields', name),
+                '%{' + modifier + directive + '}t',
+                converter,
+            ) for (name, directive, converter) in groups
         ]
         return (groups, rgx)

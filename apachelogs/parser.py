@@ -118,12 +118,14 @@ class LogEntry:
                 d[k] = v
             #else: Assume d[k] == v
         for prefix in ('original_', '', 'final_'):
-            if getattr(self, prefix + "request_time_fields", None):
-                setattr(
-                    self,
-                    prefix + 'request_time',
-                    assemble_datetime(getattr(self, prefix + 'request_time_fields')),
-                )
+            for midfix in ('begin_', '', 'end_'):
+                target = prefix + midfix + 'request_time'
+                if getattr(self, target + '_fields', None):
+                    setattr(
+                        self,
+                        target,
+                        assemble_datetime(getattr(self, target + '_fields')),
+                    )
 
     def __eq__(self, other):
         return type(self) is type(other) and vars(self) == vars(other)

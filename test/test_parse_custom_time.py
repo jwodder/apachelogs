@@ -196,6 +196,100 @@ w5 = timezone(timedelta(hours=-5))
             }
         },
     ),
+
+    (
+        "%{begin:%F %R:%S}t",
+        "2019-05-06 13:42:26",
+        {
+            "begin_request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "begin_request_time_fields": {
+                "date": date(2019, 5, 6),
+                "hour_min": time(13, 42),
+                "sec": 26,
+            }
+        },
+    ),
+
+    (
+        "%{end:%F %R:%S}t",
+        "2019-05-06 13:42:26",
+        {
+            "end_request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "end_request_time_fields": {
+                "date": date(2019, 5, 6),
+                "hour_min": time(13, 42),
+                "sec": 26,
+            }
+        },
+    ),
+
+    (
+        "%<{end:%F %R:%S}t",
+        "2019-05-06 13:42:26",
+        {
+            "original_end_request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "original_end_request_time_fields": {
+                "date": date(2019, 5, 6),
+                "hour_min": time(13, 42),
+                "sec": 26,
+            }
+        },
+    ),
+
+    (
+        "%{}t",
+        '[05/Nov/2017:02:01:01 -0500]',
+        {
+            "request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            "request_time_fields": {
+                "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            }
+        }
+    ),
+
+    (
+        "%{begin}t",
+        '[05/Nov/2017:02:01:01 -0500]',
+        {
+            "begin_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            "begin_request_time_fields": {
+                "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            }
+        }
+    ),
+
+    (
+        "%{end}t",
+        '[05/Nov/2017:02:01:01 -0500]',
+        {
+            "end_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            "end_request_time_fields": {
+                "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            }
+        }
+    ),
+
+    (
+        "%{begin:}t",
+        '[05/Nov/2017:02:01:01 -0500]',
+        {
+            "begin_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            "begin_request_time_fields": {
+                "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            }
+        }
+    ),
+
+    (
+        "%{end:}t",
+        '[05/Nov/2017:02:01:01 -0500]',
+        {
+            "end_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            "end_request_time_fields": {
+                "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            }
+        }
+    ),
 ])
 def test_parse_custom_time(fmt, entry, fields):
     log_entry = LogParser(fmt, encoding='utf-8').parse(entry)
