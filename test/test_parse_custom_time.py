@@ -1,4 +1,4 @@
-from   datetime   import datetime, timedelta, timezone
+from   datetime   import date, datetime, time, timedelta, timezone
 import pytest
 from   apachelogs import LogParser
 
@@ -145,6 +145,31 @@ w5 = timezone(timedelta(hours=-5))
                 "sec": 6,
                 "timezone": w5,
             },
+        },
+    ),
+
+    (
+        "%{%D %T}t",
+        "05/06/19 13:42:26",
+        {
+            "request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "request_time_fields": {
+                "date": date(2019, 5, 6),
+                "time": time(13, 42, 26),
+            }
+        },
+    ),
+
+    (
+        "%{%F %R:%S}t",
+        "2019-05-06 13:42:26",
+        {
+            "request_time": datetime(2019, 5, 6, 13, 42, 26),
+            "request_time_fields": {
+                "date": date(2019, 5, 6),
+                "hour_min": time(13, 42),
+                "sec": 26,
+            }
         },
     ),
 ])
