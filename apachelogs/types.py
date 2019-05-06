@@ -33,14 +33,14 @@ IPv4   = r'{BYTE}(?:\.{BYTE}){{3}}'.format(BYTE=BYTE)
 IP_ADDRESS_RGX = (
     '{IPv4}'
     # Adapted from <https://git.io/vFxQW>:
-    '|({HEXTET}:){{7}}({HEXTET}|:)'
-    '|({HEXTET}:){{6}}(:{HEXTET}|{IPv4}|:)'
-    '|({HEXTET}:){{5}}((:{HEXTET}){{1,2}}|:{IPv4}|:)'
-    '|({HEXTET}:){{4}}((:{HEXTET}){{1,3}}|(:{HEXTET})?:{IPv4}|:)'
-    '|({HEXTET}:){{3}}((:{HEXTET}){{1,4}}|(:{HEXTET}){{0,2}}:{IPv4}|:)'
-    '|({HEXTET}:){{2}}((:{HEXTET}){{1,5}}|(:{HEXTET}){{0,3}}:{IPv4}|:)'
-    '|({HEXTET}:){{1}}((:{HEXTET}){{1,6}}|(:{HEXTET}){{0,4}}:{IPv4}|:)'
-    '|:((:{HEXTET}){{1,7}}|(:{HEXTET}){{0,5}}:{IPv4}|:)'
+    '|(?:{HEXTET}:){{7}}(?:{HEXTET}|:)'
+    '|(?:{HEXTET}:){{6}}(?::{HEXTET}|{IPv4}|:)'
+    '|(?:{HEXTET}:){{5}}(?:(?::{HEXTET}){{1,2}}|:{IPv4}|:)'
+    '|(?:{HEXTET}:){{4}}(?:(?::{HEXTET}){{1,3}}|(?::{HEXTET})?:{IPv4}|:)'
+    '|(?:{HEXTET}:){{3}}(?:(?::{HEXTET}){{1,4}}|(?::{HEXTET}){{0,2}}:{IPv4}|:)'
+    '|(?:{HEXTET}:){{2}}(?:(?::{HEXTET}){{1,5}}|(?::{HEXTET}){{0,3}}:{IPv4}|:)'
+    '|(?:{HEXTET}:){{1}}(?:(?::{HEXTET}){{1,6}}|(?::{HEXTET}){{0,4}}:{IPv4}|:)'
+    '|:(?:(?::{HEXTET}){{1,7}}|(?::{HEXTET}){{0,5}}:{IPv4}|:)'
 ).format(HEXTET=HEXTET, IPv4=IPv4)
 
 #: `FieldType` instance for an IP address, either IPv4 or IPv6

@@ -112,10 +112,10 @@ SPECIAL_PARAMETERS = {
 def strftime2regex(param):
     if param in SPECIAL_PARAMETERS:
         name, dtype = SPECIAL_PARAMETERS[param]
-        return [
-            (('request_time_fields', name), '%{'+param+'}t', dtype.converter),
+        return (
+            [(('request_time_fields', name), '%{'+param+'}t', dtype.converter)],
             r'({})'.format(dtype.regex),
-        ]
+        )
     else:
         from .directives import format2regex
         groups, rgx = format2regex(param, STRFTIME_DIRECTIVES, {})
