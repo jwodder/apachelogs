@@ -10,12 +10,13 @@ apachelogs — Parse Apache access logs
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
 
 .. toctree::
-    :maxdepth: 2
+    :hidden:
 
     parser
     utils
     errors
     directives
+    changelog
 
 `apachelogs` parses Apache access log files.  Pass it a `log format string
 <http://httpd.apache.org/docs/current/mod/mod_log_config.html>`_ and get back a
