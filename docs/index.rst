@@ -8,6 +8,7 @@ apachelogs — Parse Apache access logs
 | `PyPI <https://pypi.org/project/apachelogs/>`_
 | `Documentation <https://apachelogs.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
+| :doc:`Changelog <changelog>`
 
 .. toctree::
     :hidden:

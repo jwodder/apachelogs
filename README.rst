@@ -23,6 +23,7 @@
 | `PyPI <https://pypi.org/project/apachelogs/>`_
 | `Documentation <https://apachelogs.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/apachelogs/issues>`_
+| `Changelog <https://github.com/jwodder/apachelogs/blob/master/CHANGELOG.md>`_
 
 ``apachelogs`` parses Apache access log files.  Pass it a `log format string
 <http://httpd.apache.org/docs/current/mod/mod_log_config.html>`_ and get back a
