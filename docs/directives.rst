@@ -50,13 +50,13 @@ information on the meaning of each directive.
       - ``entry.bytes_sent``
       - `int`
     * - :samp:`%\\{{name}\\}C`
-      - :samp:`entry.cookies[{name}]`
+      - :samp:`entry.cookies[{name}]` [#f1]_
       - `str`\* or `None`
     * - ``%D``
       - ``entry.request_duration_microseconds``
       - `int`
     * - :samp:`%\\{{name}\\}e`
-      - :samp:`entry.env_vars[{name}]`
+      - :samp:`entry.env_vars[{name}]` [#f1]_
       - `str`\* or `None`
     * - ``%f``
       - ``entry.request_file``
@@ -68,7 +68,7 @@ information on the meaning of each directive.
       - ``entry.request_protocol``
       - `str`\* or `None`
     * - :samp:`%\\{{name}\\}i`
-      - :samp:`entry.headers_in[{name}]`
+      - :samp:`entry.headers_in[{name}]` [#f1]_
       - `str`\* or `None`
     * - ``%I``
       - ``entry.bytes_in``
@@ -83,10 +83,10 @@ information on the meaning of each directive.
       - ``entry.request_method``
       - `str`\* or `None`
     * - :samp:`%\\{{name}\\}n`
-      - :samp:`entry.notes[{name}]`
+      - :samp:`entry.notes[{name}]` [#f1]_
       - `str`\* or `None`
     * - :samp:`%\\{{name}\\}o`
-      - :samp:`entry.headers_out[{name}]`
+      - :samp:`entry.headers_out[{name}]` [#f1]_
       - `str`\* or `None`
     * - ``%O``
       - ``entry.bytes_out``
@@ -179,10 +179,10 @@ information on the meaning of each directive.
       - ``entry.ttfb``
       - `int` or `None`
     * - :samp:`%\\{{name}\\}^ti`
-      - :samp:`entry.trailers_in[{name}]`
+      - :samp:`entry.trailers_in[{name}]` [#f1]_
       - `str`\* or `None`
     * - :samp:`%\\{{name}\\}^to`
-      - :samp:`entry.trailers_out[{name}]`
+      - :samp:`entry.trailers_out[{name}]` [#f1]_
       - `str`\* or `None`
 
 
@@ -307,3 +307,10 @@ A ``%{*}t`` directive with the ``begin:`` modifier (e.g.,
     * - ``%Z``
       - ``"tzname"``
       - `str`
+
+
+.. rubric:: Footnotes
+
+.. [#f1] The ``cookies``, ``env_vars``, ``headers_in``, ``headers_out``,
+         ``notes``, ``trailers_in``, and ``trailers_out`` attributes are
+         case-insensitive `dict`\s.

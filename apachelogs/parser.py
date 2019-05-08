@@ -1,8 +1,25 @@
 import re
 import attr
+from   pydicti     import dicti
 from   .directives import format2regex
 from   .errors     import InvalidEntryError
 from   .util       import assemble_datetime
+
+# The parameterized directives corresponding to the following `dict` attributes
+# all look up their parameters case-insensitively (either because Apache stores
+# the corresponding data in a case-insensitive dictionary structure or (in the
+# case of 'cookies') because Apache parses the relevant header
+# case-insensitively).  As a result, we want to store the directive values in
+# case-insensitive `dict`s.
+NOCASEDICTS = {
+    'cookies',
+    'env_vars',
+    'headers_in',
+    'headers_out',
+    'notes',
+    'trailers_in',
+    'trailers_out',
+}
 
 @attr.s
 class LogParser:
@@ -111,8 +128,12 @@ class LogEntry:
         for (k,_), v in zip(group_names, groups):
             d = self.__dict__
             if isinstance(k, tuple):
-                for k2 in k[:-1]:
-                    d = d.setdefault(k2, {})
+                for i, k2 in enumerate(k[:-1]):
+                    if i == 0 and k2 in NOCASEDICTS:
+                        subd = dicti()
+                    else:
+                        subd = {}
+                    d = d.setdefault(k2, subd)
                 k = k[-1]
             if d.get(k) is None:
                 d[k] = v

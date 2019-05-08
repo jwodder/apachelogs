@@ -154,6 +154,10 @@ def test_parse_general(end):
         "Referer": None,
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
     }
+    assert parsed.headers_in["User-Agent"] \
+        == parsed.headers_in["USER-AGENT"] \
+        == parsed.headers_in["user-agent"] \
+        == "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"
     assert parsed.entry == ENTRY
     assert parsed.format == COMBINED
     assert parsed.request_time_fields \
@@ -182,24 +186,67 @@ def test_parse_lines_ignore_invalid():
 
 def test_parse_default_enc(mocker):
     m = mocker.patch('apachelogs.LogParser', spec=LogParser)
-    parse('%s', '200')
+    r = parse('%s', '200')
     m.assert_called_once_with('%s', encoding='iso-8859-1', errors=None)
     m.return_value.parse.assert_called_once_with('200')
+    assert r is m.return_value.parse.return_value
 
 def test_parse_custom_enc(mocker):
     m = mocker.patch('apachelogs.LogParser', spec=LogParser)
-    parse('%s', '200', encoding='utf-8', errors='surrogateescape')
+    r = parse('%s', '200', encoding='utf-8', errors='surrogateescape')
     m.assert_called_once_with('%s', encoding='utf-8', errors='surrogateescape')
     m.return_value.parse.assert_called_once_with('200')
+    assert r is m.return_value.parse.return_value
 
 def test_parse_lines_default_enc(mocker):
     m = mocker.patch('apachelogs.LogParser', spec=LogParser)
-    parse_lines('%s', ['200'])
+    r = parse_lines('%s', ['200'])
     m.assert_called_once_with('%s', encoding='iso-8859-1', errors=None)
     m.return_value.parse_lines.assert_called_once_with(['200'], False)
+    assert r is m.return_value.parse_lines.return_value
 
 def test_parse_lines_custom_enc(mocker):
     m = mocker.patch('apachelogs.LogParser', spec=LogParser)
-    parse_lines('%s', ['200'], encoding='utf-8', errors='surrogateescape')
+    r = parse_lines('%s', ['200'], encoding='utf-8', errors='surrogateescape')
     m.assert_called_once_with('%s', encoding='utf-8', errors='surrogateescape')
     m.return_value.parse_lines.assert_called_once_with(['200'], False)
+    assert r is m.return_value.parse_lines.return_value
+
+def test_case_insensitive_dicts():
+    entry = parse(
+        "%{USER}e|%{Content-Type}i|%{flavor}C|%{ssl-secure-reneg}n"
+        "|%{Content-Type}o|%{Foo}^ti|%{Baz}^to",
+        "www-data|application/x-www-form-urlencoded|chocolate|1|text/html"
+        "|Bar|Quux",
+    )
+    assert entry.env_vars == {"USER": "www-data"}
+    assert entry.env_vars["USER"] \
+        == entry.env_vars["user"] \
+        == entry.env_vars["User"] == "www-data"
+    assert entry.headers_in == {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    assert entry.headers_in["Content-Type"] \
+        == entry.headers_in["CONTENT-TYPE"] \
+        == entry.headers_in["content-type"] \
+        == "application/x-www-form-urlencoded"
+    assert entry.cookies == {"flavor": "chocolate"}
+    assert entry.cookies["flavor"] \
+        == entry.cookies["FLAVOR"] \
+        == entry.cookies["Flavor"] == "chocolate"
+    assert entry.notes == {"ssl-secure-reneg": "1"}
+    assert entry.notes["ssl-secure-reneg"] \
+        == entry.notes["SSL-SECURE-RENEG"] \
+        == entry.notes["SSL-Secure-Reneg"] == "1"
+    assert entry.headers_out == {"Content-Type": "text/html"}
+    assert entry.headers_out["Content-Type"] \
+        == entry.headers_out["CONTENT-TYPE"] \
+        == entry.headers_out["content-type"] == "text/html"
+    assert entry.trailers_in == {"Foo": "Bar"}
+    assert entry.trailers_in["Foo"] \
+        == entry.trailers_in["FOO"] \
+        == entry.trailers_in["foo"] == "Bar"
+    assert entry.trailers_out == {"Baz": "Quux"}
+    assert entry.trailers_out["Baz"] \
+        == entry.trailers_out["BAZ"] \
+        == entry.trailers_out["baz"] == "Quux"
