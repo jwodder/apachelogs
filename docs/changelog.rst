@@ -3,8 +3,8 @@
 Changelog
 =========
 
-v0.2.0 (in development)
------------------------
+v0.2.0 (2019-05-09)
+-------------------
 - Changed the capitalization of "User-agent" in the log format string constants
   to "User-Agent"
 - The ``cookies``, ``env_vars``, ``headers_in``, ``headers_out``, ``notes``,
