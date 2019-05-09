@@ -105,6 +105,7 @@ def test_parse_apache_timestamp(ts, dt):
     '13/03/2016:01:59:59 -0500',
     '13/Mar/2016 01:59:59 -0500',
     '13/Mar/2016T01:59:59 -0500',
+    '13/Sma/2016:01:59:59 -0500',
 ])
 def test_parse_bad_apache_timestamp(ts):
     with pytest.raises(ValueError) as excinfo:

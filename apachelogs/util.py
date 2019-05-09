@@ -58,7 +58,10 @@ def parse_apache_timestamp(s):
     data = m.groupdict()
     for k in 'year day hour minute second'.split():
         data[k] = int(data[k])
-    data['month'] = MONTH_SNAMES.index(data['month']) + 1
+    try:
+        data['month'] = MONTH_SNAMES.index(data['month']) + 1
+    except ValueError:
+        raise ValueError(s)
     tzoffset = timedelta(
         hours   = int(data.pop('tzoffset_hour')),
         minutes = int(data.pop('tzoffset_min')),
