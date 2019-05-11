@@ -125,7 +125,18 @@ class LogEntry:
         self.entry = entry
         #: The entry's log format string
         self.format = format
-        for (k,_), v in zip(group_names, groups):
+        #: .. versionadded:: 0.3.0
+        #:
+        #: A `dict` mapping individual log format directives (e.g., ``"%h"`` or
+        #: ``"%<s"``) to their corresponding values from the log entry.
+        #: ``%{*}t`` directives with multiple subdirectives (e.g.,
+        #: ``%{%Y-%m-%d}t``) are broken up into one entry per subdirective (For
+        #: ``%{%Y-%m-%d}t``, this would become the three keys ``"%{%Y}t"``,
+        #: ``"%{%m}t"``, and ``"%{%d}t"``).  This attribute provides an
+        #: alternative means of looking up directive values besides using the
+        #: named attributes.
+        self.directives = {}
+        for (k, drct), v in zip(group_names, groups):
             d = self.__dict__
             if isinstance(k, tuple):
                 for i, k2 in enumerate(k[:-1]):
@@ -138,6 +149,7 @@ class LogEntry:
             if d.get(k) is None:
                 d[k] = v
             #else: Assume d[k] == v
+            self.directives[drct] = v
         for prefix in ('original_', '', 'final_'):
             for midfix in ('begin_', '', 'end_'):
                 target = prefix + midfix + 'request_time'

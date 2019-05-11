@@ -121,7 +121,7 @@ SPECIAL_PARAMETERS = {
 }
 
 def strftime2regex(param):
-    m = re.match(r'^(begin|end):?', param)
+    m = re.match(r'^(begin|end)(?::|\Z)', param)
     if m:
         param = param[m.end():]
         prefix = m.group(1) + '_'
@@ -134,7 +134,7 @@ def strftime2regex(param):
         return (
             [(
                 (prefix + 'request_time_fields', name),
-                '%{' + modifier + param + '}t',
+                modifier + param,
                 dtype.converter,
             )],
             r'({})'.format(dtype.regex),
@@ -145,7 +145,7 @@ def strftime2regex(param):
         groups = [
             (
                 (prefix + 'request_time_fields', name),
-                '%{' + modifier + directive + '}t',
+                modifier + directive,
                 converter,
             ) for (name, directive, converter) in groups
         ]

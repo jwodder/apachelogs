@@ -18,31 +18,66 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "Referer": None,
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
             },
+            "directives": {
+                 "%h": "209.126.136.4",
+                 "%l": None,
+                 "%u": None,
+                 "%t": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
+                 "%r": "GET / HTTP/1.1",
+                 "%>s": 301,
+                 "%b": 521,
+                 "%{Referer}i": None,
+                 "%{User-Agent}i": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
+            },
         },
     ),
 
     (
         '"%400r" "%r"',
         '"-" "GET /index.html HTTP/1.1"',
-        {"request_line": "GET /index.html HTTP/1.1"},
+        {
+            "request_line": "GET /index.html HTTP/1.1",
+            "directives": {
+                "%400r": None,
+                "%r": "GET /index.html HTTP/1.1",
+            },
+        },
     ),
 
     (
         '"%r" "%400r"',
         '"GET /index.html HTTP/1.1" "-"',
-        {"request_line": "GET /index.html HTTP/1.1"},
+        {
+            "request_line": "GET /index.html HTTP/1.1",
+            "directives": {
+                "%r": "GET /index.html HTTP/1.1",
+                "%400r": None,
+            },
+        },
     ),
 
     (
         '"%!400r" "%r"',
         '"-" "GET /index.xml HTTP/1.1"',
-        {"request_line": "GET /index.xml HTTP/1.1"},
+        {
+            "request_line": "GET /index.xml HTTP/1.1",
+            "directives": {
+                "%!400r": None,
+                "%r": "GET /index.xml HTTP/1.1",
+            },
+        },
     ),
 
     (
         '"%r" "%!400r"',
         '"GET /index.xml HTTP/1.1" "-"',
-        {"request_line": "GET /index.xml HTTP/1.1"},
+        {
+            "request_line": "GET /index.xml HTTP/1.1",
+            "directives": {
+                "%r": "GET /index.xml HTTP/1.1",
+                "%!400r": None,
+            },
+        },
     ),
 
     (
@@ -52,6 +87,11 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "original_status": 201,
             "status": 202,
             "final_status": 203,
+            "directives": {
+                "%<s": 201,
+                "%s": 202,
+                "%>s": 203,
+            },
         },
     ),
 
@@ -68,6 +108,11 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "final_headers_in": {
                 "Referer": "http://example.com/final",
             },
+            "directives": {
+                "%<{Referer}i": "http://example.com/original",
+                "%{Referer}i": "http://example.com/default",
+                "%>{Referer}i": "http://example.com/final",
+            },
         },
     ),
 
@@ -77,6 +122,10 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
         {
             "request_duration_seconds": 1,
             "request_duration_milliseconds": 1042,
+            "directives": {
+                "%T": 1,
+                "%{ms}T": 1042,
+            },
         }
     ),
 
@@ -108,6 +157,28 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "pid": 16,
             "tid": 140168282543872,
             "handler": "wsgi-script",
+            "directives": {
+                "%{%Y}t": 2019,
+                "%{%m}t": 5,
+                "%{%d}t": 5,
+                "%{%H}t": 20,
+                "%{%M}t": 49,
+                "%{%S}t": 14,
+                "%{%z}t": timezone.utc,
+                "%{msec_frac}t": 690,
+                "%s": 403,
+                "%a": "172.21.0.1",
+                "%{remote}p": 44782,
+                "%A": "172.21.0.2",
+                "%p": 80,
+                "%m": "GET",
+                "%U": "/wsgi/test",
+                "%q": "?q=foo",
+                "%f": "/usr/local/app/run.wsgi",
+                "%P": 16,
+                "%{tid}P": 140168282543872,
+                "%R": "wsgi-script",
+            },
         },
     ),
 
@@ -139,15 +210,51 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "pid": 16,
             "tid": 140436276180736,
             "handler": "wsgi-script",
+            "directives": {
+                "%{%Y}t": 2019,
+                "%{%m}t": 5,
+                "%{%d}t": 5,
+                "%{%H}t": 20,
+                "%{%M}t": 56,
+                "%{%S}t": 7,
+                "%{%z}t": timezone.utc,
+                "%{msec_frac}t": 148,
+                "%s": 403,
+                "%a": "172.22.0.1",
+                "%{remote}p": 34488,
+                "%A": "172.22.0.2",
+                "%p": 80,
+                "%m": "GET",
+                "%U": "/wsgi/t\xc3\xa9st",
+                "%q": "",
+                "%f": "/usr/local/app/run.wsgi",
+                "%P": 16,
+                "%{tid}P": 140436276180736,
+                "%R": "wsgi-script",
+            }
         },
     ),
 
-    ("%200f", "-", {"request_file": None}),
+    (
+        "%200f",
+        "-",
+        {
+            "request_file": None,
+            "directives": {
+                "%200f": None,
+            },
+        },
+    ),
 
     (
         "%200f",
         "/var/www/html/index.html",
-        {"request_file": "/var/www/html/index.html"},
+        {
+            "request_file": "/var/www/html/index.html",
+            "directives": {
+                "%200f": "/var/www/html/index.html",
+            },
+        },
     ),
 
     (
@@ -159,7 +266,12 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "year": None,
                 "mon": None,
                 "mday": None,
-            }
+            },
+            "directives": {
+                "%200{%Y}t": None,
+                "%200{%m}t": None,
+                "%200{%d}t": None,
+            },
         },
     ),
 
@@ -173,6 +285,11 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "mon": 5,
                 "mday": 6,
             },
+            "directives": {
+                "%200{%Y}t": 2019,
+                "%200{%m}t": 5,
+                "%200{%d}t": 6,
+            },
         },
     ),
 
@@ -182,6 +299,9 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
         {
             "request_time": None,
             "request_time_fields": {"timestamp": None},
+            "directives": {
+                "%200t": None,
+            },
         },
     ),
 
@@ -191,6 +311,9 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
         {
             "request_time": None,
             "request_time_fields": {"timestamp": None},
+            "directives": {
+                "%200{}t": None,
+            },
         },
     ),
 
@@ -214,6 +337,19 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "Referer": None,
                 "User-Agent": '}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86',
             },
+            "directives": {
+                "%v": "www.varonathe.org",
+                "%p": 80,
+                "%h": "185.234.218.71",
+                "%l": None,
+                "%u": None,
+                "%t": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
+                "%r": "GET / HTTP/1.1",
+                "%>s": 301,
+                "%O": 539,
+                "%{Referer}i": None,
+                "%{User-Agent}i": '}__test|O:21:\"JDatabaseDriverMysqli\":3:{s:4:\"\\0\\0\\0a\";O:17:\"JSimplepieFactory\":0:{}s:21:\"\\0\\0\\0disconnectHandlers\";a:1:{i:0;a:2:{i:0;O:9:\"SimplePie\":5:{s:8:\"sanitize\";O:20:\"JDatabaseDriverMysql\":0:{}s:5:\"cache\";b:1;s:19:\"cache_name_function\";s:6:\"assert\";s:10:\"javascript\";i:9999;s:8:\"feed_url\";s:54:\"eval(base64_decode($_POST[111]));JFactory::get();exit;\";}i:1;s:4:\"init\";}}s:13:\"\\0\\0\\0connection\";i:1;}\xf0\x9d\x8c\x86',
+            },
         },
     ),
 
@@ -224,6 +360,9 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "original_request_time": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
             "original_request_time_fields": {
                 "timestamp": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
+            },
+            "directives": {
+                "%<t": datetime(2018, 4, 14, 18, 39, 42, tzinfo=timezone.utc),
             },
         },
     ),
@@ -246,6 +385,16 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "usec_frac": 123456,
                 "timezone": timezone(timedelta(hours=-4)),
             },
+            "directives": {
+                "%>{%Y}t": 2019,
+                "%>{%m}t": 5,
+                "%>{%d}t": 6,
+                "%>{%H}t": 12,
+                "%>{%M}t": 9,
+                "%>{%S}t": 43,
+                "%>{usec_frac}t": 123456,
+                "%>{%z}t": timezone(timedelta(hours=-4)),
+            },
         },
     ),
 
@@ -257,61 +406,112 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             "request_uri": "/index.html",
             "request_query": "?foo",
             "request_protocol": "HTTP/1.1",
+            "directives": {
+                "%m": "GET",
+                "%U": "/index.html",
+                "%q": "?foo",
+                "%H": "HTTP/1.1",
+            },
         },
     ),
 
     (
         "%<>s",
         "200",
-        {"final_status": 200},
+        {
+            "final_status": 200,
+            "directives": {
+                "%<>s": 200,
+            },
+        },
     ),
 
     (
         "%200<T",
         "-",
-        {"original_request_duration_seconds": None},
+        {
+            "original_request_duration_seconds": None,
+            "directives": {
+                "%200<T": None,
+            },
+        },
     ),
 
     (
         "%>!200T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%>!200T": None,
+            },
+        },
     ),
 
     (
         "%>{s}!200T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%>{s}!200T": None,
+            },
+        },
     ),
 
     (
         "%{s}!200>T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%{s}!200>T": None,
+            },
+        },
     ),
 
     (
         "%<{s}!200>T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%<{s}!200>T": None,
+            },
+        },
     ),
 
     (
         "%><{s}!200>T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%><{s}!200>T": None,
+            },
+        },
     ),
 
     (
         "%<200>T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%<200>T": None,
+            },
+        },
     ),
 
     (
         "%<200<!>T",
         "-",
-        {"final_request_duration_seconds": None},
+        {
+            "final_request_duration_seconds": None,
+            "directives": {
+                "%<200<!>T": None,
+            },
+        },
     ),
 ])
 def test_parse(fmt, entry, fields):

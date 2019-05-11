@@ -16,6 +16,12 @@ w5 = timezone(timedelta(hours=-5))
                 "abbrev_mon": "Nov",
                 "mday": 25,
             },
+            "directives": {
+                "%{%a}t": "Sat",
+                "%{%b}t": "Nov",
+                "%{%d}t": 25,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -29,6 +35,12 @@ w5 = timezone(timedelta(hours=-5))
                 "full_wday": "Saturday",
                 "full_mon": "November",
                 "mday": 25,
+            },
+            "directives": {
+                "%{%A}t": "Saturday",
+                "%{%B}t": "November",
+                "%{%d}t": 25,
+                "%r": "GET / HTTP/1.1",
             },
         },
     ),
@@ -45,6 +57,13 @@ w5 = timezone(timedelta(hours=-5))
                 "mon": 11,
                 "mday": 25,
             },
+            "directives": {
+                "%{%w}t": 6,
+                "%{%u}t": 6,
+                "%{%m}t": 11,
+                "%{%d}t": 25,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -55,6 +74,10 @@ w5 = timezone(timedelta(hours=-5))
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
             "request_time_fields": {"epoch": 1511642826},
+            "directives": {
+                "%{%s}t": 1511642826,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -65,6 +88,11 @@ w5 = timezone(timedelta(hours=-5))
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
             "request_time_fields": {"epoch": 1511642826, "timezone": w5},
+            "directives": {
+                "%{%s}t": 1511642826,
+                "%{%z}t": w5,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -81,6 +109,15 @@ w5 = timezone(timedelta(hours=-5))
                 "hour": 20,
                 "min": 47,
                 "sec": 6,
+            },
+            "directives": {
+                "%{%Y}t": 2017,
+                "%{%m}t": 11,
+                "%{%d}t": 25,
+                "%{%H}t": 20,
+                "%{%M}t": 47,
+                "%{%S}t": 6,
+                "%r": "GET / HTTP/1.1",
             },
         },
     ),
@@ -100,6 +137,16 @@ w5 = timezone(timedelta(hours=-5))
                 "sec": 6,
                 "timezone": w5,
             },
+            "directives": {
+                "%{%Y}t": 2017,
+                "%{%m}t": 11,
+                "%{%d}t": 25,
+                "%{%H}t": 20,
+                "%{%M}t": 47,
+                "%{%S}t": 6,
+                "%{%z}t": w5,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -110,6 +157,11 @@ w5 = timezone(timedelta(hours=-5))
             "request_line": "GET / HTTP/1.1",
             "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
             "request_time_fields": {"epoch": 1511642826, "timezone": w5},
+            "directives": {
+                "%{%s}t": 1511642826,
+                "%{%z}t": w5,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -126,6 +178,15 @@ w5 = timezone(timedelta(hours=-5))
                 "hour": 20,
                 "min": 47,
                 "sec": 6,
+            },
+            "directives": {
+                "%{%Y}t": 2017,
+                "%{%m}t": 11,
+                "%{%d}t": 25,
+                "%{%H}t": 20,
+                "%{%M}t": 47,
+                "%{%S}t": 6,
+                "%r": "GET / HTTP/1.1",
             },
         },
     ),
@@ -145,6 +206,16 @@ w5 = timezone(timedelta(hours=-5))
                 "sec": 6,
                 "timezone": w5,
             },
+            "directives": {
+                "%{%Y}t": 2017,
+                "%{%m}t": 11,
+                "%{%d}t": 25,
+                "%{%H}t": 20,
+                "%{%M}t": 47,
+                "%{%S}t": 6,
+                "%{%z}t": w5,
+                "%r": "GET / HTTP/1.1",
+            },
         },
     ),
 
@@ -156,7 +227,11 @@ w5 = timezone(timedelta(hours=-5))
             "request_time_fields": {
                 "date": date(2019, 5, 6),
                 "time": time(13, 42, 26),
-            }
+            },
+            "directives": {
+                "%{%D}t": date(2019, 5, 6),
+                "%{%T}t": time(13, 42, 26),
+            },
         },
     ),
 
@@ -168,7 +243,11 @@ w5 = timezone(timedelta(hours=-5))
             "request_time_fields": {
                 "date": date(2019, 5, 6),
                 "time": time(13, 42, 26),
-            }
+            },
+            "directives": {
+                "%{%D}t": date(2019, 5, 6),
+                "%{%T}t": time(13, 42, 26),
+            },
         },
     ),
 
@@ -180,7 +259,11 @@ w5 = timezone(timedelta(hours=-5))
             "request_time_fields": {
                 "date": date(2019, 5, 6),
                 "time": time(13, 42, 26),
-            }
+            },
+            "directives": {
+                "%{%D}t": date(2019, 5, 6),
+                "%{%T}t": time(13, 42, 26),
+            },
         },
     ),
 
@@ -193,7 +276,12 @@ w5 = timezone(timedelta(hours=-5))
                 "date": date(2019, 5, 6),
                 "hour_min": time(13, 42),
                 "sec": 26,
-            }
+            },
+            "directives": {
+                "%{%F}t": date(2019, 5, 6),
+                "%{%R}t": time(13, 42),
+                "%{%S}t": 26,
+            },
         },
     ),
 
@@ -206,7 +294,12 @@ w5 = timezone(timedelta(hours=-5))
                 "date": date(2019, 5, 6),
                 "hour_min": time(13, 42),
                 "sec": 26,
-            }
+            },
+            "directives": {
+                "%{begin:%F}t": date(2019, 5, 6),
+                "%{begin:%R}t": time(13, 42),
+                "%{begin:%S}t": 26,
+            },
         },
     ),
 
@@ -219,7 +312,12 @@ w5 = timezone(timedelta(hours=-5))
                 "date": date(2019, 5, 6),
                 "hour_min": time(13, 42),
                 "sec": 26,
-            }
+            },
+            "directives": {
+                "%{end:%F}t": date(2019, 5, 6),
+                "%{end:%R}t": time(13, 42),
+                "%{end:%S}t": 26,
+            },
         },
     ),
 
@@ -232,7 +330,12 @@ w5 = timezone(timedelta(hours=-5))
                 "date": date(2019, 5, 6),
                 "hour_min": time(13, 42),
                 "sec": 26,
-            }
+            },
+            "directives": {
+                "%<{end:%F}t": date(2019, 5, 6),
+                "%<{end:%R}t": time(13, 42),
+                "%<{end:%S}t": 26,
+            },
         },
     ),
 
@@ -243,7 +346,10 @@ w5 = timezone(timedelta(hours=-5))
             "request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
             "request_time_fields": {
                 "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
-            }
+            },
+            "directives": {
+                "%{}t": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            },
         }
     ),
 
@@ -254,7 +360,10 @@ w5 = timezone(timedelta(hours=-5))
             "begin_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
             "begin_request_time_fields": {
                 "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
-            }
+            },
+            "directives": {
+                "%{begin}t": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            },
         }
     ),
 
@@ -265,7 +374,10 @@ w5 = timezone(timedelta(hours=-5))
             "end_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
             "end_request_time_fields": {
                 "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
-            }
+            },
+            "directives": {
+                "%{end}t": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            },
         }
     ),
 
@@ -276,7 +388,10 @@ w5 = timezone(timedelta(hours=-5))
             "begin_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
             "begin_request_time_fields": {
                 "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
-            }
+            },
+            "directives": {
+                "%{begin:}t": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            },
         }
     ),
 
@@ -287,7 +402,10 @@ w5 = timezone(timedelta(hours=-5))
             "end_request_time": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
             "end_request_time_fields": {
                 "timestamp": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
-            }
+            },
+            "directives": {
+                "%{end:}t": datetime(2017,11, 5, 2, 1, 1, tzinfo=w5),
+            },
         }
     ),
 ])

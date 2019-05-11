@@ -29,6 +29,19 @@ VHOST_COMBINED_LOG_ENTRIES = [
             "Referer": None,
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
         },
+        directives={
+             "%v": "www.varonathe.org",
+             "%p": 80,
+             "%h": "203.62.1.80",
+             "%l": None,
+             "%u": None,
+             "%t": datetime(2019, 5, 6, 6, 28, 20, tzinfo=timezone.utc),
+             "%r": "GET / HTTP/1.1",
+             "%>s": 301,
+             "%O": 577,
+             "%{Referer}i": None,
+             "%{User-Agent}i": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
+        },
     ),
 
     mkentry(
@@ -49,6 +62,19 @@ VHOST_COMBINED_LOG_ENTRIES = [
         headers_in={
             "Referer": None,
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
+        },
+        directives={
+             "%v": "www.varonathe.org",
+             "%p": 80,
+             "%h": "203.62.1.80",
+             "%l": None,
+             "%u": None,
+             "%t": datetime(2019, 5, 6, 6, 28, 20, tzinfo=timezone.utc),
+             "%r": "GET /robots.txt HTTP/1.1",
+             "%>s": 301,
+             "%O": 596,
+             "%{Referer}i": None,
+             "%{User-Agent}i": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
         },
     ),
 
@@ -71,6 +97,19 @@ VHOST_COMBINED_LOG_ENTRIES = [
             "Referer": None,
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
         },
+        directives={
+             "%v": "www.varonathe.org",
+             "%p": 80,
+             "%h": "203.62.1.80",
+             "%l": None,
+             "%u": None,
+             "%t": datetime(2019, 5, 6, 6, 28, 21, tzinfo=timezone.utc),
+             "%r": "POST /App6079ec68.php HTTP/1.1",
+             "%>s": 301,
+             "%O": 606,
+             "%{Referer}i": None,
+             "%{User-Agent}i": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
+        },
     ),
 
     mkentry(
@@ -91,6 +130,19 @@ VHOST_COMBINED_LOG_ENTRIES = [
         headers_in={
             "Referer": None,
             "User-Agent": "Mozilla/5.0",
+        },
+        directives={
+             "%v": "www.varonathe.org",
+             "%p": 80,
+             "%h": "203.62.1.80",
+             "%l": None,
+             "%u": None,
+             "%t": datetime(2019, 5, 6, 6, 28, 21, tzinfo=timezone.utc),
+             "%r": "GET /webdav/ HTTP/1.1",
+             "%>s": 301,
+             "%O": 554,
+             "%{Referer}i": None,
+             "%{User-Agent}i": "Mozilla/5.0",
         },
     ),
 
@@ -113,6 +165,19 @@ VHOST_COMBINED_LOG_ENTRIES = [
             "Referer": None,
             "User-Agent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0",
         },
+        directives={
+             "%v": "www.varonathe.org",
+             "%p": 80,
+             "%h": "203.62.1.80",
+             "%l": None,
+             "%u": None,
+             "%t": datetime(2019, 5, 6, 6, 28, 21, tzinfo=timezone.utc),
+             "%r": "GET /help.php HTTP/1.1",
+             "%>s": 301,
+             "%O": 592,
+             "%{Referer}i": None,
+             "%{User-Agent}i": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0",
+        },
     ),
 
     mkentry(
@@ -133,6 +198,19 @@ VHOST_COMBINED_LOG_ENTRIES = [
         headers_in={
             "Referer": None,
             "User-Agent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0",
+        },
+        directives={
+             "%v": "www.varonathe.org",
+             "%p": 80,
+             "%h": "203.62.1.80",
+             "%l": None,
+             "%u": None,
+             "%t": datetime(2019, 5, 6, 6, 28, 22, tzinfo=timezone.utc),
+             "%r": "GET /java.php HTTP/1.1",
+             "%>s": 301,
+             "%O": 592,
+             "%{Referer}i": None,
+             "%{User-Agent}i": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0",
         },
     ),
 ]
@@ -162,6 +240,17 @@ def test_parse_general(end):
     assert parsed.format == COMBINED
     assert parsed.request_time_fields \
         == {"timestamp": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc)}
+    assert parsed.directives == {
+        "%h": "209.126.136.4",
+        "%l": None,
+        "%u": None,
+        "%t": datetime(2017, 11, 1, 7, 28, 29, tzinfo=timezone.utc),
+        "%r": "GET / HTTP/1.1",
+        "%>s": 301,
+        "%b": 521,
+        "%{Referer}i": None,
+        "%{User-Agent}i": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
+    }
 
 def test_parse_lines_invalid():
     with (Path(__file__).with_name('data') / 'vhost_combined.log').open() as fp:

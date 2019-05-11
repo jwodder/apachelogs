@@ -159,6 +159,17 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None,
                     name, dtype = spec[param]
                 elif callable(spec):
                     subgroups, subrgx = spec(param)
+                    subgroups = [
+                        (
+                            name,
+                            '%' + (m.group('modifiers1') or '')
+                                + '{' + directive + '}'
+                                + (m.group('modifiers2') or '')
+                                + m.group('directive'),
+                            converter,
+                        )
+                        for (name, directive, converter) in subgroups
+                    ]
                     multiple = True
                 else:
                     name = (spec[0], param)

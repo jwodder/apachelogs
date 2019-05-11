@@ -20,15 +20,17 @@ def test_bytes_parse():
     log_entry = LogParser(COMBINED, encoding='bytes').parse(ENTRY)
     for k,v in NON_STR_FIELDS.items():
         assert getattr(log_entry, k) == v
-    assert log_entry.request_line == b"Gh0st\xAD"
-    assert log_entry.remote_host == b"66.240.205.34"
+    assert log_entry.request_line == log_entry.directives["%r"] == b"Gh0st\xAD"
+    assert log_entry.remote_host == log_entry.directives["%h"] \
+        == b"66.240.205.34"
 
 def test_parse_latin1():
     log_entry = LogParser(COMBINED).parse(ENTRY)
     for k,v in NON_STR_FIELDS.items():
         assert getattr(log_entry, k) == v
-    assert log_entry.request_line == "Gh0st\xAD"
-    assert log_entry.remote_host == "66.240.205.34"
+    assert log_entry.request_line == log_entry.directives["%r"] == "Gh0st\xAD"
+    assert log_entry.remote_host == log_entry.directives["%h"] \
+        == "66.240.205.34"
 
 def test_parse_bad_utf8():
     with pytest.raises(UnicodeDecodeError):
@@ -39,8 +41,9 @@ def test_parse_utf8_surrogateescape():
                     .parse(ENTRY)
     for k,v in NON_STR_FIELDS.items():
         assert getattr(log_entry, k) == v
-    assert log_entry.request_line == "Gh0st\uDCAD"
-    assert log_entry.remote_host == "66.240.205.34"
+    assert log_entry.request_line == log_entry.directives["%r"] == "Gh0st\uDCAD"
+    assert log_entry.remote_host == log_entry.directives["%h"] \
+        == "66.240.205.34"
 
 @pytest.mark.parametrize('encoding', [None, 'iso-8859-1', 'utf-8'])
 def test_parse_ip_address(encoding):

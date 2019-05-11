@@ -64,6 +64,13 @@ Parse a single log entry::
     True
     >>> entry.headers_in["User-Agent"]
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
+    >>> # Log entry components can also be looked up by directive:
+    >>> entry.directives["%r"]
+    'GET / HTTP/1.1'
+    >>> entry.directives["%>s"]
+    301
+    >>> entry.directives["%t"]
+    datetime.datetime(2017, 11, 1, 7, 28, 29, tzinfo=datetime.timezone.utc)
 
 Parse a file full of log entries::
 

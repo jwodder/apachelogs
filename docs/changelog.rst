@@ -3,6 +3,11 @@
 Changelog
 =========
 
+v0.3.0 (in development)
+-----------------------
+- Gave `LogEntry` a `~LogEntry.directives` attribute for looking up directive
+  values by the corresponding log format directives
+
 v0.2.0 (2019-05-09)
 -------------------
 - Changed the capitalization of "User-agent" in the log format string constants
