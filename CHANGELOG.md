@@ -1,3 +1,7 @@
+v0.4.0 (in development)
+-----------------------
+- Support the `%{c}h` log directive
+
 v0.3.0 (2019-05-12)
 -------------------
 - Gave `LogEntry` a `directives` attribute for looking up directive values by

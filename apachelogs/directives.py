@@ -28,6 +28,9 @@ PLAIN_DIRECTIVES = {
         'request_query',
         FieldType(r'(?:\?{})?'.format(esc_string.regex), esc_string.converter)
     ),
+    # `%r` is just the first line sent by the client, and so it can be
+    # anything.  I've even seen it as '-' in logs, though I can't quite figure
+    # out how to reproduce that.
     'r': ('request_line', clf_string),
     'R': ('handler', esc_string),
     # httpd v2.4.29 has a provision in its code for converting statuses less
@@ -58,6 +61,9 @@ PARAMETERIZED_DIRECTIVES = {
     },
     'C': ('cookies', clf_string),
     'e': ('env_vars', clf_string),
+    'h': {
+        'c': ('remote_underlying_host', esc_string),
+    },
     'i': ('headers_in', clf_string),
     'n': ('notes', clf_string),
     'o': ('headers_out', clf_string),

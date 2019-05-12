@@ -64,6 +64,9 @@ information on the meaning of each directive.
     * - ``%h``
       - ``entry.remote_host``
       - `str`\*
+    * - ``%{c}h``
+      - ``entry.remote_underlying_host``
+      - `str`\*
     * - ``%H``
       - ``entry.request_protocol``
       - `str`\* or `None`

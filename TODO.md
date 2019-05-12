@@ -1,12 +1,12 @@
 - Research the following:
     - Look into whether the values for the following string format directives
       have more restrictive patterns they always follow:
-        - `%C` - no semicolons, spaces, or tabs?  URI encoded?
+        - `%{*}C` - no semicolons, spaces, or tabs?  URI encoded?
         - `%H` — no restrictions? (at least on Trusty)
         - `%h`
         - `%f`?
         - `%l`
-        - `%m`
+        - `%m` - no whitespace?
         - `%q` - forbidden from containing spaces?
         - `%R`
         - `%u` - no colon?
