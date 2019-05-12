@@ -3,8 +3,8 @@
 Changelog
 =========
 
-v0.3.0 (in development)
------------------------
+v0.3.0 (2019-05-12)
+-------------------
 - Gave `LogEntry` a `~LogEntry.directives` attribute for looking up directive
   values by the corresponding log format directives
 
