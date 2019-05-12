@@ -513,6 +513,17 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             },
         },
     ),
+
+    (
+        "%u",
+        '""',
+        {
+            "remote_user": '',
+            "directives": {
+                "%u": '',
+            },
+        },
+    ),
 ])
 def test_parse(fmt, entry, fields):
     log_entry = LogParser(fmt).parse(entry)

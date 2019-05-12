@@ -73,6 +73,6 @@ clf_string = clf(esc_string)
 #: double-quotes) to an empty string, as that is how ``%u`` represents empty
 #: names.
 remote_user = FieldType(
-    clf_string.regex,
+    r'(?:{}|"")'.format(clf_string.regex),
     lambda s: clf_string.converter('' if s == '""' else s),
 )
