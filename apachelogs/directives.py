@@ -14,10 +14,16 @@ PLAIN_DIRECTIVES = {
     'D': ('request_duration_microseconds', integer),
     'f': ('request_file', esc_string),
     'h': ('remote_host', esc_string),
+    # In some versions of Apache (I think this includes 2.4.18, the version
+    # available to Xenial), `%H` is everything in the request line from the
+    # third word onward, and thus it can be anything.  In some other versions
+    # (including 2.4.7, Trusty's version?), `%H` can even be '-' for certain
+    # very malformed request lines.
     'H': ('request_protocol', clf_string),
     'k': ('requests_on_connection', integer),
     'l': ('remote_logname', clf_string),
     ### XXX: 'L': ('log_id', clf( ??? )),
+    # `%m` is '-' when the request line is malformed.
     'm': ('request_method', clf_string),
     'p': ('server_port', integer),
     'P': ('pid', integer),
@@ -32,7 +38,7 @@ PLAIN_DIRECTIVES = {
     # anything.  I've even seen it as '-' in logs, though I can't quite figure
     # out how to reproduce that.
     'r': ('request_line', clf_string),
-    'R': ('handler', esc_string),
+    'R': ('handler', clf_string),
     # httpd v2.4.29 has a provision in its code for converting statuses less
     # than or equal to zero to "-".  I'm not sure when that can happen, but
     # apparently it can.
@@ -43,6 +49,7 @@ PLAIN_DIRECTIVES = {
     ),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
+    # `%U` is '-' when the request line is malformed.
     'U': ('request_uri', clf_string),
     'v': ('virtual_host', esc_string),
     'V': ('server_name', esc_string),
@@ -75,7 +82,7 @@ PARAMETERIZED_DIRECTIVES = {
     'P': {
         'pid': ('pid', integer),
         'tid': ('tid', integer),
-        ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version)
+        ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version; sadly, the hex version doesn't seem to start with "0x")
     },
     't': strftime2regex,
     'T': {

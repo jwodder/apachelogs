@@ -6,6 +6,7 @@ Changelog
 v0.4.0 (in development)
 -----------------------
 - Support the ``%{c}h`` log directive
+- ``%R`` can now be `None`
 
 v0.3.0 (2019-05-12)
 -------------------

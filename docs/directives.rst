@@ -123,7 +123,7 @@ information on the meaning of each directive.
       - `str`\* or `None`
     * - ``%R``
       - ``entry.handler``
-      - `str`\*
+      - `str`\* or `None`
     * - ``%s``
       - ``entry.status``
       - `int` or `None`
