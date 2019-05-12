@@ -1,8 +1,8 @@
 import re
 from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
-from   .types    import (FieldType, clf, clf_string, esc_string, integer,
-                         ip_address, remote_user)
+from   .types    import (FieldType, clf, clf_string, clf_word, esc_string,
+                         integer, ip_address, remote_user)
 from   .util     import parse_apache_timestamp
 
 PLAIN_DIRECTIVES = {
@@ -21,7 +21,9 @@ PLAIN_DIRECTIVES = {
     # very malformed request lines.
     'H': ('request_protocol', clf_string),
     'k': ('requests_on_connection', integer),
-    'l': ('remote_logname', clf_string),
+    # As of v2.4.39, Apache uses the `%s` sscanf() format to extract the value
+    # that becomes `remote_logname`, and so it does not contain any whitespace.
+    'l': ('remote_logname', clf_word),
     ### XXX: 'L': ('log_id', clf( ??? )),
     # `%m` is '-' when the request line is malformed.
     'm': ('request_method', clf_string),

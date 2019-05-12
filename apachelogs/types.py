@@ -64,9 +64,18 @@ esc_string = FieldType(
     unescape,
 )
 
+#: Like `esc_string`, but without any whitespace.  (Whitespace escape sequences
+#: are still allowed just because it's easier.)
+esc_word = FieldType(
+    r'(?:[!\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?',
+    unescape,
+)
+
 #: `FieldType` instance for a "Common Log Format" string: either a string with
 #: escape sequences or else a single hyphen, representing `None`
 clf_string = clf(esc_string)
+
+clf_word = clf(esc_word)
 
 #: `FieldType` instance for a remote user (directive ``%u``).  This is the same
 #: as `clf_string`, but the converter additionally converts ``""`` (two
