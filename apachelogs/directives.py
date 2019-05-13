@@ -51,6 +51,9 @@ PLAIN_DIRECTIVES = {
     ),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
+    # Starting somewhere between versions 2.4.18 and 2.4.29 of Apache, `%U` has
+    # (some?) percent-escapes decoded and thus may contain whitespace (and just
+    # about any other ASCII character?).
     # `%U` is '-' when the request line is malformed.
     'U': ('request_uri', clf_string),
     'v': ('virtual_host', esc_string),

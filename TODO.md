@@ -3,18 +3,13 @@
       have more restrictive patterns they always follow:
         - `%{*}C` - no semicolons, spaces, or tabs?  URI encoded?
         - `%h`
-        - `%f`?
-        - `%l`
         - `%m` - no whitespace?
-        - `%q` - forbidden from containing spaces?
-        - `%R`
-        - `%u` - no colon?
-        - `%U` - forbidden from containing spaces or question marks?
+        - `%q` - no whitespace?
         - `%v` - no whitespace?
         - `%V` - no whitespace?
         - `%{*}^ti`
         - `%{*}^to`
-    - `mod_ssl` formats??? <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
+    - `mod_ssl` formats <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
     - Check whether `%a` can be a comma-separated list of IP addresses (in case
       of proxying/X-Forwarded-For and the like)
 
