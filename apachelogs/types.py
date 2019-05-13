@@ -49,6 +49,9 @@ ip_address = FieldType(IP_ADDRESS_RGX, str)
 #: `FieldType` instance for a base-10 integer
 integer    = FieldType(r'(?:0|-?[1-9][0-9]*)', int)
 
+#: `FieldType` instance for an unsigned base-10 integer
+uinteger   = FieldType(r'(?:0|[1-9][0-9]*)', int)
+
 #log_string = FieldType(r'.*?', str)
 
 #: `FieldType` instance for a string containing escape sequences that is
