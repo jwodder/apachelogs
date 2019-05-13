@@ -13,12 +13,14 @@ from   .util       import assemble_datetime
 # case-insensitive `dict`s.
 NOCASEDICTS = {
     'cookies',
+    'cryptography',
     'env_vars',
     'headers_in',
     'headers_out',
     'notes',
     'trailers_in',
     'trailers_out',
+    'variables',
 }
 
 @attr.s

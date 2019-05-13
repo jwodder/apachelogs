@@ -19,7 +19,7 @@ def test_malformed_directive(fmt):
 @pytest.mark.parametrize('fmt', [
     '%x',
     '%^xx',
-    '%{param}x',
+    '%{param}z',
     '%{x}a',
     '%{x}b',
     '%{%{x}a',

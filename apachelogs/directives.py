@@ -97,6 +97,12 @@ PARAMETERIZED_DIRECTIVES = {
     },
     '^ti': ('trailers_in', clf_string),
     '^to': ('trailers_out', clf_string),
+
+    # Defined by mod_ssl:
+    # As of Apache 2.4.39, no escaping is performed on the values of `%{*}x`
+    # and `%{*}c` despite the fact that they can be just about anything.
+    'c': ('cryptography', clf(FieldType(r'.+?', str))),
+    'x': ('variables', clf(FieldType(r'.+?', str))),
 }
 
 DIRECTIVE_RGX = re.compile(r'''

@@ -304,9 +304,9 @@ def test_parse_lines_custom_enc(mocker):
 def test_case_insensitive_dicts():
     entry = parse(
         "%{USER}e|%{Content-Type}i|%{flavor}C|%{ssl-secure-reneg}n"
-        "|%{Content-Type}o|%{Foo}^ti|%{Baz}^to",
+        "|%{Content-Type}o|%{Foo}^ti|%{Baz}^to|%{HTTP_USER_AGENT}x|%{errcode}c",
         "www-data|application/x-www-form-urlencoded|chocolate|1|text/html"
-        "|Bar|Quux",
+        "|Bar|Quux|Web \"Browsy\" Browser|-",
     )
     assert entry.env_vars == {"USER": "www-data"}
     assert entry.env_vars["USER"] \
@@ -339,3 +339,11 @@ def test_case_insensitive_dicts():
     assert entry.trailers_out["Baz"] \
         == entry.trailers_out["BAZ"] \
         == entry.trailers_out["baz"] == "Quux"
+    assert entry.variables == {"HTTP_USER_AGENT": "Web \"Browsy\" Browser"}
+    assert entry.variables["HTTP_USER_AGENT"] \
+        == entry.variables["http_user_agent"] \
+        == entry.variables["Http_User_Agent"] == "Web \"Browsy\" Browser"
+    assert entry.cryptography == {"errcode": None}
+    assert entry.cryptography["errcode"] \
+        is entry.cryptography["ERRCODE"] \
+        is entry.cryptography["Errcode"] is None

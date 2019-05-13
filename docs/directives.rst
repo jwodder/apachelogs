@@ -49,6 +49,9 @@ information on the meaning of each directive.
     * - ``%B``
       - ``entry.bytes_sent``
       - `int`
+    * - :samp:`%\\{{name}\\}c`
+      - :samp:`entry.cryptography[{name}]` [#f1]_
+      - `str` or `None`
     * - :samp:`%\\{{name}\\}C`
       - :samp:`entry.cookies[{name}]` [#f1]_
       - `str`\* or `None`
@@ -175,6 +178,9 @@ information on the meaning of each directive.
     * - ``%V``
       - ``entry.server_name``
       - `str`\*
+    * - :samp:`%\\{{name}\\}x`
+      - :samp:`entry.variables[{name}]` [#f1]_
+      - `str` or `None`
     * - ``%X``
       - ``entry.connection_status``
       - `str`
@@ -314,6 +320,6 @@ A ``%{*}t`` directive with the ``begin:`` modifier (e.g.,
 
 .. rubric:: Footnotes
 
-.. [#f1] The ``cookies``, ``env_vars``, ``headers_in``, ``headers_out``,
-         ``notes``, ``trailers_in``, and ``trailers_out`` attributes are
-         case-insensitive `dict`\s.
+.. [#f1] The ``cookies``, ``cryptography``, ``env_vars``, ``headers_in``,
+         ``headers_out``, ``notes``, ``trailers_in``, ``trailers_out``, and
+         ``variables`` attributes are case-insensitive `dict`\s.

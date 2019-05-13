@@ -58,11 +58,11 @@ uinteger   = FieldType(r'(?:0|[1-9][0-9]*)', int)
 #: converted to `bytes`
 esc_string = FieldType(
     # The following characters are escaped in logfiles: ", \, control
-    # characters (whatever matches `apr_iscntrl`), bytes over 127 (whatever
-    # fails `apr_isprint`?)
+    # characters (everything accepted by `apr_iscntrl` = `iscntrl`, i.e.,
+    # everything less than 0x20 and also 0x7F), non-printable characters
+    # (everything rejected by `apr_isprint` = `isprint`, i.e., control
+    # characters plus everything over 0x7F).
     # cf. server/gen_test_char.c
-    ### TODO: Accept raw tabs?
-    ### TODO: Accept characters that should be escaped but aren't?
     r'(?:[ !\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?',
     unescape,
 )

@@ -4,12 +4,11 @@
         - `%{*}C` - no semicolons, spaces, or tabs?  URI encoded?
         - `%h`
         - `%m` - no whitespace?
-        - `%q` - no whitespace?
+        - `%q` - no whitespace? no '#'?
         - `%v` - no whitespace?
         - `%V` - no whitespace?
         - `%{*}^ti`
         - `%{*}^to`
-    - `mod_ssl` formats <http://httpd.apache.org/docs/current/mod/mod_ssl.html#logformats>
     - Check whether `%a` can be a comma-separated list of IP addresses (in case
       of proxying/X-Forwarded-For and the like)
 
