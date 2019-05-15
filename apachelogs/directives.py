@@ -24,7 +24,10 @@ PLAIN_DIRECTIVES = {
     # As of v2.4.39, Apache uses the `%s` sscanf() format to extract the value
     # that becomes `remote_logname`, and so it does not contain any whitespace.
     'l': ('remote_logname', clf_word),
-    ### XXX: 'L': ('log_id', clf( ??? )),
+    # `%L` is the base64-encoding of a byte sequence with trailing '=' removed.
+    # Depending on whether mod_unique_id is loaded, the encoding will use
+    # either '+' and '/' or '@' and '-'.
+    'L': ('request_log_id', clf(FieldType(r'[-@/+A-Za-z0-9]+', str))),
     # `%m` is '-' when the request line is malformed.
     'm': ('request_method', clf_string),
     'p': ('server_port', integer),
@@ -51,9 +54,9 @@ PLAIN_DIRECTIVES = {
     ),
     'T': ('request_duration_seconds', integer),
     'u': ('remote_user', remote_user),
-    # Starting somewhere between versions 2.4.18 and 2.4.29 of Apache, `%U` has
-    # (some?) percent-escapes decoded and thus may contain whitespace (and just
-    # about any other ASCII character?).
+    # Starting somewhere between versions 2.4.18 and 2.4.29 of Apache (or maybe
+    # earlier?), `%U` has (some?) percent-escapes decoded and thus may contain
+    # whitespace and '?' (and just about any other ASCII character?).
     # `%U` is '-' when the request line is malformed.
     'U': ('request_uri', clf_string),
     'v': ('virtual_host', esc_string),
@@ -77,6 +80,10 @@ PARAMETERIZED_DIRECTIVES = {
         'c': ('remote_underlying_host', esc_string),
     },
     'i': ('headers_in', clf_string),
+    # `%{c}L` is derived the same way as `%L`; see above.
+    'L': {
+        'c': ('connection_log_id', clf(FieldType(r'[-@/+A-Za-z0-9]+', str))),
+    },
     'n': ('notes', clf_string),
     'o': ('headers_out', clf_string),
     'p': {

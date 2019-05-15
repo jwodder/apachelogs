@@ -85,6 +85,12 @@ information on the meaning of each directive.
     * - ``%l``
       - ``entry.remote_logname``
       - `str`\* or `None`
+    * - ``%L``
+      - ``entry.request_log_id``
+      - `str` or `None`
+    * - ``%{c}L``
+      - ``entry.connection_log_id``
+      - `str` or `None`
     * - ``%m``
       - ``entry.request_method``
       - `str`\* or `None`

@@ -5,6 +5,7 @@ v0.4.0 (in development)
 - **Bugfix**: `%u` can now match the string `""` (two double quotes)
 - Support `mod_ssl`'s `%{*}c` and `%{*}x` directives
 - Support the `%{hextid}P` directive (as a hexadecimal integer)
+- Support the `%L` and `%{c}L` directives
 
 v0.3.0 (2019-05-12)
 -------------------

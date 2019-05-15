@@ -96,7 +96,6 @@ STRFTIME_DIRECTIVES = {
     'z': (
         'timezone',
         FieldType(
-            ### TODO: Get rid of the `?` here?
             r'(?:[-+](?:[01][0-9]|2[0-3])[0-5][0-9])?',
             lambda s: datetime.strptime(s, '%z').tzinfo if s else None,
         )
