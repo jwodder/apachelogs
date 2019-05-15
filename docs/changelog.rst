@@ -9,6 +9,7 @@ v0.4.0 (in development)
 - ``%R`` can now be `None`
 - **Bugfix**: ``%u`` can now match the string ``""`` (two double quotes)
 - Support ``mod_ssl``'s ``%{*}c`` and ``%{*}x`` directives
+- Support the ``%{hextid}P`` directive (as a hexadecimal integer)
 
 v0.3.0 (2019-05-12)
 -------------------

@@ -112,6 +112,9 @@ information on the meaning of each directive.
     * - ``%P``
       - ``entry.pid``
       - `int`
+    * - ``%{hextid}P`` [#f2]_
+      - ``entry.tid``
+      - `int`
     * - ``%{pid}P``
       - ``entry.pid``
       - `int`
@@ -323,3 +326,9 @@ A ``%{*}t`` directive with the ``begin:`` modifier (e.g.,
 .. [#f1] The ``cookies``, ``cryptography``, ``env_vars``, ``headers_in``,
          ``headers_out``, ``notes``, ``trailers_in``, ``trailers_out``, and
          ``variables`` attributes are case-insensitive `dict`\s.
+
+.. [#f2] Apache renders ``%{hextid}P`` as either a decimal integer or a
+         hexadecimal integer depending on the APR version available.
+         `apachelogs` expects ``%{hextid}P`` to always be in hexadecimal; if
+         your Apache produces decimal integers instead, you must instead use
+         ``%{tid}P`` in the log format passed to `apachelogs`.

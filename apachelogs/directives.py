@@ -87,7 +87,7 @@ PARAMETERIZED_DIRECTIVES = {
     'P': {
         'pid': ('pid', integer),
         'tid': ('tid', integer),
-        ### XXX: 'hextid': ('tid', ???),  ### decimal or hex integer (depending on APR version; sadly, the hex version doesn't seem to start with "0x")
+        'hextid': ('tid', FieldType(r'[0-9A-Fa-f]+', lambda s: int(s, 16))),
     },
     't': strftime2regex,
     'T': {

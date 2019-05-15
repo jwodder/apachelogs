@@ -183,8 +183,8 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
     ),
 
     (
-        "%{%Y-%m-%d %H:%M:%S %z}t [%{msec_frac}t] %s %a:%{remote}p <-> %A:%p \"%m\" \"%U%q\" \"%f\" %P:%{tid}P \"%R\"",
-        r'2019-05-05 20:56:07 +0000 [148] 403 172.22.0.1:34488 <-> 172.22.0.2:80 "GET" "/wsgi/t\xc3\xa9st" "/usr/local/app/run.wsgi" 16:140436276180736 "wsgi-script"',
+        "%{%Y-%m-%d %H:%M:%S %z}t [%{msec_frac}t] %s %a:%{remote}p <-> %A:%p \"%m\" \"%U%q\" \"%f\" %P:%{hextid}P \"%R\"",
+        r'2019-05-05 20:56:07 +0000 [148] 403 172.22.0.1:34488 <-> 172.22.0.2:80 "GET" "/wsgi/t\xc3\xa9st" "/usr/local/app/run.wsgi" 16:7fb9de5af700 "wsgi-script"',
         {
             "request_time": datetime(2019, 5, 5, 20, 56, 7, 148000,
                                      tzinfo=timezone.utc),
@@ -229,7 +229,7 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "%q": "",
                 "%f": "/usr/local/app/run.wsgi",
                 "%P": 16,
-                "%{tid}P": 140436276180736,
+                "%{hextid}P": 140436276180736,
                 "%R": "wsgi-script",
             }
         },
