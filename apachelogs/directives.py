@@ -114,7 +114,7 @@ PARAMETERIZED_DIRECTIVES = {
 
 DIRECTIVE_RGX = re.compile(r'''
     % (?P<modifiers1>[0-9,!<>]*)
-      (?:\{(?P<param>.*?)\})?
+      (?:\{(?P<param>[^}]*)\})?
       (?P<modifiers2>[0-9,!<>]*)
       (?P<directive>\^[a-zA-Z%]{2}|[a-zA-Z%])
     | (?P<literal>.)
@@ -177,7 +177,7 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None,
             rgx += re.escape(m.group('literal'))
             continue
         multiple = False
-        modifiers = (m.group('modifiers1') or '')+(m.group('modifiers2') or '')
+        modifiers = m.group('modifiers1') + m.group('modifiers2')
         conditioned = any(c.isdigit() for c in modifiers)
         redirects = re.findall(r'[<>]', modifiers)
         if simple and (modifiers or m.group('param') is not None):
@@ -193,9 +193,9 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None,
                     subgroups = [
                         (
                             name,
-                            '%' + (m.group('modifiers1') or '')
+                            '%' + m.group('modifiers1')
                                 + '{' + directive + '}'
-                                + (m.group('modifiers2') or '')
+                                + m.group('modifiers2')
                                 + m.group('directive'),
                             converter,
                         )
