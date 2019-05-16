@@ -1,4 +1,5 @@
 import re
+from   pydicti   import dicti
 from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
 from   .types    import (FieldType, clf, clf_string, clf_word, esc_string,
@@ -86,23 +87,23 @@ PARAMETERIZED_DIRECTIVES = {
     },
     'n': ('notes', clf_string),
     'o': ('headers_out', clf_string),
-    'p': {
+    'p': dicti({
         'canonical': ('server_port', integer),
         'local': ('local_port', integer),
         'remote': ('remote_port', integer),
-    },
-    'P': {
+    }),
+    'P': dicti({
         'pid': ('pid', integer),
         # `%{tid}P` is formatted as an unsigned integer.
         'tid': ('tid', uinteger),
         'hextid': ('tid', FieldType(r'[0-9A-Fa-f]+', lambda s: int(s, 16))),
-    },
+    }),
     't': strftime2regex,
-    'T': {
+    'T': dicti({
         'ms': ('request_duration_milliseconds', integer),
         'us': ('request_duration_microseconds', integer),
         's': ('request_duration_seconds', integer),
-    },
+    }),
     '^ti': ('trailers_in', clf_string),
     '^to': ('trailers_out', clf_string),
 

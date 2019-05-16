@@ -130,6 +130,19 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
     ),
 
     (
+        '%T %{MS}T',
+        '1 1042',
+        {
+            "request_duration_seconds": 1,
+            "request_duration_milliseconds": 1042,
+            "directives": {
+                "%T": 1,
+                "%{MS}T": 1042,
+            },
+        }
+    ),
+
+    (
         "%{%Y-%m-%d %H:%M:%S %z}t [%{msec_frac}t] %s %a:%{remote}p <-> %A:%p \"%m\" \"%U%q\" \"%f\" %P:%{tid}P \"%R\"",
         '2019-05-05 20:49:14 +0000 [690] 403 172.21.0.1:44782 <-> 172.21.0.2:80 "GET" "/wsgi/test?q=foo" "/usr/local/app/run.wsgi" 16:140168282543872 "wsgi-script"',
         {
@@ -232,6 +245,32 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
                 "%{hextid}P": 140436276180736,
                 "%R": "wsgi-script",
             }
+        },
+    ),
+
+    (
+        "%a:%{REMOTE}p",
+        '172.21.0.1:44782',
+        {
+            "remote_address": "172.21.0.1",
+            "remote_port": 44782,
+            "directives": {
+                "%a": "172.21.0.1",
+                "%{REMOTE}p": 44782,
+            },
+        },
+    ),
+
+    (
+        "%P:%{TID}P",
+        '16:140168282543872',
+        {
+            "pid": 16,
+            "tid": 140168282543872,
+            "directives": {
+                "%P": 16,
+                "%{TID}P": 140168282543872,
+            },
         },
     ),
 

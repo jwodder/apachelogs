@@ -11,6 +11,8 @@ v0.4.0 (in development)
 - Support ``mod_ssl``'s ``%{*}c`` and ``%{*}x`` directives
 - Support the ``%{hextid}P`` directive (as a hexadecimal integer)
 - Support the ``%L`` and ``%{c}L`` directives
+- Parameters to ``%{*}p``, ``%{*}P``, and ``%{*}T`` are now treated
+  case-insensitively in order to mirror Apache's behavior
 
 v0.3.0 (2019-05-12)
 -------------------
