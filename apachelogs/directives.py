@@ -93,7 +93,8 @@ PARAMETERIZED_DIRECTIVES = {
     },
     'P': {
         'pid': ('pid', integer),
-        'tid': ('tid', integer),
+        # `%{tid}P` is formatted as an unsigned integer.
+        'tid': ('tid', uinteger),
         'hextid': ('tid', FieldType(r'[0-9A-Fa-f]+', lambda s: int(s, 16))),
     },
     't': strftime2regex,
