@@ -1,7 +1,6 @@
 - Research the following:
     - Look into whether the values for the following string format directives
       have more restrictive patterns they always follow:
-        - `%{*}C` - no semicolons, spaces, or tabs?  URI encoded?
         - `%h`
         - `%m` - no whitespace?
         - `%q` - no whitespace? no '#'?

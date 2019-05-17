@@ -2,8 +2,8 @@ import re
 from   pydicti   import dicti
 from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
-from   .types    import (FieldType, clf, clf_string, clf_word, esc_string,
-                         integer, ip_address, remote_user, uinteger)
+from   .types    import (FieldType, clf, clf_string, clf_word, cookie_value,
+                         esc_string, integer, ip_address, remote_user, uinteger)
 from   .util     import parse_apache_timestamp
 
 PLAIN_DIRECTIVES = {
@@ -75,7 +75,7 @@ PARAMETERIZED_DIRECTIVES = {
     'a': {
         'c': ('remote_client_address', ip_address),
     },
-    'C': ('cookies', clf_string),
+    'C': ('cookies', cookie_value),
     'e': ('env_vars', clf_string),
     'h': {
         'c': ('remote_underlying_host', esc_string),

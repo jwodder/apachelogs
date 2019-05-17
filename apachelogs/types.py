@@ -52,8 +52,6 @@ integer    = FieldType(r'(?:0|-?[1-9][0-9]*)', int)
 #: `FieldType` instance for an unsigned base-10 integer
 uinteger   = FieldType(r'(?:0|[1-9][0-9]*)', int)
 
-#log_string = FieldType(r'.*?', str)
-
 #: `FieldType` instance for a string containing escape sequences that is
 #: converted to `bytes`
 esc_string = FieldType(
@@ -78,13 +76,25 @@ esc_word = FieldType(
 #: escape sequences or else a single hyphen, representing `None`
 clf_string = clf(esc_string)
 
+#: Like `clf_string`, but without any whitespace.  (Whitespace escape sequences
+#: are still allowed just because it's easier.)
 clf_word = clf(esc_word)
 
 #: `FieldType` instance for a remote user (directive ``%u``).  This is the same
-#: as `clf_string`, but the converter additionally converts ``""`` (two
-#: double-quotes) to an empty string, as that is how ``%u`` represents empty
-#: names.
+#: as `clf_string`, but ``""`` (two double-quotes) is accepted and converted to
+#: an empty string, as that is how ``%u`` represents empty names.
 remote_user = FieldType(
     r'(?:{}|"")'.format(clf_string.regex),
     lambda s: clf_string.converter('' if s == '""' else s),
 )
+
+#: Regex for a single non-space atom in a cookie value; this is the same as an
+#: `esc_word` atom, except semicolons are not matched
+CRUMB = r'(?:[!\x23-\x3A\x3C-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)'
+
+#: `FieldType` instance for a cookie value; like `clf_string`, but with no
+#: leading or trailing spaces and no semicolons
+cookie_value = clf(FieldType(
+    r'{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?'.format(CRUMB=CRUMB),
+    unescape,
+))
