@@ -6,7 +6,7 @@ Changelog
 v0.4.0 (in development)
 -----------------------
 - Support the ``%{c}h`` log directive
-- ``%R`` can now be `None`
+- ``%f`` and ``%R`` can now be `None`
 - **Bugfix**: ``%u`` can now match the string ``""`` (two double quotes)
 - Support ``mod_ssl``'s ``%{*}c`` and ``%{*}x`` directives
 - Support the ``%{hextid}P`` directive (as a hexadecimal integer)

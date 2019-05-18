@@ -63,7 +63,7 @@ information on the meaning of each directive.
       - `str`\* or `None`
     * - ``%f``
       - ``entry.request_file``
-      - `str`\*
+      - `str`\* or `None`
     * - ``%h``
       - ``entry.remote_host``
       - `str`\*

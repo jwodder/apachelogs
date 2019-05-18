@@ -1,7 +1,7 @@
 - Research the following:
     - Look into whether the values for the following string format directives
       have more restrictive patterns they always follow:
-        - `%h`
+        - `%h` - no whitespace?
         - `%v` - no whitespace?
         - `%V` - no whitespace?
         - `%{*}^ti`
@@ -22,5 +22,4 @@
   [<file> ...]`
     - The special names "combined" and "common" (et alii?) are accepted as
       formats.
-        - Accept these in the library interface as well?
     - Default format: combined?  Guess at combined or common?

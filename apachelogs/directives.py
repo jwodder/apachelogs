@@ -14,7 +14,8 @@ PLAIN_DIRECTIVES = {
     'b': ('bytes_sent', clf(integer)),
     'B': ('bytes_sent', integer),
     'D': ('request_duration_microseconds', integer),
-    'f': ('request_file', esc_string),
+    # `%f` is '-' for malformed requests.
+    'f': ('request_file', clf_string),
     'h': ('remote_host', esc_string),
     # In some versions of Apache (I think this includes 2.4.18, the version
     # available to Xenial), `%H` is everything in the request line from the
