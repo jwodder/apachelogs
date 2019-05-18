@@ -563,6 +563,19 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
             },
         },
     ),
+
+    (
+        "%U%q",
+        '/wsgi/test?',
+        {
+            "request_uri": "/wsgi/test",
+            "request_query": "?",
+            "directives": {
+                "%U": "/wsgi/test",
+                "%q": "?",
+            }
+        },
+    ),
 ])
 def test_parse(fmt, entry, fields):
     log_entry = LogParser(fmt).parse(entry)

@@ -14,9 +14,10 @@ v0.4.0 (in development)
 - Parameters to ``%{*}p``, ``%{*}P``, and ``%{*}T`` are now treated
   case-insensitively in order to mirror Apache's behavior
 - Refined some directives to better match only the values emitted by Apache:
-    - ``%l`` no longer accepts whitespace
+    - ``%l`` and ``%m`` no longer accept whitespace
     - ``%s`` and ``%{tid}P`` now only match unsigned integers
     - ``%{*}C`` no longer accepts semicolons or leading or trailing spaces
+    - ``%q`` no longer accepts whitespace or pound/hash signs
 
 v0.3.0 (2019-05-12)
 -------------------

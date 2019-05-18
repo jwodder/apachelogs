@@ -2,8 +2,6 @@
     - Look into whether the values for the following string format directives
       have more restrictive patterns they always follow:
         - `%h`
-        - `%m` - no whitespace?
-        - `%q` - no whitespace? no '#'?
         - `%v` - no whitespace?
         - `%V` - no whitespace?
         - `%{*}^ti`
