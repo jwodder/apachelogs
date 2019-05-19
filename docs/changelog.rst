@@ -14,6 +14,9 @@ v0.5.0 (in development)
     without a century (``%C``), treat years less than 69 as part of the
     twenty-first century and other years as part of the twentieth
 
+- ``%{%n}t`` and ``%{%t}t`` now match any amount of any whitespace, in order to
+  match :manpage:`strptime(3)`'s behavior
+
 v0.4.0 (2019-05-19)
 -------------------
 - Support the ``%{c}h`` log directive

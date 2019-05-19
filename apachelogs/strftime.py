@@ -67,7 +67,7 @@ STRFTIME_DIRECTIVES = {
     ),
     'm': ('mon', FieldType(MONTH, none_int)),
     'M': ('min', FieldType(MINUTE, none_int)),
-    'n': (None, FieldType('\n', None)),
+    'n': (None, FieldType(r'\s*', None)),
     'p': ('am_pm', word),
     'R': (
         'hour_min',
@@ -78,7 +78,7 @@ STRFTIME_DIRECTIVES = {
     ),
     's': ('epoch', none_integer),
     'S': ('sec', FieldType(SECOND, none_int)),
-    't': (None, FieldType('\t', None)),
+    't': (None, FieldType(r'\s*', None)),
     'T': (
         'time',
         FieldType(
