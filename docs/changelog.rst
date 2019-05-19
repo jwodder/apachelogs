@@ -3,8 +3,8 @@
 Changelog
 =========
 
-v0.4.0 (in development)
------------------------
+v0.4.0 (2019-05-19)
+-------------------
 - Support the ``%{c}h`` log directive
 - ``%f`` and ``%R`` can now be `None`
 - **Bugfix**: ``%u`` can now match the string ``""`` (two double quotes)

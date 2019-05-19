@@ -1,11 +1,7 @@
 - Research the following:
-    - Look into whether the values for the following string format directives
-      have more restrictive patterns they always follow:
-        - `%h` - no whitespace?
-        - `%v` - no whitespace?
-        - `%V` - no whitespace?
-        - `%{*}^ti`
-        - `%{*}^to`
+    - Is it valid to expect `%h`, `%v`, and `%V` to always be hostnames (or an
+      IP address, for `%h`)?  Failing that, can they at least be expected to
+      not contain whitespace?
     - Check whether `%a` can be a comma-separated list of IP addresses (in case
       of proxying/X-Forwarded-For and the like)
 
