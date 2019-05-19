@@ -141,9 +141,13 @@ def assemble_datetime(fields):
             year = fields["year"]
         elif fields.get("date") is not None:
             year = fields["date"].year
-        elif fields.get("century") is not None \
-                and fields.get("abbrev_year") is not None:
-            year = fields["century"] * 100 + fields["abbrev_year"]
+        elif fields.get("abbrev_year") is not None:
+            if fields.get("century") is not None:
+                year = fields["century"] * 100 + fields["abbrev_year"]
+            elif fields["abbrev_year"] < 69:
+                year = 2000 + fields["abbrev_year"]
+            else:
+                year = 1900 + fields["abbrev_year"]
         else:
             return None
 

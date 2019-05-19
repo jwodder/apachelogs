@@ -1,8 +1,12 @@
 v0.5.0 (in development)
 -----------------------
-- When assembling `request_time`, if the month is only available as a full or
-  abbreviated name and the name is not in English, try looking it up in the
-  current locale
+- Improved the routine for assembling `request_time` from
+  `request_time_fields`:
+    - If the month is only available as a full or abbreviated name and the name
+      is not in English, try looking it up in the current locale
+    - If the year is only available in abbreviated form (the `%y` directive)
+      without a century (`%C`), treat years less than 69 as part of the
+      twenty-first century and other years as part of the twentieth
 
 v0.4.0 (2019-05-19)
 -------------------

@@ -203,6 +203,130 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
+            "century": 20,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        None,
+    ),
+
+    (
+        {
+            "abbrev_year": 17,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(2017, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "abbrev_year": 0,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(2000, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "abbrev_year": 68,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(2068, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "abbrev_year": 69,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(1969, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "abbrev_year": 99,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(1999, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "century": 19,
+            "abbrev_year": 0,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(1900, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "century": 19,
+            "abbrev_year": 68,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(1968, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "century": 20,
+            "abbrev_year": 69,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(2069, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
+            "century": 20,
+            "abbrev_year": 99,
+            "mon": 11,
+            "mday": 1,
+            "hour": 7,
+            "min": 28,
+            "sec": 29,
+        },
+        datetime(2099, 11, 1, 7, 28, 29),
+    ),
+
+    (
+        {
             "year": 2017,
             "full_mon": "November",
             "mday": 1,
