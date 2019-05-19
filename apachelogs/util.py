@@ -1,27 +1,38 @@
+import calendar
 from   datetime import date, datetime, timedelta, timezone
 import re
 
 #: The names of the months in English
-MONTH_FULL_NAMES = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-]
+MONTH_FULL_NAMES = {
+    'January': 1,
+    'February': 2,
+    'March': 3,
+    'April': 4,
+    'May': 5,
+    'June': 6,
+    'July': 7,
+    'August': 8,
+    'September': 9,
+    'October': 10,
+    'November': 11,
+    'December': 12,
+}
 
 #: The abbreviated names of the months in English
-MONTH_SNAMES = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-]
+MONTH_SNAMES = {
+    'Jan': 1,
+    'Feb': 2,
+    'Mar': 3,
+    'Apr': 4,
+    'May': 5,
+    'Jun': 6,
+    'Jul': 7,
+    'Aug': 8,
+    'Sep': 9,
+    'Oct': 10,
+    'Nov': 11,
+    'Dec': 12,
+}
 
 #: Compiled regex for an Apache timestamp
 APACHE_TS_RGX = re.compile(r'''
@@ -59,8 +70,8 @@ def parse_apache_timestamp(s):
     for k in 'year day hour minute second'.split():
         data[k] = int(data[k])
     try:
-        data['month'] = MONTH_SNAMES.index(data['month']) + 1
-    except ValueError:
+        data['month'] = MONTH_SNAMES[data['month']]
+    except KeyError:
         raise ValueError(s)
     tzoffset = timedelta(
         hours   = int(data.pop('tzoffset_hour')),
@@ -136,6 +147,13 @@ def assemble_datetime(fields):
         else:
             return None
 
+        locale_month_names = {
+            m:i for i,m in enumerate(calendar.month_name) if i != 0
+        }
+        locale_month_abbrevs = {
+            m:i for i,m in enumerate(calendar.month_abbr) if i != 0
+        }
+
         if fields.get("mon") is not None:
             month = fields["mon"]
         elif fields.get("date") is not None:
@@ -143,9 +161,13 @@ def assemble_datetime(fields):
         elif fields.get("yday") is not None:
             month = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).month
         elif fields.get("full_mon") in MONTH_FULL_NAMES:
-            month = MONTH_FULL_NAMES.index(fields["full_mon"]) + 1
+            month = MONTH_FULL_NAMES[fields["full_mon"]]
+        elif fields.get("full_mon") in locale_month_names:
+            month = locale_month_names[fields["full_mon"]]
         elif fields.get("abbrev_mon") in MONTH_SNAMES:
-            month = MONTH_SNAMES.index(fields["abbrev_mon"]) + 1
+            month = MONTH_SNAMES[fields["abbrev_mon"]]
+        elif fields.get("abbrev_mon") in locale_month_abbrevs:
+            month = locale_month_abbrevs[fields["abbrev_mon"]]
         else:
             return None
 

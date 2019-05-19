@@ -1,3 +1,9 @@
+v0.5.0 (in development)
+-----------------------
+- When assembling `request_time`, if the month is only available as a full or
+  abbreviated name and the name is not in English, try looking it up in the
+  current locale
+
 v0.4.0 (2019-05-19)
 -------------------
 - Support the `%{c}h` log directive

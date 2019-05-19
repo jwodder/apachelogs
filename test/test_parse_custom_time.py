@@ -1,4 +1,5 @@
 from   datetime   import date, datetime, time, timedelta, timezone
+import locale
 import pytest
 from   apachelogs import LogParser
 
@@ -413,3 +414,69 @@ def test_parse_custom_time(fmt, entry, fields):
     log_entry = LogParser(fmt, encoding='utf-8').parse(entry)
     for k,v in fields.items():
         assert getattr(log_entry, k) == v
+
+@pytest.mark.parametrize('fmt,entry,fields', [
+    (
+        '%{%d %b %Y %H:%M:%S %z}t',
+        '19 Mär 2019 01:39:12 +0000',
+        {
+            "request_time": datetime(2019, 3, 19, 1, 39, 12, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "mday": 19,
+                "abbrev_mon": "Mär",
+                "year": 2019,
+                "hour": 1,
+                "min": 39,
+                "sec": 12,
+                "timezone": timezone.utc,
+            },
+            "directives": {
+                "%{%d}t": 19,
+                "%{%b}t": "Mär",
+                "%{%Y}t": 2019,
+                "%{%H}t": 1,
+                "%{%M}t": 39,
+                "%{%S}t": 12,
+                "%{%z}t": timezone.utc,
+            },
+        },
+    ),
+
+    (
+        '%{%d %B %Y %H:%M:%S %z}t',
+        '19 März 2019 01:39:12 +0000',
+        {
+            "request_time": datetime(2019, 3, 19, 1, 39, 12, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "mday": 19,
+                "full_mon": "März",
+                "year": 2019,
+                "hour": 1,
+                "min": 39,
+                "sec": 12,
+                "timezone": timezone.utc,
+            },
+            "directives": {
+                "%{%d}t": 19,
+                "%{%B}t": "März",
+                "%{%Y}t": 2019,
+                "%{%H}t": 1,
+                "%{%M}t": 39,
+                "%{%S}t": 12,
+                "%{%z}t": timezone.utc,
+            },
+        },
+    ),
+])
+def test_parse_custom_german_time(fmt, entry, fields):
+    oldlocale = locale.setlocale(locale.LC_ALL)
+    try:
+        locale.setlocale(locale.LC_ALL, 'de_DE.utf8')
+    except locale.Error:
+        pytest.skip('Locale not supported')
+    else:
+        entry = LogParser(fmt).parse(entry)
+        for k,v in fields.items():
+            assert getattr(entry, k) == v
+    finally:
+        locale.setlocale(locale.LC_ALL, oldlocale)
