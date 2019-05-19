@@ -409,6 +409,60 @@ w5 = timezone(timedelta(hours=-5))
             },
         }
     ),
+
+    (
+        '%{%Y%n%m%t%d}t',
+        '2019 05 19',
+        {
+            "request_time": None,
+            "request_time_fields": {
+                "year": 2019,
+                "mon": 5,
+                "mday": 19,
+            },
+            "directives": {
+                "%{%Y}t": 2019,
+                "%{%m}t": 5,
+                "%{%d}t": 19,
+            },
+        },
+    ),
+
+    (
+        '%{%Y%n%m%t%d}t',
+        '2019 \t 05 \n 19',
+        {
+            "request_time": None,
+            "request_time_fields": {
+                "year": 2019,
+                "mon": 5,
+                "mday": 19,
+            },
+            "directives": {
+                "%{%Y}t": 2019,
+                "%{%m}t": 5,
+                "%{%d}t": 19,
+            },
+        },
+    ),
+
+    (
+        '%{%Y%n%m%t%d}t',
+        '20190519',
+        {
+            "request_time": None,
+            "request_time_fields": {
+                "year": 2019,
+                "mon": 5,
+                "mday": 19,
+            },
+            "directives": {
+                "%{%Y}t": 2019,
+                "%{%m}t": 5,
+                "%{%d}t": 19,
+            },
+        },
+    ),
 ])
 def test_parse_custom_time(fmt, entry, fields):
     log_entry = LogParser(fmt, encoding='utf-8').parse(entry)
