@@ -22,7 +22,8 @@ ISO_WEEKNUM = r'(?:0[1-9]|[1-4][0-9]|5[0-3])'  # 01-53
 # All strftime converters must pass `None` through unmodified in order to
 # handle directives like `%200{%Y-%m-%d}t` matching "-".
 
-word = FieldType(r'\w+', lambda s: None if s is None else s)
+word  = FieldType(r'\w+', lambda s: s)
+word0 = FieldType(r'\w*', lambda s: s)
 
 def none_int(s):
     return None if s is None else int(s)
@@ -70,7 +71,7 @@ STRFTIME_DIRECTIVES = {
     'n': (None, FieldType(r'\s*', None)),
     # `%p` is the empty string in certain locales (e.g., de_DE.utf8 on Ubuntu
     # Bionic)
-    'p': ('am_pm', FieldType(r'\w*', lambda s: None if s is None else s)),
+    'p': ('am_pm', word0),
     'R': (
         'hour_min',
         FieldType(
@@ -102,7 +103,7 @@ STRFTIME_DIRECTIVES = {
             lambda s: datetime.strptime(s, '%z').tzinfo if s else None,
         )
     ),
-    'Z': ('tzname', word),
+    'Z': ('tzname', word0),
 
 #    'c':  # C locale: %a %b %e %T %Y
 #    'r':  # C locale: %I:%M:%S %p

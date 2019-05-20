@@ -15,6 +15,7 @@ v0.5.0 (in development)
   `%{%g}t` from `"week_year"` and `"abbrev_week_year"` to `"iso_year"` and
   `"abbrev_iso_year"`, respectively
 - `%{%p}t` can now match the empty string (its value in certain locales)
+- `%{%Z}t` can now match the empty string
 
 v0.4.0 (2019-05-19)
 -------------------
