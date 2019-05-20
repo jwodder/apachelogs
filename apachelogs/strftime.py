@@ -68,7 +68,9 @@ STRFTIME_DIRECTIVES = {
     'm': ('mon', FieldType(MONTH, none_int)),
     'M': ('min', FieldType(MINUTE, none_int)),
     'n': (None, FieldType(r'\s*', None)),
-    'p': ('am_pm', word),
+    # `%p` is the empty string in certain locales (e.g., de_DE.utf8 on Ubuntu
+    # Bionic)
+    'p': ('am_pm', FieldType(r'\w*', lambda s: None if s is None else s)),
     'R': (
         'hour_min',
         FieldType(

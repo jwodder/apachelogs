@@ -14,6 +14,7 @@ v0.5.0 (in development)
 - **Breaking**: Renamed the `request_time_fields` keys for `%{%G}t` and
   `%{%g}t` from `"week_year"` and `"abbrev_week_year"` to `"iso_year"` and
   `"abbrev_iso_year"`, respectively
+- `%{%p}t` can now match the empty string (its value in certain locales)
 
 v0.4.0 (2019-05-19)
 -------------------
