@@ -389,6 +389,364 @@ w4 = timezone(timedelta(hours=-4))
         {"year": 2017, "mon": 11, "mday": 1, "hour": 7, "sec": 29},
         None,
     ),
+
+    (
+        {
+            "week_year": 2019,
+            "iso_weeknum": 20,
+            "iso_wday": 7,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "week_year": 2019,
+            "iso_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "week_year": 2019,
+            "iso_weeknum": 20,
+            "abbrev_wday": "Sun",
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "week_year": 2019,
+            "iso_weeknum": 20,
+            "full_wday": "Sunday",
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "week_year": 2019,
+            "iso_weeknum": 52,
+            "iso_wday": 7,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 12, 29, 12, 34, 56),
+    ),
+
+    (
+        {
+            "week_year": 2020,
+            "iso_weeknum": 1,
+            "iso_wday": 1,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 12, 30, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_week_year": 19,
+            "iso_weeknum": 20,
+            "iso_wday": 7,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_week_year": 0,
+            "iso_weeknum": 20,
+            "iso_wday": 5,
+            "time": time(12, 34, 56),
+        },
+        datetime(2000, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_week_year": 68,
+            "iso_weeknum": 20,
+            "iso_wday": 6,
+            "time": time(12, 34, 56),
+        },
+        datetime(2068, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_week_year": 69,
+            "iso_weeknum": 21,
+            "iso_wday": 1,
+            "time": time(12, 34, 56),
+        },
+        datetime(1969, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_week_year": 99,
+            "iso_weeknum": 20,
+            "iso_wday": 3,
+            "time": time(12, 34, 56),
+        },
+        datetime(1999, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "sunday_weeknum": 20,
+            "iso_wday": 7,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "sunday_weeknum": 20,
+            "full_wday": "Sunday",
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "sunday_weeknum": 20,
+            "abbrev_wday": "Sun",
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "monday_weeknum": 19,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "monday_weeknum": 19,
+            "iso_wday": 7,
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "monday_weeknum": 19,
+            "full_wday": "Sunday",
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "year": 2019,
+            "monday_weeknum": 19,
+            "abbrev_wday": "Sun",
+            "time": time(12, 34, 56),
+        },
+        datetime(2019, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 0,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2000, 5, 14, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 68,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2068, 5, 13, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 69,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1969, 5, 18, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 99,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1999, 5, 16, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 0,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2000, 5, 21, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 68,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2068, 5, 20, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 69,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1969, 5, 25, 12, 34, 56),
+    ),
+
+    (
+        {
+            "abbrev_year": 99,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1999, 5, 23, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 19,
+            "abbrev_year": 0,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1900, 5, 20, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 19,
+            "abbrev_year": 68,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1968, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 20,
+            "abbrev_year": 69,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2069, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 20,
+            "abbrev_year": 99,
+            "sunday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2099, 5, 17, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 19,
+            "abbrev_year": 0,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1900, 5, 20, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 19,
+            "abbrev_year": 68,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(1968, 5, 19, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 20,
+            "abbrev_year": 69,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2069, 5, 26, 12, 34, 56),
+    ),
+
+    (
+        {
+            "century": 20,
+            "abbrev_year": 99,
+            "monday_weeknum": 20,
+            "wday": 0,
+            "time": time(12, 34, 56),
+        },
+        datetime(2099, 5, 24, 12, 34, 56),
+    ),
 ])
 def test_assemble_datetime(fields, dt):
     res = assemble_datetime(fields)

@@ -7,6 +7,8 @@ v0.5.0 (in development)
     - If the year is only available in abbreviated form (the `%y` directive)
       without a century (`%C`), treat years less than 69 as part of the
       twenty-first century and other years as part of the twentieth
+    - When necessary, use the values of the `%G`, `%g`, `%u`, `%V`, `%U`, `%W`,
+      and `%w` time directives to derive the date
 - `%{%n}t` and `%{%t}t` now match any amount of any whitespace, in order to
   match `strptime(3)`'s behavior
 

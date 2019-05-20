@@ -34,6 +34,28 @@ MONTH_SNAMES = {
     'Dec': 12,
 }
 
+#: The names of the days of the week in English
+WDAY_FULL_NAMES = {
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6,
+    "Sunday": 7,
+}
+
+#: The abbreviated names of the days of the week in English
+WDAY_SNAMES = {
+    "Mon": 1,
+    "Tue": 2,
+    "Wed": 3,
+    "Thu": 4,
+    "Fri": 5,
+    "Sat": 6,
+    "Sun": 7,
+}
+
 #: Compiled regex for an Apache timestamp
 APACHE_TS_RGX = re.compile(r'''
     ^\[?
@@ -137,6 +159,34 @@ def assemble_datetime(fields):
             # timezone to be UTC
         )
     else:
+        locale_wday_names = {
+            w:i for i,w in enumerate(calendar.day_name, start=1)
+        }
+        locale_wday_abbrevs = {
+            w:i for i,w in enumerate(calendar.day_abbr, start=1)
+        }
+
+        if fields.get("iso_wday") is not None:
+            iso_wday = fields["iso_wday"]
+        elif fields.get("wday") is not None:
+            iso_wday = fields["wday"] or 7
+        elif fields.get("full_wday") is not None \
+                and fields["full_wday"] in WDAY_FULL_NAMES:
+            iso_wday = WDAY_FULL_NAMES[fields["full_wday"]]
+        elif fields.get("full_wday") is not None \
+                and fields["full_wday"] in locale_wday_names:
+            iso_wday = locale_wday_names[fields["full_wday"]]
+        elif fields.get("abbrev_wday") is not None \
+                and fields["abbrev_wday"] in WDAY_SNAMES:
+            iso_wday = WDAY_SNAMES[fields["abbrev_wday"]]
+        elif fields.get("abbrev_wday") is not None \
+                and fields["abbrev_wday"] in locale_wday_abbrevs:
+            iso_wday = locale_wday_abbrevs[fields["abbrev_wday"]]
+        else:
+            iso_wday = None
+
+        thedate = None
+
         if fields.get("year") is not None:
             year = fields["year"]
         elif fields.get("date") is not None:
@@ -148,6 +198,22 @@ def assemble_datetime(fields):
                 year = 2000 + fields["abbrev_year"]
             else:
                 year = 1900 + fields["abbrev_year"]
+        elif fields.get("week_year") is not None \
+                and fields.get("iso_weeknum") is not None \
+                and iso_wday is not None:
+            thedate = fromisocalendar(
+                fields["week_year"],
+                fields["iso_weeknum"],
+                iso_wday,
+            )
+            year = thedate.year
+        elif fields.get("abbrev_week_year") is not None \
+                and fields.get("iso_weeknum") is not None \
+                and iso_wday is not None:
+            iso_year = fields["abbrev_week_year"]
+            iso_year += 2000 if iso_year < 69 else 1900
+            thedate = fromisocalendar(iso_year, fields["iso_weeknum"], iso_wday)
+            year = thedate.year
         else:
             return None
 
@@ -158,12 +224,30 @@ def assemble_datetime(fields):
             m:i for i,m in enumerate(calendar.month_abbr) if i != 0
         }
 
+        if thedate is None:
+            if fields.get("date") is not None:
+                thedate = fields["date"]
+            elif fields.get("yday") is not None:
+                thedate = date(year, 1, 1) + timedelta(days=fields["yday"]-1)
+            elif fields.get("sunday_weeknum") is not None \
+                    and iso_wday is not None:
+                thedate = datetime.strptime(
+                    '{} {} {}'
+                        .format(year, fields["sunday_weeknum"], iso_wday % 7),
+                    '%Y %U %w',
+                ).date()
+            elif fields.get("monday_weeknum") is not None \
+                    and iso_wday is not None:
+                thedate = datetime.strptime(
+                    '{} {} {}'
+                        .format(year, fields["monday_weeknum"], iso_wday % 7),
+                    '%Y %W %w',
+                ).date()
+
         if fields.get("mon") is not None:
             month = fields["mon"]
-        elif fields.get("date") is not None:
-            month = fields["date"].month
-        elif fields.get("yday") is not None:
-            month = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).month
+        elif thedate is not None:
+            month = thedate.month
         elif fields.get("full_mon") in MONTH_FULL_NAMES:
             month = MONTH_FULL_NAMES[fields["full_mon"]]
         elif fields.get("full_mon") in locale_month_names:
@@ -177,10 +261,8 @@ def assemble_datetime(fields):
 
         if fields.get("mday") is not None:
             day = fields["mday"]
-        elif fields.get("date") is not None:
-            day = fields["date"].day
-        elif fields.get("yday") is not None:
-            day = (date(year, 1, 1) + timedelta(days=fields["yday"]-1)).day
+        elif thedate is not None:
+            day = thedate.day
         else:
             return None
 
@@ -232,3 +314,24 @@ def assemble_datetime(fields):
             microsecond = microsecond,
             tzinfo = fields.get("timezone"),
         )
+
+def fromisocalendar(iso_year, iso_weeknum, iso_wday):
+    """
+    Convert an ISO year, ISO week number, and ISO weekday to a `datetime.date`.
+    This is the inverse of `datetime.date.isocalendar()`.
+
+    >>> fromisocalendar(2004, 1, 1)
+    datetime.date(2003, 12, 29)
+    >>> fromisocalendar(2004, 1, 7)
+    datetime.date(2004, 1, 4)
+    """
+
+    # Python 3.6+:
+    # datetime.strptime(f'{iso_year} {iso_weeknum} {iso_wday}', '%G %V %u')\
+    #         .date()
+
+    # Based on
+    # <https://www.staff.science.uu.nl/~gent0113/calendar/isocalendar.htm>
+    q, z = divmod(iso_year, 400)
+    weeksum = 20871*q + 52*z + (5*z + 7 - 4*((z-1)//100)) // 28 + iso_weeknum
+    return date.fromordinal(7*weeksum + iso_wday - 371)

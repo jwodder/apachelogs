@@ -521,6 +521,54 @@ def test_parse_custom_time(fmt, entry, fields):
             },
         },
     ),
+
+    (
+        '%{%G--%V %a %H:%M:%S}t',
+        '2019--20 So 12:34:56',
+        {
+            "request_time": datetime(2019, 5, 19, 12, 34, 56),
+            "request_time_fields": {
+                "week_year": 2019,
+                "iso_weeknum": 20,
+                "abbrev_wday": "So",
+                "hour": 12,
+                "min": 34,
+                "sec": 56,
+            },
+            "directives": {
+                "%{%G}t": 2019,
+                "%{%V}t": 20,
+                "%{%a}t": "So",
+                "%{%H}t": 12,
+                "%{%M}t": 34,
+                "%{%S}t": 56,
+            },
+        },
+    ),
+
+    (
+        '%{%G--%V %A %H:%M:%S}t',
+        '2019--20 Sonntag 12:34:56',
+        {
+            "request_time": datetime(2019, 5, 19, 12, 34, 56),
+            "request_time_fields": {
+                "week_year": 2019,
+                "iso_weeknum": 20,
+                "full_wday": "Sonntag",
+                "hour": 12,
+                "min": 34,
+                "sec": 56,
+            },
+            "directives": {
+                "%{%G}t": 2019,
+                "%{%V}t": 20,
+                "%{%A}t": "Sonntag",
+                "%{%H}t": 12,
+                "%{%M}t": 34,
+                "%{%S}t": 56,
+            },
+        },
+    ),
 ])
 def test_parse_custom_german_time(fmt, entry, fields):
     oldlocale = locale.setlocale(locale.LC_ALL)
