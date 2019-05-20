@@ -4,6 +4,7 @@ import pytest
 from   apachelogs import LogParser
 
 w5 = timezone(timedelta(hours=-5))
+w4 = timezone(timedelta(hours=-4))
 
 @pytest.mark.parametrize('fmt,entry,fields', [
     (
@@ -500,6 +501,176 @@ w5 = timezone(timedelta(hours=-5))
                 "%200{%M}t": None,
                 "%200{%S}t": None,
                 "%200{%p}t": None,
+            },
+        },
+    ),
+
+    (
+        '%{%s %Z}t',
+        '1511642826 GMT',
+        {
+            "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "epoch": 1511642826,
+                "tzname": "GMT",
+            },
+            "directives": {
+                "%{%s}t": 1511642826,
+                "%{%Z}t": "GMT",
+            },
+        },
+    ),
+
+    (
+        '%{%s %Z}t',
+        '1511642826 UTC',
+        {
+            "request_time": datetime(2017, 11, 25, 20, 47, 6, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "epoch": 1511642826,
+                "tzname": "UTC",
+            },
+            "directives": {
+                "%{%s}t": 1511642826,
+                "%{%Z}t": "UTC",
+            },
+        },
+    ),
+
+    (
+        '%{%s %Z}t',
+        '1511642826 EST',
+        {
+            "request_time": datetime(2017, 11, 25, 15, 47, 6, tzinfo=w5),
+            "request_time_fields": {
+                "epoch": 1511642826,
+                "tzname": "EST",
+            },
+            "directives": {
+                "%{%s}t": 1511642826,
+                "%{%Z}t": "EST",
+            },
+        },
+    ),
+
+    (
+        '%{%s %Z}t',
+        '1558378254 EDT',
+        {
+            "request_time": datetime(2019, 5, 20, 14, 50, 54, tzinfo=w4),
+            "request_time_fields": {
+                "epoch": 1558378254,
+                "tzname": "EDT",
+            },
+            "directives": {
+                "%{%s}t": 1558378254,
+                "%{%Z}t": "EDT",
+            },
+        },
+    ),
+
+    (
+        '%{%s %Z}t',
+        '1558378254 XXX',
+        {
+            "request_time": datetime(2019, 5, 20, 18, 50, 54, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "epoch": 1558378254,
+                "tzname": "XXX",
+            },
+            "directives": {
+                "%{%s}t": 1558378254,
+                "%{%Z}t": "XXX",
+            },
+        },
+    ),
+
+    (
+        '%{%FT%T %Z}t',
+        '2019-02-20T14:54:43 GMT',
+        {
+            "request_time": datetime(2019, 2, 20, 14, 54, 43, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "date": date(2019, 2, 20),
+                "time": time(14, 54, 43),
+                "tzname": "GMT",
+            },
+            "directives": {
+                "%{%F}t": date(2019, 2, 20),
+                "%{%T}t": time(14, 54, 43),
+                "%{%Z}t": "GMT",
+            },
+        },
+    ),
+
+    (
+        '%{%FT%T %Z}t',
+        '2019-02-20T14:54:43 UTC',
+        {
+            "request_time": datetime(2019, 2, 20, 14, 54, 43, tzinfo=timezone.utc),
+            "request_time_fields": {
+                "date": date(2019, 2, 20),
+                "time": time(14, 54, 43),
+                "tzname": "UTC",
+            },
+            "directives": {
+                "%{%F}t": date(2019, 2, 20),
+                "%{%T}t": time(14, 54, 43),
+                "%{%Z}t": "UTC",
+            },
+        },
+    ),
+
+    (
+        '%{%FT%T %Z}t',
+        '2019-02-20T14:54:43 EST',
+        {
+            "request_time": datetime(2019, 2, 20, 14, 54, 43, tzinfo=w5),
+            "request_time_fields": {
+                "date": date(2019, 2, 20),
+                "time": time(14, 54, 43),
+                "tzname": "EST",
+            },
+            "directives": {
+                "%{%F}t": date(2019, 2, 20),
+                "%{%T}t": time(14, 54, 43),
+                "%{%Z}t": "EST",
+            },
+        },
+    ),
+
+    (
+        '%{%FT%T %Z}t',
+        '2019-05-20T14:54:43 EDT',
+        {
+            "request_time": datetime(2019, 5, 20, 14, 54, 43, tzinfo=w4),
+            "request_time_fields": {
+                "date": date(2019, 5, 20),
+                "time": time(14, 54, 43),
+                "tzname": "EDT",
+            },
+            "directives": {
+                "%{%F}t": date(2019, 5, 20),
+                "%{%T}t": time(14, 54, 43),
+                "%{%Z}t": "EDT",
+            },
+        },
+    ),
+
+    (
+        '%{%FT%T %Z}t',
+        '2019-05-20T14:54:43 XXX',
+        {
+            "request_time": datetime(2019, 5, 20, 14, 54, 43),
+            "request_time_fields": {
+                "date": date(2019, 5, 20),
+                "time": time(14, 54, 43),
+                "tzname": "XXX",
+            },
+            "directives": {
+                "%{%F}t": date(2019, 5, 20),
+                "%{%T}t": time(14, 54, 43),
+                "%{%Z}t": "XXX",
             },
         },
     ),

@@ -1,6 +1,7 @@
 import calendar
 from   datetime import date, datetime, timedelta, timezone
 import re
+import time
 
 #: The names of the months in English
 MONTH_FULL_NAMES = {
@@ -135,29 +136,34 @@ def assemble_datetime(fields):
     Given a `dict` of time fields, return a `datetime.datetime` object if there
     is enough information to create one, `None` otherwise.
     """
+    if fields.get("timezone") is not None:
+        tz = fields["timezone"]
+    elif fields.get("tzname") is not None:
+        if fields["tzname"] in ('GMT', 'UTC'):
+            tz = timezone.utc
+        elif fields["tzname"] == time.tzname[0]:
+            tz = timezone(timedelta(seconds=-time.timezone))
+        elif time.daylight and fields["tzname"] == time.tzname[1]:
+            tz = timezone(timedelta(seconds=-time.altzone))
+        else:
+            tz = None
+    else:
+        tz = None
+
     if fields.get("timestamp") is not None:
         return fields["timestamp"]
     elif fields.get("microepoch") is not None:
         return datetime.fromtimestamp(
             fields["microepoch"] / 1000000,
-            fields.get("timezone") or timezone.utc,
-            # fields["timezone"] may be None, in which case we still want the
-            # timezone to be UTC
+            tz or timezone.utc,
         )
     elif fields.get("milliepoch") is not None:
         return datetime.fromtimestamp(
             fields["milliepoch"] / 1000,
-            fields.get("timezone") or timezone.utc,
-            # fields["timezone"] may be None, in which case we still want the
-            # timezone to be UTC
+            tz or timezone.utc,
         )
     elif fields.get("epoch") is not None:
-        return datetime.fromtimestamp(
-            fields["epoch"],
-            fields.get("timezone") or timezone.utc,
-            # fields["timezone"] may be None, in which case we still want the
-            # timezone to be UTC
-        )
+        return datetime.fromtimestamp(fields["epoch"], tz or timezone.utc)
     else:
         locale_wday_names = {
             w:i for i,w in enumerate(calendar.day_name, start=1)
@@ -312,7 +318,7 @@ def assemble_datetime(fields):
             minute = minute,
             second = second,
             microsecond = microsecond,
-            tzinfo = fields.get("timezone"),
+            tzinfo = tz,
         )
 
 def fromisocalendar(iso_year, iso_weeknum, iso_wday):

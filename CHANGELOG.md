@@ -9,6 +9,8 @@ v0.5.0 (in development)
       twenty-first century and other years as part of the twentieth
     - When necessary, use the values of the `%G`, `%g`, `%u`, `%V`, `%U`, `%W`,
       and `%w` time directives to derive the date
+    - If `%Z` equals `"GMT"`, `"UTC"`, or one of the names in `time.tzname`,
+      produce an aware `datetime`
 - `%{%n}t` and `%{%t}t` now match any amount of any whitespace, in order to
   match `strptime(3)`'s behavior
 - **Breaking**: Renamed the `request_time_fields` keys for `%{%G}t` and
