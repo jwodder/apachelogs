@@ -52,8 +52,8 @@ STRFTIME_DIRECTIVES = {
             lambda s: datetime.strptime(s, '%Y-%m-%d').date() if s is not None else None,
         )
     ),
-    'g': ('abbrev_week_year', FieldType(r'[0-9][0-9]', none_int)),
-    'G': ('week_year', FieldType(YEAR, none_int)),
+    'g': ('abbrev_iso_year', FieldType(r'[0-9][0-9]', none_int)),
+    'G': ('iso_year', FieldType(YEAR, none_int)),
     'h': ('abbrev_mon', word),
     'H': ('hour', FieldType(HOUR, none_int)),
     'I': ('hour12', FieldType(HOUR12, none_int)),

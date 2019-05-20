@@ -18,6 +18,9 @@ v0.5.0 (in development)
 
 - ``%{%n}t`` and ``%{%t}t`` now match any amount of any whitespace, in order to
   match :manpage:`strptime(3)`'s behavior
+- **Breaking**: Renamed the ``request_time_fields`` keys for ``%{%G}t`` and
+  ``%{%g}t`` from ``"week_year"`` and ``"abbrev_week_year"`` to ``"iso_year"``
+  and ``"abbrev_iso_year"``, respectively
 
 v0.4.0 (2019-05-19)
 -------------------

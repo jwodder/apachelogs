@@ -198,19 +198,19 @@ def assemble_datetime(fields):
                 year = 2000 + fields["abbrev_year"]
             else:
                 year = 1900 + fields["abbrev_year"]
-        elif fields.get("week_year") is not None \
+        elif fields.get("iso_year") is not None \
                 and fields.get("iso_weeknum") is not None \
                 and iso_wday is not None:
             thedate = fromisocalendar(
-                fields["week_year"],
+                fields["iso_year"],
                 fields["iso_weeknum"],
                 iso_wday,
             )
             year = thedate.year
-        elif fields.get("abbrev_week_year") is not None \
+        elif fields.get("abbrev_iso_year") is not None \
                 and fields.get("iso_weeknum") is not None \
                 and iso_wday is not None:
-            iso_year = fields["abbrev_week_year"]
+            iso_year = fields["abbrev_iso_year"]
             iso_year += 2000 if iso_year < 69 else 1900
             thedate = fromisocalendar(iso_year, fields["iso_weeknum"], iso_wday)
             year = thedate.year

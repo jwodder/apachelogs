@@ -528,7 +528,7 @@ def test_parse_custom_time(fmt, entry, fields):
         {
             "request_time": datetime(2019, 5, 19, 12, 34, 56),
             "request_time_fields": {
-                "week_year": 2019,
+                "iso_year": 2019,
                 "iso_weeknum": 20,
                 "abbrev_wday": "So",
                 "hour": 12,
@@ -552,7 +552,7 @@ def test_parse_custom_time(fmt, entry, fields):
         {
             "request_time": datetime(2019, 5, 19, 12, 34, 56),
             "request_time_fields": {
-                "week_year": 2019,
+                "iso_year": 2019,
                 "iso_weeknum": 20,
                 "full_wday": "Sonntag",
                 "hour": 12,

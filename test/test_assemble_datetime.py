@@ -392,7 +392,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "week_year": 2019,
+            "iso_year": 2019,
             "iso_weeknum": 20,
             "iso_wday": 7,
             "time": time(12, 34, 56),
@@ -402,7 +402,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "week_year": 2019,
+            "iso_year": 2019,
             "iso_weeknum": 20,
             "wday": 0,
             "time": time(12, 34, 56),
@@ -412,7 +412,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "week_year": 2019,
+            "iso_year": 2019,
             "iso_weeknum": 20,
             "abbrev_wday": "Sun",
             "time": time(12, 34, 56),
@@ -422,7 +422,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "week_year": 2019,
+            "iso_year": 2019,
             "iso_weeknum": 20,
             "full_wday": "Sunday",
             "time": time(12, 34, 56),
@@ -432,7 +432,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "week_year": 2019,
+            "iso_year": 2019,
             "iso_weeknum": 52,
             "iso_wday": 7,
             "time": time(12, 34, 56),
@@ -442,7 +442,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "week_year": 2020,
+            "iso_year": 2020,
             "iso_weeknum": 1,
             "iso_wday": 1,
             "time": time(12, 34, 56),
@@ -452,7 +452,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "abbrev_week_year": 19,
+            "abbrev_iso_year": 19,
             "iso_weeknum": 20,
             "iso_wday": 7,
             "time": time(12, 34, 56),
@@ -462,7 +462,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "abbrev_week_year": 0,
+            "abbrev_iso_year": 0,
             "iso_weeknum": 20,
             "iso_wday": 5,
             "time": time(12, 34, 56),
@@ -472,7 +472,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "abbrev_week_year": 68,
+            "abbrev_iso_year": 68,
             "iso_weeknum": 20,
             "iso_wday": 6,
             "time": time(12, 34, 56),
@@ -482,7 +482,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "abbrev_week_year": 69,
+            "abbrev_iso_year": 69,
             "iso_weeknum": 21,
             "iso_wday": 1,
             "time": time(12, 34, 56),
@@ -492,7 +492,7 @@ w4 = timezone(timedelta(hours=-4))
 
     (
         {
-            "abbrev_week_year": 99,
+            "abbrev_iso_year": 99,
             "iso_weeknum": 20,
             "iso_wday": 3,
             "time": time(12, 34, 56),

@@ -254,10 +254,10 @@ A ``%{*}t`` directive with the ``begin:`` modifier (e.g.,
       - ``"date"``
       - `datetime.date`
     * - ``%g``
-      - ``"abbrev_week_year"``
+      - ``"abbrev_iso_year"``
       - `int`
     * - ``%G``
-      - ``"week_year"``
+      - ``"iso_year"``
       - `int`
     * - ``%h``
       - ``"abbrev_mon"``
