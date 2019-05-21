@@ -1,5 +1,5 @@
-v0.5.0 (in development)
------------------------
+v0.5.0 (2019-05-21)
+-------------------
 - Improved the routine for assembling `request_time` from
   `request_time_fields`:
     - If the month is only available as a full or abbreviated name and the name
