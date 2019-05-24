@@ -2,10 +2,10 @@ import re
 from   pydicti   import dicti
 from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
-from   .types    import (FieldType, clf, clf_string, clf_word, cookie_value,
+from   .timeutil import parse_apache_timestamp
+from   .util     import (FieldType, clf, clf_string, clf_word, cookie_value,
                          esc_string, integer, ip_address, remote_user, uinteger,
                          unescape)
-from   .util     import parse_apache_timestamp
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),

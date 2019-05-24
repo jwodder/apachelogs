@@ -1,6 +1,6 @@
-from   datetime        import date, datetime, time, timedelta, timezone
+from   datetime            import date, datetime, time, timedelta, timezone
 import pytest
-from   apachelogs.util import assemble_datetime
+from   apachelogs.timeutil import assemble_datetime
 
 w4 = timezone(timedelta(hours=-4))
 

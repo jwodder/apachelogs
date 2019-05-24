@@ -11,16 +11,16 @@ Visit <https://github.com/jwodder/apachelogs> or <https://apachelogs.rtfd.io>
 for more information.
 """
 
-__version__      = '0.5.0'
+__version__      = '0.6.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'apachelogs@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/apachelogs'
 
-from .errors import Error, InvalidDirectiveError, InvalidEntryError, \
-                    UnknownDirectiveError
-from .parser import LogEntry, LogParser
-from .util   import parse_apache_timestamp
+from .errors   import Error, InvalidDirectiveError, InvalidEntryError, \
+                      UnknownDirectiveError
+from .parser   import LogEntry, LogParser
+from .timeutil import parse_apache_timestamp
 
 __all__ = [
     'COMBINED',

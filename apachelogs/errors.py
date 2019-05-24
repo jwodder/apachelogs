@@ -1,5 +1,5 @@
 class Error(Exception):
-    """ The base class for all custom exceptions raised by ``apachelogs`` """
+    """ The base class for all custom exceptions raised by `apachelogs` """
     pass
 
 

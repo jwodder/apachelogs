@@ -3,10 +3,10 @@
 # Apache implements `%{*}t` via `apr_strftime()`, which just calls the native
 # platform's `strftime()`.
 
-from   datetime import datetime
+from   datetime  import datetime
 import re
-from   .types   import FieldType, integer
-from   .util    import parse_apache_timestamp
+from   .timeutil import parse_apache_timestamp
+from   .util     import FieldType, integer
 
 YEAR   = r'[0-9]{4,}'
 MONTH  = r'(?:0[1-9]|1[012])'

@@ -3,7 +3,7 @@ import attr
 from   pydicti     import dicti
 from   .directives import format2regex
 from   .errors     import InvalidEntryError
-from   .util       import assemble_datetime
+from   .timeutil   import assemble_datetime
 
 # The parameterized directives corresponding to the following `dict` attributes
 # all look up their parameters case-insensitively (either because Apache stores
