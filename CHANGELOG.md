@@ -1,3 +1,7 @@
+v0.6.0 (in development)
+-----------------------
+- Support Python 3.8
+
 v0.5.0 (2019-05-21)
 -------------------
 - Improved the routine for assembling `request_time` from
