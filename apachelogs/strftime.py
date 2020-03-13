@@ -42,7 +42,7 @@ STRFTIME_DIRECTIVES = {
         'date',
         FieldType(
             '{}/{}/[0-9][0-9]'.format(MONTH, MDAY),
-            lambda s: datetime.strptime(s, '%m/%d/%y').date() if s is not None else None,
+            lambda s: s and datetime.strptime(s, '%m/%d/%y').date(),
         )
     ),
     'e': ('mday', FieldType(MDAY, none_int)),
@@ -50,7 +50,7 @@ STRFTIME_DIRECTIVES = {
         'date',
         FieldType(
             '{}-{}-{}'.format(YEAR, MONTH, MDAY),
-            lambda s: datetime.strptime(s, '%Y-%m-%d').date() if s is not None else None,
+            lambda s: s and datetime.strptime(s, '%Y-%m-%d').date(),
         )
     ),
     'g': ('abbrev_iso_year', FieldType(r'[0-9][0-9]', none_int)),
@@ -76,7 +76,7 @@ STRFTIME_DIRECTIVES = {
         'hour_min',
         FieldType(
             '{}:{}'.format(HOUR, MINUTE),
-            lambda s: datetime.strptime(s, '%H:%M').time() if s is not None else None,
+            lambda s: s and datetime.strptime(s, '%H:%M').time(),
         )
     ),
     's': ('epoch', none_integer),
@@ -86,7 +86,7 @@ STRFTIME_DIRECTIVES = {
         'time',
         FieldType(
             '{}:{}:{}'.format(HOUR, MINUTE, SECOND),
-            lambda s: datetime.strptime(s, '%H:%M:%S').time() if s is not None else None,
+            lambda s: s and datetime.strptime(s, '%H:%M:%S').time(),
         )
     ),
     'u': ('iso_wday', FieldType(r'[1-7]', none_int)),
