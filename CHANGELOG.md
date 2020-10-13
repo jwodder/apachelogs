@@ -1,6 +1,9 @@
 v0.6.0 (in development)
 -----------------------
 - Support Python 3.8
+- `%s` now matches any sequence of exactly three digits.  Previously, it
+  matched either '0' or any sequence of digits not beginning with '0'.  Thanks
+  to [@chosak](https://github.com/chosak) for the patch.
 
 v0.5.0 (2019-05-21)
 -------------------
