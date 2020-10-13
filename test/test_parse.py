@@ -1,6 +1,6 @@
 from   datetime   import datetime, timedelta, timezone
 import pytest
-from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
+from   apachelogs import COMBINED, LogParser, VHOST_COMBINED
 
 @pytest.mark.parametrize('fmt,entry,fields', [
     (

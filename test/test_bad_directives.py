@@ -1,5 +1,5 @@
 import pytest
-from   apachelogs import LogParser, InvalidDirectiveError, UnknownDirectiveError
+from   apachelogs import InvalidDirectiveError, LogParser, UnknownDirectiveError
 
 @pytest.mark.parametrize('fmt', [
     '%',
