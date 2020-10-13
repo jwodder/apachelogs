@@ -96,6 +96,17 @@ from   apachelogs import COMBINED, VHOST_COMBINED, LogParser
     ),
 
     (
+        '%s',
+        '000',
+        {
+            "status": 000,
+            "directives": {
+                "%s": 000,
+            },
+        },
+    ),
+
+    (
         '%<{Referer}i %{Referer}i %>{Referer}i',
         'http://example.com/original http://example.com/default http://example.com/final',
         {
