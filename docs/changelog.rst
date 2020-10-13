@@ -3,12 +3,13 @@
 Changelog
 =========
 
-v0.6.0 (in development)
------------------------
+v0.6.0 (2020-10-13)
+-------------------
 - Support Python 3.8
 - ``%s`` now matches any sequence of exactly three digits.  Previously, it
   matched either '0' or any sequence of digits not beginning with '0'.  Thanks
   to `@chosak <https://github.com/chosak>`_ for the patch.
+
 
 v0.5.0 (2019-05-21)
 -------------------
@@ -33,6 +34,7 @@ v0.5.0 (2019-05-21)
 - ``%{%p}t`` can now match the empty string (its value in certain locales)
 - ``%{%Z}t`` can now match the empty string
 
+
 v0.4.0 (2019-05-19)
 -------------------
 - Support the ``%{c}h`` log directive
@@ -50,10 +52,12 @@ v0.4.0 (2019-05-19)
   - ``%{*}C`` no longer accepts semicolons or leading or trailing spaces
   - ``%q`` no longer accepts whitespace or pound/hash signs
 
+
 v0.3.0 (2019-05-12)
 -------------------
 - Gave `LogEntry` a `~LogEntry.directives` attribute for looking up directive
   values by the corresponding log format directives
+
 
 v0.2.0 (2019-05-09)
 -------------------
@@ -62,6 +66,7 @@ v0.2.0 (2019-05-09)
 - The ``cookies``, ``env_vars``, ``headers_in``, ``headers_out``, ``notes``,
   ``trailers_in``, and ``trailers_out`` attributes of `LogEntry` are now all
   case-insensitive `dict`\s.
+
 
 v0.1.0 (2019-05-06)
 -------------------

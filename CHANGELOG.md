@@ -1,5 +1,5 @@
-v0.6.0 (in development)
------------------------
+v0.6.0 (2020-10-13)
+-------------------
 - Support Python 3.8
 - `%s` now matches any sequence of exactly three digits.  Previously, it
   matched either '0' or any sequence of digits not beginning with '0'.  Thanks

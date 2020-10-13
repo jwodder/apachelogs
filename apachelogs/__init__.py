@@ -11,7 +11,7 @@ Visit <https://github.com/jwodder/apachelogs> or <https://apachelogs.rtfd.io>
 for more information.
 """
 
-__version__      = '0.6.0.dev1'
+__version__      = '0.6.0'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'apachelogs@varonathe.org'
 __license__      = 'MIT'
