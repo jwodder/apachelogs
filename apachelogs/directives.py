@@ -4,8 +4,8 @@ from   .errors   import InvalidDirectiveError, UnknownDirectiveError
 from   .strftime import strftime2regex
 from   .timeutil import parse_apache_timestamp
 from   .util     import (FieldType, clf, clf_string, clf_word, cookie_value,
-                         esc_string, integer, ip_address, remote_user, uinteger,
-                         unescape)
+                         esc_string, integer, ip_address, remote_user,
+                         status_code, uinteger, unescape)
 
 PLAIN_DIRECTIVES = {
     '%': (None, FieldType('%', None)),
@@ -58,7 +58,7 @@ PLAIN_DIRECTIVES = {
     # httpd v2.4.29 has a provision in its code for converting statuses less
     # than or equal to zero to "-".  I'm not sure when that can happen, but
     # apparently it can.
-    's': ('status', clf(uinteger)),
+    's': ('status', clf(status_code)),
     't': (
         ('request_time_fields', 'timestamp'),
         FieldType(r'\[[^]]+\]', parse_apache_timestamp),

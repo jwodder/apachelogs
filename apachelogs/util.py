@@ -78,6 +78,9 @@ integer    = FieldType(r'(?:0|-?[1-9][0-9]*)', int)
 #: `FieldType` instance for an unsigned base-10 integer
 uinteger   = FieldType(r'(?:0|[1-9][0-9]*)', int)
 
+#: `FieldType` instance for a 3-digit integer HTTP status code
+status_code = FieldType(r'[0-9]{3}', int)
+
 #: `FieldType` instance for a string containing escape sequences that is
 #: converted to `bytes`
 esc_string = FieldType(
