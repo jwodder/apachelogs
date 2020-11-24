@@ -38,44 +38,44 @@ Installation
 Examples
 ========
 
-Parse a single log entry::
+Parse a single log entry:
 
-    >>> from apachelogs import LogParser
-    >>> parser = LogParser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"")
-    >>> # The above log format is also available as the constant `apachelogs.COMBINED`.
-    >>> entry = parser.parse('209.126.136.4 - - [01/Nov/2017:07:28:29 +0000] "GET / HTTP/1.1" 301 521 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"\n')
-    >>> entry.remote_host
-    '209.126.136.4'
-    >>> entry.request_time
-    datetime.datetime(2017, 11, 1, 7, 28, 29, tzinfo=datetime.timezone.utc)
-    >>> entry.request_line
-    'GET / HTTP/1.1'
-    >>> entry.final_status
-    301
-    >>> entry.bytes_sent
-    521
-    >>> entry.headers_in["Referer"] is None
-    True
-    >>> entry.headers_in["User-Agent"]
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
-    >>> # Log entry components can also be looked up by directive:
-    >>> entry.directives["%r"]
-    'GET / HTTP/1.1'
-    >>> entry.directives["%>s"]
-    301
-    >>> entry.directives["%t"]
-    datetime.datetime(2017, 11, 1, 7, 28, 29, tzinfo=datetime.timezone.utc)
+>>> from apachelogs import LogParser
+>>> parser = LogParser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"")
+>>> # The above log format is also available as the constant `apachelogs.COMBINED`.
+>>> entry = parser.parse('209.126.136.4 - - [01/Nov/2017:07:28:29 +0000] "GET / HTTP/1.1" 301 521 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"\n')
+>>> entry.remote_host
+'209.126.136.4'
+>>> entry.request_time
+datetime.datetime(2017, 11, 1, 7, 28, 29, tzinfo=datetime.timezone.utc)
+>>> entry.request_line
+'GET / HTTP/1.1'
+>>> entry.final_status
+301
+>>> entry.bytes_sent
+521
+>>> entry.headers_in["Referer"] is None
+True
+>>> entry.headers_in["User-Agent"]
+'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
+>>> # Log entry components can also be looked up by directive:
+>>> entry.directives["%r"]
+'GET / HTTP/1.1'
+>>> entry.directives["%>s"]
+301
+>>> entry.directives["%t"]
+datetime.datetime(2017, 11, 1, 7, 28, 29, tzinfo=datetime.timezone.utc)
 
-Parse a file full of log entries::
+Parse a file full of log entries:
 
-    >>> with open('/var/log/apache2/access.log') as fp:  # doctest: +SKIP
-    ...     for entry in parser.parse_lines(fp):
-    ...         print(str(entry.request_time), entry.request_line)
-    ...
-    2019-01-01 12:34:56-05:00 GET / HTTP/1.1
-    2019-01-01 12:34:57-05:00 GET /favicon.ico HTTP/1.1
-    2019-01-01 12:34:57-05:00 GET /styles.css HTTP/1.1
-    # etc.
+>>> with open('/var/log/apache2/access.log') as fp:  # doctest: +SKIP
+...     for entry in parser.parse_lines(fp):
+...         print(str(entry.request_time), entry.request_line)
+...
+2019-01-01 12:34:56-05:00 GET / HTTP/1.1
+2019-01-01 12:34:57-05:00 GET /favicon.ico HTTP/1.1
+2019-01-01 12:34:57-05:00 GET /styles.css HTTP/1.1
+# etc.
 
 
 Indices and tables
