@@ -223,15 +223,15 @@ def format2regex(fmt, plain_directives=None, parameterized_directives=None,
             raise UnknownDirectiveError(m.group(0))
         if multiple:
             if conditioned:
-                subrgx = '(?:{}|-)'.format(subrgx)
+                subrgx = f'(?:{subrgx}|-)'
             rgx += subrgx
         else:
             if name is None:
-                rgx += '(?:{})'.format(dtype.regex)
+                rgx += f'(?:{dtype.regex})'
                 continue
             if conditioned:
                 dtype = clf(dtype)
-            rgx += r'({})'.format(dtype.regex)
+            rgx += fr'({dtype.regex})'
             subgroups = [(name, m.group(0), dtype.converter)]
         if redirects:
             prefix = 'original_' if redirects[-1] == '<' else 'final_'

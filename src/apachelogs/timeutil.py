@@ -212,15 +212,13 @@ def assemble_datetime(fields):
             elif fields.get("sunday_weeknum") is not None \
                     and iso_wday is not None:
                 thedate = datetime.strptime(
-                    '{} {} {}'
-                        .format(year, fields["sunday_weeknum"], iso_wday % 7),
+                    f'{year} {fields["sunday_weeknum"]} {iso_wday % 7}',
                     '%Y %U %w',
                 ).date()
             elif fields.get("monday_weeknum") is not None \
                     and iso_wday is not None:
                 thedate = datetime.strptime(
-                    '{} {} {}'
-                        .format(year, fields["monday_weeknum"], iso_wday % 7),
+                    f'{year} {fields["monday_weeknum"]} {iso_wday % 7}',
                     '%Y %W %w',
                 ).date()
 
@@ -306,12 +304,10 @@ def fromisocalendar(iso_year, iso_weeknum, iso_wday):
     datetime.date(2004, 1, 4)
     """
 
-    # Python 3.6+:
-    # datetime.strptime(f'{iso_year} {iso_weeknum} {iso_wday}', '%G %V %u')\
-    #         .date()
+    # Python 3.8+:
+    # date.fromisocalendar(iso_year, iso_weeknum, iso_wday)
 
-    # Based on
-    # <https://www.staff.science.uu.nl/~gent0113/calendar/isocalendar.htm>
-    q, z = divmod(iso_year, 400)
-    weeksum = 20871*q + 52*z + (5*z + 7 - 4*((z-1)//100)) // 28 + iso_weeknum
-    return date.fromordinal(7*weeksum + iso_wday - 371)
+    return datetime.strptime(
+        f'{iso_year} {iso_weeknum} {iso_wday}',
+        '%G %V %u',
+    ).date()

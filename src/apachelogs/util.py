@@ -16,7 +16,7 @@ def clf(ftype):
     :rtype: FieldType
     """
     return FieldType(
-        regex=r'(?:{}|-)'.format(ftype.regex),
+        regex=fr'(?:{ftype.regex}|-)',
         converter=lambda s: None if s == '-' else ftype.converter(s),
     )
 
@@ -53,21 +53,21 @@ BYTE   = r'(?:[1-9]?[0-9]|[1-9][0-9][0-9]|2[0-4][0-9]|25[0-5])'
 HEXTET = r'[0-9A-Fa-f]{1,4}'
 
 #: Regex for an IPv4 address
-IPv4   = r'{BYTE}(?:\.{BYTE}){{3}}'.format(BYTE=BYTE)
+IPv4   = fr'{BYTE}(?:\.{BYTE}){{3}}'
 
 #: Regex for an IP address, either IPv4 or IPv6
 IP_ADDRESS_RGX = (
-    '{IPv4}'
+    f'{IPv4}'
     # Adapted from <https://git.io/vFxQW>:
-    '|(?:{HEXTET}:){{7}}(?:{HEXTET}|:)'
-    '|(?:{HEXTET}:){{6}}(?::{HEXTET}|{IPv4}|:)'
-    '|(?:{HEXTET}:){{5}}(?:(?::{HEXTET}){{1,2}}|:{IPv4}|:)'
-    '|(?:{HEXTET}:){{4}}(?:(?::{HEXTET}){{1,3}}|(?::{HEXTET})?:{IPv4}|:)'
-    '|(?:{HEXTET}:){{3}}(?:(?::{HEXTET}){{1,4}}|(?::{HEXTET}){{0,2}}:{IPv4}|:)'
-    '|(?:{HEXTET}:){{2}}(?:(?::{HEXTET}){{1,5}}|(?::{HEXTET}){{0,3}}:{IPv4}|:)'
-    '|(?:{HEXTET}:){{1}}(?:(?::{HEXTET}){{1,6}}|(?::{HEXTET}){{0,4}}:{IPv4}|:)'
-    '|:(?:(?::{HEXTET}){{1,7}}|(?::{HEXTET}){{0,5}}:{IPv4}|:)'
-).format(HEXTET=HEXTET, IPv4=IPv4)
+    f'|(?:{HEXTET}:){{7}}(?:{HEXTET}|:)'
+    f'|(?:{HEXTET}:){{6}}(?::{HEXTET}|{IPv4}|:)'
+    f'|(?:{HEXTET}:){{5}}(?:(?::{HEXTET}){{1,2}}|:{IPv4}|:)'
+    f'|(?:{HEXTET}:){{4}}(?:(?::{HEXTET}){{1,3}}|(?::{HEXTET})?:{IPv4}|:)'
+    f'|(?:{HEXTET}:){{3}}(?:(?::{HEXTET}){{1,4}}|(?::{HEXTET}){{0,2}}:{IPv4}|:)'
+    f'|(?:{HEXTET}:){{2}}(?:(?::{HEXTET}){{1,5}}|(?::{HEXTET}){{0,3}}:{IPv4}|:)'
+    f'|(?:{HEXTET}:){{1}}(?:(?::{HEXTET}){{1,6}}|(?::{HEXTET}){{0,4}}:{IPv4}|:)'
+    f'|:(?:(?::{HEXTET}){{1,7}}|(?::{HEXTET}){{0,5}}:{IPv4}|:)'
+)
 
 #: `FieldType` instance for an IP address, either IPv4 or IPv6
 ip_address = FieldType(IP_ADDRESS_RGX, str)
@@ -113,7 +113,7 @@ clf_word = clf(esc_word)
 #: as `clf_string`, but ``""`` (two double-quotes) is accepted and converted to
 #: an empty string, as that is how ``%u`` represents empty names.
 remote_user = FieldType(
-    r'(?:{}|"")'.format(clf_string.regex),
+    fr'(?:{clf_string.regex}|"")',
     lambda s: clf_string.converter('' if s == '""' else s),
 )
 
@@ -124,6 +124,6 @@ CRUMB = r'(?:[!\x23-\x3A\x3C-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)'
 #: `FieldType` instance for a cookie value; like `clf_string`, but with no
 #: leading or trailing spaces and no semicolons
 cookie_value = clf(FieldType(
-    r'{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?'.format(CRUMB=CRUMB),
+    fr'{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?',
     unescape,
 ))

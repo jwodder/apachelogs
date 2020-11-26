@@ -41,7 +41,7 @@ STRFTIME_DIRECTIVES = {
     'D': (
         'date',
         FieldType(
-            '{}/{}/[0-9][0-9]'.format(MONTH, MDAY),
+            f'{MONTH}/{MDAY}/[0-9][0-9]',
             lambda s: s and datetime.strptime(s, '%m/%d/%y').date(),
         )
     ),
@@ -49,7 +49,7 @@ STRFTIME_DIRECTIVES = {
     'F': (
         'date',
         FieldType(
-            '{}-{}-{}'.format(YEAR, MONTH, MDAY),
+            f'{YEAR}-{MONTH}-{MDAY}',
             lambda s: s and datetime.strptime(s, '%Y-%m-%d').date(),
         )
     ),
@@ -75,7 +75,7 @@ STRFTIME_DIRECTIVES = {
     'R': (
         'hour_min',
         FieldType(
-            '{}:{}'.format(HOUR, MINUTE),
+            f'{HOUR}:{MINUTE}',
             lambda s: s and datetime.strptime(s, '%H:%M').time(),
         )
     ),
@@ -85,7 +85,7 @@ STRFTIME_DIRECTIVES = {
     'T': (
         'time',
         FieldType(
-            '{}:{}:{}'.format(HOUR, MINUTE, SECOND),
+            f'{HOUR}:{MINUTE}:{SECOND}',
             lambda s: s and datetime.strptime(s, '%H:%M:%S').time(),
         )
     ),
@@ -139,7 +139,7 @@ def strftime2regex(param):
                 modifier + param,
                 dtype.converter,
             )],
-            r'({})'.format(dtype.regex),
+            fr'({dtype.regex})',
         )
     else:
         from .directives import format2regex

@@ -16,8 +16,10 @@ class InvalidEntryError(Error, ValueError):
         self.format = format
 
     def __str__(self):
-        return 'Could not match log entry {0.entry!r}'\
-               ' against log format {0.format!r}'.format(self)
+        return (
+            f'Could not match log entry {self.entry!r}'
+            f' against log format {self.format!r}'
+        )
 
 
 class InvalidDirectiveError(Error, ValueError):
@@ -34,8 +36,7 @@ class InvalidDirectiveError(Error, ValueError):
         self.pos = pos
 
     def __str__(self):
-        return 'Invalid log format directive at index {} of {!r}'\
-            .format(self.pos, self.format)
+        return f'Invalid log format directive at index {self.pos} of {self.format!r}'
 
 
 class UnknownDirectiveError(Error, ValueError):
@@ -49,4 +50,4 @@ class UnknownDirectiveError(Error, ValueError):
         self.directive = directive
 
     def __str__(self):
-        return 'Unknown log format directive: {!r}'.format(self.directive)
+        return f'Unknown log format directive: {self.directive!r}'
