@@ -12,7 +12,7 @@ def test_malformed_directive(fmt):
     with pytest.raises(InvalidDirectiveError) as excinfo:
         LogParser(fmt)
     assert str(excinfo.value) \
-        == 'Invalid log format directive at index 0 of {!r}'.format(fmt)
+        == f'Invalid log format directive at index 0 of {fmt!r}'
     assert excinfo.value.pos == 0
     assert excinfo.value.format == fmt
 
@@ -28,8 +28,7 @@ def test_malformed_directive(fmt):
 def test_unknown_directive(fmt):
     with pytest.raises(UnknownDirectiveError) as excinfo:
         LogParser(fmt)
-    assert str(excinfo.value) \
-        == 'Unknown log format directive: {!r}'.format(fmt)
+    assert str(excinfo.value) == f'Unknown log format directive: {fmt!r}'
     assert excinfo.value.directive == fmt
 
 @pytest.mark.parametrize('fmt', [
@@ -48,6 +47,6 @@ def test_malformed_time_directive(fmt):
     with pytest.raises(InvalidDirectiveError) as excinfo:
         LogParser('%{' + fmt + '}t')
     assert str(excinfo.value) \
-        == 'Invalid log format directive at index 0 of {!r}'.format(fmt)
+        == f'Invalid log format directive at index 0 of {fmt!r}'
     assert excinfo.value.pos == 0
     assert excinfo.value.format == fmt
