@@ -1,11 +1,12 @@
-from   collections import namedtuple
+from collections import namedtuple
 import re
 
 #: `collections.namedtuple` class for describing how to match various types and
 #: how to convert them from strings.  The two attributes are ``regex``, a regex
 #: string, and ``converter``, a function that takes a `str` and returns an
 #: value of the appropriate type.
-FieldType = namedtuple('FieldType', 'regex converter')
+FieldType = namedtuple("FieldType", "regex converter")
+
 
 def clf(ftype):
     """
@@ -16,9 +17,10 @@ def clf(ftype):
     :rtype: FieldType
     """
     return FieldType(
-        regex=fr'(?:{ftype.regex}|-)',
-        converter=lambda s: None if s == '-' else ftype.converter(s),
+        regex=fr"(?:{ftype.regex}|-)",
+        converter=lambda s: None if s == "-" else ftype.converter(s),
     )
+
 
 def unescape(s):
     """
@@ -27,59 +29,62 @@ def unescape(s):
     """
     # Escape sequences used by Apache: \b \n \r \t \v \\ \" \xHH
     # cf. ap_escape_logitem() in server/util.c
-    return re.sub(r'\\(x[0-9A-Fa-f]{2}|.)', _unesc, s).encode('iso-8859-1')
+    return re.sub(r"\\(x[0-9A-Fa-f]{2}|.)", _unesc, s).encode("iso-8859-1")
+
 
 _unescapes = {
-    't': '\t',
-    'n': '\n',
-    'r': '\r',
-    'b': '\b',
-    'v': '\v',
+    "t": "\t",
+    "n": "\n",
+    "r": "\r",
+    "b": "\b",
+    "v": "\v",
     # Not emitted by Apache (as of v2.4), but other servers might use it:
-    'f': '\f',
+    "f": "\f",
 }
+
 
 def _unesc(m):
     esc = m.group(1)
-    if esc[0] == 'x':
+    if esc[0] == "x":
         return chr(int(esc[1:], 16))
     else:
         return _unescapes.get(esc, esc)
 
+
 #: Regex matching a base-10 integer from 0 to 255
-BYTE   = r'(?:[1-9]?[0-9]|[1-9][0-9][0-9]|2[0-4][0-9]|25[0-5])'
+BYTE = r"(?:[1-9]?[0-9]|[1-9][0-9][0-9]|2[0-4][0-9]|25[0-5])"
 
 #: Regex matching one to four hexadecimal digits
-HEXTET = r'[0-9A-Fa-f]{1,4}'
+HEXTET = r"[0-9A-Fa-f]{1,4}"
 
 #: Regex for an IPv4 address
-IPv4   = fr'{BYTE}(?:\.{BYTE}){{3}}'
+IPv4 = fr"{BYTE}(?:\.{BYTE}){{3}}"
 
 #: Regex for an IP address, either IPv4 or IPv6
 IP_ADDRESS_RGX = (
-    f'{IPv4}'
+    f"{IPv4}"
     # Adapted from <https://git.io/vFxQW>:
-    f'|(?:{HEXTET}:){{7}}(?:{HEXTET}|:)'
-    f'|(?:{HEXTET}:){{6}}(?::{HEXTET}|{IPv4}|:)'
-    f'|(?:{HEXTET}:){{5}}(?:(?::{HEXTET}){{1,2}}|:{IPv4}|:)'
-    f'|(?:{HEXTET}:){{4}}(?:(?::{HEXTET}){{1,3}}|(?::{HEXTET})?:{IPv4}|:)'
-    f'|(?:{HEXTET}:){{3}}(?:(?::{HEXTET}){{1,4}}|(?::{HEXTET}){{0,2}}:{IPv4}|:)'
-    f'|(?:{HEXTET}:){{2}}(?:(?::{HEXTET}){{1,5}}|(?::{HEXTET}){{0,3}}:{IPv4}|:)'
-    f'|(?:{HEXTET}:){{1}}(?:(?::{HEXTET}){{1,6}}|(?::{HEXTET}){{0,4}}:{IPv4}|:)'
-    f'|:(?:(?::{HEXTET}){{1,7}}|(?::{HEXTET}){{0,5}}:{IPv4}|:)'
+    f"|(?:{HEXTET}:){{7}}(?:{HEXTET}|:)"
+    f"|(?:{HEXTET}:){{6}}(?::{HEXTET}|{IPv4}|:)"
+    f"|(?:{HEXTET}:){{5}}(?:(?::{HEXTET}){{1,2}}|:{IPv4}|:)"
+    f"|(?:{HEXTET}:){{4}}(?:(?::{HEXTET}){{1,3}}|(?::{HEXTET})?:{IPv4}|:)"
+    f"|(?:{HEXTET}:){{3}}(?:(?::{HEXTET}){{1,4}}|(?::{HEXTET}){{0,2}}:{IPv4}|:)"
+    f"|(?:{HEXTET}:){{2}}(?:(?::{HEXTET}){{1,5}}|(?::{HEXTET}){{0,3}}:{IPv4}|:)"
+    f"|(?:{HEXTET}:){{1}}(?:(?::{HEXTET}){{1,6}}|(?::{HEXTET}){{0,4}}:{IPv4}|:)"
+    f"|:(?:(?::{HEXTET}){{1,7}}|(?::{HEXTET}){{0,5}}:{IPv4}|:)"
 )
 
 #: `FieldType` instance for an IP address, either IPv4 or IPv6
 ip_address = FieldType(IP_ADDRESS_RGX, str)
 
 #: `FieldType` instance for a base-10 integer
-integer    = FieldType(r'(?:0|-?[1-9][0-9]*)', int)
+integer = FieldType(r"(?:0|-?[1-9][0-9]*)", int)
 
 #: `FieldType` instance for an unsigned base-10 integer
-uinteger   = FieldType(r'(?:0|[1-9][0-9]*)', int)
+uinteger = FieldType(r"(?:0|[1-9][0-9]*)", int)
 
 #: `FieldType` instance for a 3-digit integer HTTP status code
-status_code = FieldType(r'[0-9]{3}', int)
+status_code = FieldType(r"[0-9]{3}", int)
 
 #: `FieldType` instance for a string containing escape sequences that is
 #: converted to `bytes`
@@ -90,14 +95,14 @@ esc_string = FieldType(
     # (everything rejected by `apr_isprint` = `isprint`, i.e., control
     # characters plus everything over 0x7F).
     # cf. server/gen_test_char.c
-    r'(?:[ !\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?',
+    r"(?:[ !\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?",
     unescape,
 )
 
 #: Like `esc_string`, but without any whitespace.  (Whitespace escape sequences
 #: are still allowed just because it's easier.)
 esc_word = FieldType(
-    r'(?:[!\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?',
+    r"(?:[!\x23-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)*?",
     unescape,
 )
 
@@ -114,16 +119,18 @@ clf_word = clf(esc_word)
 #: an empty string, as that is how ``%u`` represents empty names.
 remote_user = FieldType(
     fr'(?:{clf_string.regex}|"")',
-    lambda s: clf_string.converter('' if s == '""' else s),
+    lambda s: clf_string.converter("" if s == '""' else s),
 )
 
 #: Regex for a single non-space atom in a cookie value; this is the same as an
 #: `esc_word` atom, except semicolons are not matched
-CRUMB = r'(?:[!\x23-\x3A\x3C-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)'
+CRUMB = r"(?:[!\x23-\x3A\x3C-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)"
 
 #: `FieldType` instance for a cookie value; like `clf_string`, but with no
 #: leading or trailing spaces and no semicolons
-cookie_value = clf(FieldType(
-    fr'{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?',
-    unescape,
-))
+cookie_value = clf(
+    FieldType(
+        fr"{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?",
+        unescape,
+    )
+)

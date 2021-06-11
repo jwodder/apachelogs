@@ -1,9 +1,9 @@
 import re
 import attr
-from   pydicti     import dicti
-from   .directives import format2regex
-from   .errors     import InvalidEntryError
-from   .timeutil   import assemble_datetime
+from pydicti import dicti
+from .directives import format2regex
+from .errors import InvalidEntryError
+from .timeutil import assemble_datetime
 
 # The parameterized directives corresponding to the following `dict` attributes
 # all look up their parameters case-insensitively (either because Apache stores
@@ -12,16 +12,17 @@ from   .timeutil   import assemble_datetime
 # case-insensitively).  As a result, we want to store the directive values in
 # case-insensitive `dict`s.
 NOCASEDICTS = {
-    'cookies',
-    'cryptography',
-    'env_vars',
-    'headers_in',
-    'headers_out',
-    'notes',
-    'trailers_in',
-    'trailers_out',
-    'variables',
+    "cookies",
+    "cryptography",
+    "env_vars",
+    "headers_in",
+    "headers_out",
+    "notes",
+    "trailers_in",
+    "trailers_out",
+    "variables",
 }
+
 
 @attr.s
 class LogParser:
@@ -42,9 +43,9 @@ class LogParser:
     :raises UnknownDirectiveError: if an unknown directive occurs in ``format``
     """
 
-    format   = attr.ib()
-    encoding = attr.ib(default='iso-8859-1')
-    errors   = attr.ib(default=None)
+    format = attr.ib()
+    encoding = attr.ib(default="iso-8859-1")
+    errors = attr.ib(default=None)
 
     def __attrs_post_init__(self):
         self._group_defs, self._rgx = format2regex(self.format)
@@ -59,18 +60,16 @@ class LogParser:
         :rtype: LogEntry
         :raises InvalidEntryError: if ``entry`` does not match the log format
         """
-        entry = entry.rstrip('\r\n')
+        entry = entry.rstrip("\r\n")
         m = self._rgx.fullmatch(entry)
         if not m:
             raise InvalidEntryError(entry, self.format)
-        groups = [
-            conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())
-        ]
-        if self.encoding != 'bytes':
+        groups = [conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())]
+        if self.encoding != "bytes":
             groups = [
-                gr.decode(self.encoding, self.errors or 'strict')
-                    if isinstance(gr, bytes)
-                    else gr
+                gr.decode(self.encoding, self.errors or "strict")
+                if isinstance(gr, bytes)
+                else gr
                 for gr in groups
             ]
         return LogEntry(
@@ -150,16 +149,16 @@ class LogEntry:
                 k = k[-1]
             if d.get(k) is None:
                 d[k] = v
-            #else: Assume d[k] == v
+            # else: Assume d[k] == v
             self.directives[drct] = v
-        for prefix in ('original_', '', 'final_'):
-            for midfix in ('begin_', '', 'end_'):
-                target = prefix + midfix + 'request_time'
-                if getattr(self, target + '_fields', None):
+        for prefix in ("original_", "", "final_"):
+            for midfix in ("begin_", "", "end_"):
+                target = prefix + midfix + "request_time"
+                if getattr(self, target + "_fields", None):
                     setattr(
                         self,
                         target,
-                        assemble_datetime(getattr(self, target + '_fields')),
+                        assemble_datetime(getattr(self, target + "_fields")),
                     )
 
     def __eq__(self, other):
