@@ -7,6 +7,8 @@ v0.7.0 (in development)
 -----------------------
 - Support Python 3.9
 - Drop support for Python 3.5
+- `LogEntry`'s ``__eq__`` method now returns `NotImplemented` instead of
+  `False` when comparing against non-`LogEntry` values
 
 
 v0.6.0 (2020-10-13)

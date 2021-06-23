@@ -162,4 +162,7 @@ class LogEntry:
                     )
 
     def __eq__(self, other):
-        return type(self) is type(other) and vars(self) == vars(other)
+        if isinstance(other, LogEntry):
+            return vars(self) == vars(other)
+        else:
+            return NotImplemented
