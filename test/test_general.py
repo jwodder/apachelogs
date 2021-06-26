@@ -3,10 +3,10 @@ from pathlib import Path
 import pytest
 from apachelogs import (
     COMBINED,
+    VHOST_COMBINED,
     InvalidEntryError,
     LogEntry,
     LogParser,
-    VHOST_COMBINED,
     parse,
     parse_lines,
 )
