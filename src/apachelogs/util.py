@@ -17,7 +17,7 @@ def clf(ftype):
     :rtype: FieldType
     """
     return FieldType(
-        regex=fr"(?:{ftype.regex}|-)",
+        regex=rf"(?:{ftype.regex}|-)",
         converter=lambda s: None if s == "-" else ftype.converter(s),
     )
 
@@ -58,12 +58,13 @@ BYTE = r"(?:[1-9]?[0-9]|[1-9][0-9][0-9]|2[0-4][0-9]|25[0-5])"
 HEXTET = r"[0-9A-Fa-f]{1,4}"
 
 #: Regex for an IPv4 address
-IPv4 = fr"{BYTE}(?:\.{BYTE}){{3}}"
+IPv4 = rf"{BYTE}(?:\.{BYTE}){{3}}"
 
 #: Regex for an IP address, either IPv4 or IPv6
 IP_ADDRESS_RGX = (
     f"{IPv4}"
-    # Adapted from <https://git.io/vFxQW>:
+    # Adapted from <https://github.com/logstash-plugins/logstash-patterns-core/
+    #   blob/main/patterns/legacy/grok-patterns>:
     f"|(?:{HEXTET}:){{7}}(?:{HEXTET}|:)"
     f"|(?:{HEXTET}:){{6}}(?::{HEXTET}|{IPv4}|:)"
     f"|(?:{HEXTET}:){{5}}(?:(?::{HEXTET}){{1,2}}|:{IPv4}|:)"
@@ -118,7 +119,7 @@ clf_word = clf(esc_word)
 #: as `clf_string`, but ``""`` (two double-quotes) is accepted and converted to
 #: an empty string, as that is how ``%u`` represents empty names.
 remote_user = FieldType(
-    fr'(?:{clf_string.regex}|"")',
+    rf'(?:{clf_string.regex}|"")',
     lambda s: clf_string.converter("" if s == '""' else s),
 )
 
@@ -130,7 +131,7 @@ CRUMB = r"(?:[!\x23-\x3A\x3C-\x5B\x5D-\x7E]|\\x[0-9A-Fa-f]{2}|\\.)"
 #: leading or trailing spaces and no semicolons
 cookie_value = clf(
     FieldType(
-        fr"{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?",
+        rf"{CRUMB}(?:(?:{CRUMB}|[ ])*{CRUMB})?",
         unescape,
     )
 )
