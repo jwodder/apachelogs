@@ -65,7 +65,7 @@ COMBINED_DEBIAN = '%h %l %u %t "%r" %>s %O "%{Referer}i" "%{User-Agent}i"'
 VHOST_COMBINED = '%v:%p %h %l %u %t "%r" %>s %O "%{Referer}i" "%{User-Agent}i"'
 
 
-def parse(format, entry, encoding="iso-8859-1", errors=None):
+def parse(format, entry, encoding="iso-8859-1", errors=None):  # noqa: A002
     """
     A convenience function for parsing a single logfile entry without having
     to directly create a `LogParser` object.
@@ -76,7 +76,11 @@ def parse(format, entry, encoding="iso-8859-1", errors=None):
 
 
 def parse_lines(
-    format, entries, encoding="iso-8859-1", errors=None, ignore_invalid=False
+    format,  # noqa: A002
+    entries,
+    encoding="iso-8859-1",
+    errors=None,
+    ignore_invalid=False,
 ):
     """
     A convenience function for parsing an iterable of logfile entries without

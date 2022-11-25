@@ -10,7 +10,7 @@ class InvalidEntryError(Error, ValueError):
     log format
     """
 
-    def __init__(self, entry, format):
+    def __init__(self, entry, format):  # noqa: A002
         #: The invalid log entry
         self.entry = entry
         #: The log format string the entry failed to match against
@@ -29,7 +29,7 @@ class InvalidDirectiveError(Error, ValueError):
     invalid or malformed directive
     """
 
-    def __init__(self, format, pos):
+    def __init__(self, format, pos):  # noqa: A002
         #: The log format string containing the invalid directive
         self.format = format
         #: The position in the log format string at which the invalid directive

@@ -12,7 +12,7 @@ from apachelogs import (
 )
 
 
-def mkentry(entry, format, **attrs):
+def mkentry(entry, format, **attrs):  # noqa: A002
     logentry = LogEntry(entry, format, [], [])
     logentry.__dict__.update(attrs)
     return logentry

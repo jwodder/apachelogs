@@ -43,7 +43,7 @@ class LogParser:
     :raises UnknownDirectiveError: if an unknown directive occurs in ``format``
     """
 
-    format = attr.ib()
+    format = attr.ib()  # noqa: A003
     encoding = attr.ib(default="iso-8859-1")
     errors = attr.ib(default=None)
 
@@ -121,7 +121,7 @@ class LogEntry:
     have a ``request_time`` attribute equal to that `datetime.datetime`.
     """
 
-    def __init__(self, entry, format, group_names, groups):
+    def __init__(self, entry, format, group_names, groups):  # noqa: A002
         #: The original logfile entry with trailing newlines removed
         self.entry = entry
         #: The entry's log format string
