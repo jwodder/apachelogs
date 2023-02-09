@@ -254,7 +254,7 @@ def format2regex(
                 continue
             if conditioned:
                 dtype = clf(dtype)
-            rgx += fr"({dtype.regex})"
+            rgx += rf"({dtype.regex})"
             subgroups = [(name, m.group(0), dtype.converter)]
         if redirects:
             prefix = "original_" if redirects[-1] == "<" else "final_"

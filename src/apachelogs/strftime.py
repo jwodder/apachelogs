@@ -142,7 +142,7 @@ def strftime2regex(param):
                     dtype.converter,
                 )
             ],
-            fr"({dtype.regex})",
+            rf"({dtype.regex})",
         )
     else:
         from .directives import format2regex

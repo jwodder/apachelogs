@@ -2,7 +2,7 @@ from apachelogs import __version__
 
 project = "apachelogs"
 author = "John Thorvald Wodder II"
-copyright = "2017-2020 John Thorvald Wodder II"
+copyright = "2017-2020 John Thorvald Wodder II"  # noqa: A001
 
 extensions = [
     "sphinx.ext.autodoc",
