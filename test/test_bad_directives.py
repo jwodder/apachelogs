@@ -50,7 +50,8 @@ def test_unknown_directive(fmt):
         # '%{x}a',  # actually parsed as an unknown directive
         "%<a",
         "%200a",
-        "%!a" "%!200a",
+        "%!a",
+        "%!200a",
     ],
 )
 def test_malformed_time_directive(fmt):
