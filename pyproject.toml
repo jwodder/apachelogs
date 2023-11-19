@@ -1,3 +1,66 @@
 [build-system]
-requires = ["setuptools >= 46.4.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "apachelogs"
+dynamic = ["version"]
+description = "Parse Apache access logs"
+readme = "README.rst"
+requires-python = ">=3.7"
+license = "MIT"
+license-files = { paths = ["LICENSE"] }
+authors = [
+    { name = "John Thorvald Wodder II", email = "apachelogs@varonathe.org" }
+]
+
+keywords = [
+    "Apache",
+    "access logs",
+    "httpd",
+    "logfiles",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: System Administrators",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: System :: Logging",
+    "Topic :: Text Processing :: Filters",
+]
+
+dependencies = [
+    "attrs   >= 17.1",
+    "pydicti ~= 1.1",
+]
+
+[project.urls]
+"Source Code" = "https://github.com/jwodder/apachelogs"
+"Bug Tracker" = "https://github.com/jwodder/apachelogs/issues"
+"Documentation" = "https://apachelogs.readthedocs.io"
+
+[tool.hatch.version]
+path = "src/apachelogs/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/docs",
+    "/src",
+    "/test",
+    "CHANGELOG.*",
+    "CONTRIBUTORS.*",
+    "tox.ini",
+]
+
+[tool.hatch.envs.default]
+python = "3"
