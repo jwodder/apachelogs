@@ -67,9 +67,11 @@ class LogParser:
         groups = [conv(gr) for (_, _, conv), gr in zip(self._group_defs, m.groups())]
         if self.encoding != "bytes":
             groups = [
-                gr.decode(self.encoding, self.errors or "strict")
-                if isinstance(gr, bytes)
-                else gr
+                (
+                    gr.decode(self.encoding, self.errors or "strict")
+                    if isinstance(gr, bytes)
+                    else gr
+                )
                 for gr in groups
             ]
         return LogEntry(
