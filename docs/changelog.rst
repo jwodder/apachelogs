@@ -6,7 +6,7 @@ Changelog
 v0.7.0 (in development)
 -----------------------
 - Support Python 3.9, 3.10, 3.11, and 3.12
-- Drop support for Python 3.5 and 3.6
+- Drop support for Python 3.5, 3.6, and 3.7
 - `LogEntry`'s ``__eq__`` method now returns `NotImplemented` instead of
   `False` when comparing against non-`LogEntry` values
 - Migrated from setuptools to hatch
