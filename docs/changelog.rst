@@ -3,8 +3,8 @@
 Changelog
 =========
 
-v0.7.0 (in development)
------------------------
+v0.6.1 (2024-12-01)
+-------------------
 - Support Python 3.9, 3.10, 3.11, 3.12, and 3.13
 - Drop support for Python 3.5, 3.6, and 3.7
 - `LogEntry`'s ``__eq__`` method now returns `NotImplemented` instead of
