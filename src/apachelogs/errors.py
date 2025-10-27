@@ -15,6 +15,7 @@ class InvalidEntryError(Error, ValueError):
         self.entry = entry
         #: The log format string the entry failed to match against
         self.format = format
+        super().__init__(entry, format)
 
     def __str__(self):
         return (
@@ -35,6 +36,7 @@ class InvalidDirectiveError(Error, ValueError):
         #: The position in the log format string at which the invalid directive
         #: occurs
         self.pos = pos
+        super().__init__(format, pos)
 
     def __str__(self):
         return f"Invalid log format directive at index {self.pos} of {self.format!r}"
@@ -49,6 +51,7 @@ class UnknownDirectiveError(Error, ValueError):
     def __init__(self, directive):
         #: The unknown or unsupported directive
         self.directive = directive
+        super().__init__(directive)
 
     def __str__(self):
         return f"Unknown log format directive: {self.directive!r}"
