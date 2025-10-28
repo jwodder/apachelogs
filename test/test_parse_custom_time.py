@@ -753,7 +753,7 @@ def test_parse_custom_time(fmt, entry, fields):
 def test_parse_custom_german_time(fmt, entry, fields):
     oldlocale = locale.setlocale(locale.LC_ALL)
     try:
-        locale.setlocale(locale.LC_ALL, "de_DE.utf8")
+        locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
     except locale.Error:
         pytest.skip("Locale not supported")
     else:
