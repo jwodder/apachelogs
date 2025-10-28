@@ -28,7 +28,7 @@ bare hyphens to `~datetime.datetime` values, `int`\s, and `None`\s.
 
 Installation
 ============
-`apachelogs` requires Python 3.8 or higher.  Just use `pip
+`apachelogs` requires Python 3.10 or higher.  Just use `pip
 <https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 `apachelogs` and its dependencies::
 
