@@ -1,9 +1,10 @@
 |repostatus| |ci-status| |coverage| |pyversions| |license|
 
-.. |repostatus| image:: https://www.repostatus.org/badges/latest/active.svg
-    :target: https://www.repostatus.org/#active
-    :alt: Project Status: Active — The project has reached a stable, usable
-          state and is being actively developed.
+.. image:: https://www.repostatus.org/badges/latest/inactive.svg
+    :target: https://www.repostatus.org/#inactive
+    :alt: Project Status: Inactive – The project has reached a stable, usable
+          state but is no longer being actively developed; support/maintenance
+          will be provided as time allows.
 
 .. |ci-status| image:: https://github.com/jwodder/apachelogs/actions/workflows/test.yml/badge.svg
     :target: https://github.com/jwodder/apachelogs/actions/workflows/test.yml
