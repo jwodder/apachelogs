@@ -1,6 +1,6 @@
 |repostatus| |ci-status| |coverage| |pyversions| |license|
 
-.. image:: https://www.repostatus.org/badges/latest/inactive.svg
+.. |repostatus| image:: https://www.repostatus.org/badges/latest/inactive.svg
     :target: https://www.repostatus.org/#inactive
     :alt: Project Status: Inactive – The project has reached a stable, usable
           state but is no longer being actively developed; support/maintenance
